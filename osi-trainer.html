@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSI Model Learning Tool</title>
+    <link rel="stylesheet" href="css/osi-trainer.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>OSI Model Learning Tool</h1>
+            <!-- Theme toggle button can be added here later if desired -->
+        </header>
+
+        <main>
+            <section id="main-menu">
+                <h2>OSI Learning Exercises</h2>
+                <button id="select-drag-drop-puzzle">Drag & Drop Layers Puzzle</button>
+                <button id="select-protocol-matching">Protocol Matching Game</button>
+                <div id="progress-overview">
+                    <!-- Progress will be displayed here -->
+                </div>
+            </section>
+
+            <section id="drag-drop-exercise" class="exercise-container" style="display: none;">
+                <h3>Drag & Drop Layers Puzzle</h3>
+                <p id="drag-drop-instructions">Drag the layers to their correct positions.</p>
+                <div id="draggable-layers-container">
+                    <p>Layers to Drag:</p>
+                    <div id="draggable-layers">
+                        <!-- Draggable layer cards will be generated here by JS -->
+                    </div>
+                </div>
+                <div id="layer-slots-container">
+                    <p>Target Slots:</p>
+                    <div id="layer-slots">
+                        <!-- Layer drop slots will be generated here by JS -->
+                    </div>
+                </div>
+                <button id="reset-drag-drop-puzzle">Reset Puzzle</button>
+                <button class="back-to-menu">Back to Menu</button>
+                <div id="layer-explanation-popup" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <span class="close-button">&times;</span>
+                        <h4 id="explanation-title">Layer Explanation</h4>
+                        <p id="explanation-text"></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="protocol-matching-exercise" class="exercise-container" style="display: none;">
+                <h3>Protocol Matching Game</h3>
+                <p id="protocol-matching-instructions">Match the protocol to its correct OSI layer.</p>
+                <div id="protocol-question-area">
+                    <p>Protocol: <span id="protocol-name-display"></span></p>
+                </div>
+                <div id="protocol-options-area">
+                    <!-- Layer options will be generated here by JS -->
+                </div>
+                <button id="submit-protocol-answer">Submit Answer</button>
+                <button id="next-protocol-task" style="display: none;">Next Task</button>
+                <div id="protocol-feedback-area">
+                    <!-- Feedback (correct/incorrect) will be displayed here -->
+                </div>
+                <button class="back-to-menu">Back to Menu</button>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 OSI Learning Tool</p>
+        </footer>
+    </div>
+
+    <script src="js/osi-trainer.js"></script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+/* General Styles */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+main {
+    padding: 10px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    background-color: #333;
+    color: #fff;
+}
+
+button {
+    display: inline-block;
+    background-color: #5cb85c;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #4cae4c;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.back-to-menu {
+    background-color: #f0ad4e;
+}
+
+.back-to-menu:hover {
+    background-color: #ec971f;
+}
+
+/* Main Menu Styles */
+#main-menu {
+    text-align: center;
+    padding: 20px;
+}
+
+#main-menu h2 {
+    margin-bottom: 20px;
+}
+
+#progress-overview {
+    margin-top: 20px;
+    font-style: italic;
+    color: #666;
+}
+
+/* Exercise Container Styles */
+.exercise-container {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+}
+
+.exercise-container h3 {
+    margin-top: 0;
+    color: #337ab7;
+}
+
+/* Drag & Drop Puzzle Styles */
+#draggable-layers-container,
+#layer-slots-container {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px dashed #ccc;
+}
+
+#draggable-layers-container p,
+#layer-slots-container p {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+
+#draggable-layers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    min-height: 50px; /* Placeholder height */
+    background-color: #e9e9e9;
+    border-radius: 3px;
+}
+
+#layer-slots {
+    display: flex;
+    flex-direction: column; /* Stack slots vertically */
+    gap: 15px; /* Increased gap for clarity */
+    padding: 10px;
+    min-height: 300px; /* Placeholder height */
+    background-color: #e9e9e9;
+    border-radius: 3px;
+}
+
+.draggable-layer {
+    padding: 15px 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: grab;
+    text-align: center;
+    font-weight: bold;
+    min-width: 120px; /* Ensure some width */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.layer-slot {
+    padding: 20px;
+    border: 2px dashed #aaa;
+    border-radius: 5px;
+    text-align: center;
+    min-height: 60px; /* Taller slots */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    color: #777;
+}
+
+.layer-slot.correct {
+    border-color: green;
+    background-color: #e6ffe6;
+}
+
+.layer-slot.incorrect { /* For momentary feedback if needed */
+    border-color: red;
+    background-color: #ffe6e6;
+}
+
+.layer-slot .draggable-layer { /* Style for layer when inside a slot */
+    cursor: default;
+    box-shadow: none;
+}
+
+
+/* Modal (Explanation Popup) Styles */
+.modal {
+    /* display: none; Re-enable when JS controls it */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Dim background */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 25px;
+    border: 1px solid #888;
+    width: 60%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.modal-content h4 {
+    margin-top: 0;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    padding: 0;
+    line-height: 1;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+/* Protocol Matching Game Styles */
+#protocol-question-area {
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+#protocol-name-display {
+    font-weight: bold;
+    color: #d9534f;
+}
+
+#protocol-options-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+#protocol-options-area button { /* If options are buttons */
+    background-color: #5bc0de;
+    width: 100%;
+    text-align: left;
+}
+#protocol-options-area button:hover {
+    background-color: #31b0d5;
+}
+
+
+#protocol-feedback-area {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.feedback-correct {
+    background-color: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d6e9c6;
+}
+
+.feedback-incorrect {
+    background-color: #f2dede;
+    color: #a94442;
+    border: 1px solid #ebccd1;
+}
+
+/* Responsive Design (Basic Example) */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    button {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+
+    #draggable-layers, #layer-slots {
+        flex-direction: column;
+        align-items: stretch; /* Make items full width in column */
+    }
+
+    .draggable-layer {
+        width: auto; /* Allow full width */
+        margin-bottom: 10px; /* Add margin for stacked items */
+    }
+    .modal-content {
+        width: 85%;
+    }
+}
