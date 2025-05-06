@@ -1,10 +1,18 @@
 // Global Variables
 let currentExercise = null;
-let layersData = [];
+let layersData = []; // Still used for layer names in slots and protocol game
 let protocolsData = [];
+let dragDropTasks = []; // For the new scenario-based drag & drop
+let currentDragDropTask = null; // Holds the currently active drag & drop task
+
 let userProgress = {
-    dragDropPuzzle: { completed: false, correctPlacements: 0 },
-    protocolMatching: { completedTasks: [], score: 0 },
+    dragDropPuzzle: {
+        completed: false,
+        correctPlacements: 0,
+        currentTaskIndex: 0, // Index for dragDropTasks
+        completedTasks: [] // Array of task IDs that are completed
+    },
+    protocolMatching: { completedTasks: [], score: 0, currentTaskIndex: 0 }, // Added currentTaskIndex for consistency
     lastExercise: "menu"
 };
 
@@ -20,10 +28,13 @@ const backToMenuButtons = document.querySelectorAll('.back-to-menu');
 const draggableLayersContainer = document.getElementById('draggable-layers');
 const layerSlotsContainer = document.getElementById('layer-slots');
 const resetDragDropButton = document.getElementById('reset-drag-drop-puzzle');
-const explanationPopup = document.getElementById('layer-explanation-popup');
+const explanationPopup = document.getElementById('layer-explanation-popup'); // May need to be re-purposed or disabled for new D&D
 const explanationTitle = document.getElementById('explanation-title');
 const explanationText = document.getElementById('explanation-text');
-const closeExplanationButton = explanationPopup.querySelector('.close-button');
+const closeExplanationButton = explanationPopup ? explanationPopup.querySelector('.close-button') : null; // Check if popup exists
+
+// DOM element for drag & drop task scenario/instructions
+const dragDropTaskScenarioDisplay = document.getElementById('drag-drop-instructions'); // Re-using existing p tag
 
 const protocolNameDisplay = document.getElementById('protocol-name-display');
 const protocolFullnameDisplay = document.getElementById('protocol-fullname-display');
@@ -45,8 +56,9 @@ async function initApp() {
     loadProgress(); // Lade Fortschritt
 
     try {
-        await loadLayerData();
+        await loadLayerData(); // Still needed for layer slot structure and protocol game
         await loadProtocolData();
+        await loadDragDropTasks(); // Load the new task data
     } catch (error) {
         console.error("Fehler beim Laden der initialen Daten:", error);
         // Zeige eine Fehlermeldung an, wenn kritische Daten nicht geladen werden können
@@ -112,15 +124,49 @@ async function loadProtocolData() {
     }
 }
 
+async function loadDragDropTasks() {
+    try {
+        const response = await fetch('data/drag-drop-tasks.json');
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        dragDropTasks = await response.json();
+        console.log("Drag & Drop Tasks loaded:", dragDropTasks);
+        if (dragDropTasks.length === 0) {
+            console.warn("Keine Drag & Drop Aufgaben gefunden oder Datei ist leer.");
+        }
+    } catch (error) {
+        console.error("Error loading drag & drop tasks:", error);
+        dragDropTasks = []; // Ensure it's an empty array on error
+        // Optional: display an error to the user if these tasks are critical
+        // throw error; // Decide if this should halt initApp
+    }
+}
+
 // --- Progress Management (localStorage) ---
 function loadProgress() {
     const savedProgress = localStorage.getItem('osiUserProgress');
     if (savedProgress) {
         userProgress = JSON.parse(savedProgress);
+        // Ensure new progress structures are present
+        if (!userProgress.dragDropPuzzle) {
+            userProgress.dragDropPuzzle = { completed: false, correctPlacements: 0, currentTaskIndex: 0, completedTasks: [] };
+        } else {
+            if (userProgress.dragDropPuzzle.currentTaskIndex === undefined) userProgress.dragDropPuzzle.currentTaskIndex = 0;
+            if (userProgress.dragDropPuzzle.completedTasks === undefined) userProgress.dragDropPuzzle.completedTasks = [];
+        }
+        if (!userProgress.protocolMatching) {
+            userProgress.protocolMatching = { completedTasks: [], score: 0, currentTaskIndex: 0 };
+        } else {
+            if (userProgress.protocolMatching.currentTaskIndex === undefined) userProgress.protocolMatching.currentTaskIndex = 0;
+        }
         console.log("Fortschritt geladen:", userProgress);
     } else {
         console.log("Kein gespeicherter Fortschritt gefunden, verwende Standard.");
-        // Standard userProgress ist bereits global definiert
+        // Initialize with default structure if not found
+        userProgress = {
+            dragDropPuzzle: { completed: false, correctPlacements: 0, currentTaskIndex: 0, completedTasks: [] },
+            protocolMatching: { completedTasks: [], score: 0, currentTaskIndex: 0 },
+            lastExercise: "menu"
+        };
     }
 }
 
@@ -215,40 +261,70 @@ function setupEventListeners() {
 let draggedItem = null;
 
 function initDragDropPuzzle() {
-    console.log("Initialisiere Drag & Drop Puzzle...");
-    renderDraggableLayers();
-    renderLayerSlots();
-    // Setze ggf. vorherigen Zustand zurück
-    userProgress.dragDropPuzzle.correctPlacements = 0; // Zurücksetzen für eine neue Puzzle-Sitzung
+    console.log("Initialisiere Drag & Drop Puzzle (Szenario-basiert)...");
+    if (!dragDropTasks || dragDropTasks.length === 0) {
+        if (dragDropTaskScenarioDisplay) dragDropTaskScenarioDisplay.textContent = "Keine Aufgaben für das Drag & Drop Puzzle geladen.";
+        if (draggableLayersContainer) draggableLayersContainer.innerHTML = "";
+        if (layerSlotsContainer) layerSlotsContainer.innerHTML = "";
+        console.warn("Drag & Drop Puzzle kann nicht initialisiert werden: Keine Aufgaben.");
+        return;
+    }
+
+    // Select current task
+    let taskIndex = userProgress.dragDropPuzzle.currentTaskIndex || 0;
+    if (taskIndex >= dragDropTasks.length) {
+        // All tasks completed or index out of bounds, reset to first task or show completion message
+        // For now, let's loop. A more robust solution would handle overall completion.
+        console.log("Alle Drag & Drop Aufgaben durchlaufen. Starte von vorne oder zeige Abschlussmeldung.");
+        taskIndex = 0;
+        userProgress.dragDropPuzzle.currentTaskIndex = 0;
+        // Potentially clear userProgress.dragDropPuzzle.completedTasks if re-looping all.
+    }
+    currentDragDropTask = dragDropTasks[taskIndex];
+
+    if (!currentDragDropTask) {
+        console.error("Ausgewählte Drag & Drop Aufgabe ist ungültig. Index:", taskIndex);
+        if (dragDropTaskScenarioDisplay) dragDropTaskScenarioDisplay.textContent = "Fehler beim Laden der Aufgabe.";
+        return;
+    }
+    
+    if (dragDropTaskScenarioDisplay) {
+        dragDropTaskScenarioDisplay.innerHTML = `<strong>Szenario:</strong> ${currentDragDropTask.scenario}<br><em>${currentDragDropTask.instructions || ""}</em>`;
+    }
+
+    renderDraggableItemsForTask(currentDragDropTask.draggableItems);
+    renderLayerSlots(); // Slots remain the same (OSI layers 1-7)
+    
+    userProgress.dragDropPuzzle.correctPlacements = 0; // Reset for the current task
     saveProgress();
 }
 
-function renderDraggableLayers() {
+function renderDraggableItemsForTask(items) {
     if (!draggableLayersContainer) return;
-    draggableLayersContainer.innerHTML = ''; // Clear previous layers
-    // Shuffle layers for randomness
-    const shuffledLayers = [...layersData].sort(() => Math.random() - 0.5);
+    draggableLayersContainer.innerHTML = ''; // Clear previous items
+    
+    const shuffledItems = [...items].sort(() => Math.random() - 0.5);
 
-    shuffledLayers.forEach(layer => {
-        const layerEl = document.createElement('div');
-        layerEl.classList.add('draggable-layer');
-        layerEl.textContent = layer.name;
-        layerEl.setAttribute('draggable', true);
-        layerEl.dataset.layerId = layer.id;
-        layerEl.dataset.layerNumber = layer.number; // Store layer number
-        layerEl.style.backgroundColor = layer.color || '#ddd'; // Use color from JSON
+    shuffledItems.forEach(item => {
+        const itemEl = document.createElement('div');
+        itemEl.classList.add('draggable-layer'); // Re-use class for styling
+        itemEl.textContent = item.name;
+        itemEl.setAttribute('draggable', true);
+        itemEl.dataset.itemId = item.id;
+        itemEl.dataset.correctLayerNumber = item.correctLayerNumber; // The target layer for THIS item
+        itemEl.style.backgroundColor = item.color || '#ddd';
 
-        layerEl.addEventListener('dragstart', (e) => {
+        itemEl.addEventListener('dragstart', (e) => {
             draggedItem = e.target;
-            setTimeout(() => e.target.style.opacity = '0.5', 0);
+            setTimeout(() => { if(e.target) e.target.style.opacity = '0.5'; }, 0);
         });
-        layerEl.addEventListener('dragend', (e) => {
+        itemEl.addEventListener('dragend', (e) => {
             setTimeout(() => {
-                e.target.style.opacity = '1';
+                if(e.target) e.target.style.opacity = '1';
                 draggedItem = null;
             }, 0);
         });
-        draggableLayersContainer.appendChild(layerEl);
+        draggableLayersContainer.appendChild(itemEl);
     });
 }
 
@@ -269,8 +345,8 @@ function renderLayerSlots() {
             e.preventDefault();
             // Only drop if slot is empty (does not already contain a draggable-layer)
             if (draggedItem && e.target.classList.contains('layer-slot') && !e.target.querySelector('.draggable-layer')) {
-                const slotNumber = parseInt(e.target.dataset.slotNumber);
-                const layerNumber = parseInt(draggedItem.dataset.layerNumber);
+                const slotNumber = parseInt(e.target.dataset.slotNumber); // This is the OSI layer number of the slot (1-7)
+                const itemCorrectLayerNumber = parseInt(draggedItem.dataset.correctLayerNumber); // Correct OSI layer for the dragged item
 
                 // Clear placeholder text before appending
                 if (e.target.childNodes.length === 1 && e.target.firstChild.nodeType === Node.TEXT_NODE) {
@@ -279,48 +355,58 @@ function renderLayerSlots() {
                 e.target.appendChild(draggedItem);
                 draggedItem.setAttribute('draggable', false); // Prevent re-dragging from slot for now
                 draggedItem.style.cursor = 'default';
-                checkLayerPlacement(draggedItem, e.target, layerNumber, slotNumber);
+                checkLayerPlacement(draggedItem, e.target, itemCorrectLayerNumber, slotNumber); // Pass item's correct layer
             }
         });
         layerSlotsContainer.appendChild(slotEl);
     }
 }
 
-function checkLayerPlacement(layerElement, slotElement, layerNumber, slotNumber) {
-    const layerId = layerElement.dataset.layerId;
-    const correct = layerNumber === slotNumber;
+function checkLayerPlacement(itemElement, slotElement, itemCorrectLayerNumber, slotNumber) {
+    // itemCorrectLayerNumber is the layer this specific item belongs to for the current task.
+    // slotNumber is the layer number of the slot it was dropped into.
+    const itemId = itemElement.dataset.itemId;
+    const correct = itemCorrectLayerNumber === slotNumber;
     provideVisualFeedback(slotElement, correct);
 
     if (correct) {
         userProgress.dragDropPuzzle.correctPlacements++;
         saveProgress();
-        // Make the correctly placed layer clickable for explanation
-        layerElement.addEventListener('click', () => showLayerExplanation(layerId));
-        // Überprüfe, ob alle Schichten korrekt platziert sind
-        if (userProgress.dragDropPuzzle.correctPlacements === layersData.length) {
-            // Verzögerung, um das letzte Feedback anzuzeigen, bevor der Alert kommt
+        // itemElement.addEventListener('click', () => showItemExplanation(itemId)); // TODO: Implement if needed for items
+        
+        if (userProgress.dragDropPuzzle.correctPlacements === currentDragDropTask.draggableItems.length) {
+            if (!userProgress.dragDropPuzzle.completedTasks.includes(currentDragDropTask.id)) {
+                userProgress.dragDropPuzzle.completedTasks.push(currentDragDropTask.id);
+            }
+            userProgress.dragDropPuzzle.currentTaskIndex++; // Move to next task index
+            saveProgress();
+
             setTimeout(() => {
-                alert("Glückwunsch! Du hast alle OSI-Schichten korrekt platziert!");
-            }, 100);
-            // Optional: Weitere Interaktion deaktivieren oder Zurücksetzen/Menü anbieten
+                alert(`Glückwunsch! Aufgabe "${currentDragDropTask.scenario}" abgeschlossen!`);
+                // Automatically load next task or show completion if all tasks are done
+                if (userProgress.dragDropPuzzle.currentTaskIndex < dragDropTasks.length) {
+                    initDragDropPuzzle(); // Load next task
+                } else {
+                    if (dragDropTaskScenarioDisplay) dragDropTaskScenarioDisplay.innerHTML = "<strong>Alle Drag & Drop Aufgaben abgeschlossen! Gut gemacht!</strong><br>Du kannst das Puzzle zurücksetzen, um erneut zu üben.";
+                    // Optionally disable reset button or change its text
+                }
+            }, 200);
         }
     } else {
         // Wenn falsch, kurz rot anzeigen, dann zurück in den ziehbaren Bereich verschieben
         setTimeout(() => {
             provideVisualFeedback(slotElement, null); // Reset slot visual
-            // Ensure the slot is cleared of the incorrect item before moving it
-            if (slotElement.contains(layerElement)) {
-                slotElement.removeChild(layerElement);
+            if (slotElement.contains(itemElement)) {
+                slotElement.removeChild(itemElement);
             }
-            draggableLayersContainer.appendChild(layerElement); // Move back
-            layerElement.setAttribute('draggable', true);
-            layerElement.style.cursor = 'grab';
-            // Restore placeholder text if slot is now empty and doesn't have another draggable layer
+            draggableLayersContainer.appendChild(itemElement);
+            itemElement.setAttribute('draggable', true);
+            itemElement.style.cursor = 'grab';
             if (!slotElement.querySelector('.draggable-layer')) {
                  const slotNum = slotElement.dataset.slotNumber;
                  slotElement.textContent = `Schicht ${slotNum} Steckplatz`;
             }
-        }, 1000); // 1 second delay
+        }, 1000);
     }
 }
 
@@ -331,22 +417,30 @@ function provideVisualFeedback(element, isCorrect) {
     } else if (isCorrect === false) {
         element.classList.add('incorrect');
     }
-    // If isCorrect is null, it means reset to default (no class)
 }
 
+// This function was for OSI layers. For items, we might need a different approach or no pop-up.
+// For now, clicking items won't trigger this.
 function showLayerExplanation(layerId) {
+    // Check if the ID corresponds to an OSI Layer from layersData if we want to keep this for some items
     const layer = layersData.find(l => l.id === layerId);
     if (layer && explanationPopup && explanationTitle && explanationText) {
         explanationTitle.textContent = layer.name;
         explanationText.textContent = layer.description;
         explanationPopup.style.display = 'block';
+    } else {
+        console.warn(`Keine Erklärung für ID ${layerId} gefunden oder Popup nicht verfügbar.`);
+        if (explanationPopup) explanationPopup.style.display = 'none';
     }
 }
 
 function resetDragDropPuzzle() {
+    // Resets the current task, or could be modified to reset all progress for D&D
     userProgress.dragDropPuzzle.correctPlacements = 0;
+    // userProgress.dragDropPuzzle.currentTaskIndex = 0; // Uncomment to always restart from the first task
+    // userProgress.dragDropPuzzle.completedTasks = []; // Uncomment to clear all task completions
     saveProgress();
-    initDragDropPuzzle(); // Re-initialize to reset elements
+    initDragDropPuzzle(); // Re-initialize the current or first task
     if (explanationPopup) explanationPopup.style.display = 'none';
 }
 

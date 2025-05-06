@@ -1,0 +1,25 @@
+[
+  {
+    "id": "email_sending_task_1",
+    "scenario": "E-Mail Versand: Protokolle zuordnen",
+    "instructions": "Du schreibst und sendest eine E-Mail. Ziehe die folgenden Protokolle/Elemente auf die OSI-Schicht, auf der sie primär während dieses Vorgangs aktiv sind.",
+    "draggableItems": [
+      { "id": "smtp", "name": "SMTP (E-Mail Senden)", "correctLayerNumber": 7, "color": "#FFB3BA" },
+      { "id": "tcp_segment", "name": "TCP (Zuverlässiger Transport)", "correctLayerNumber": 4, "color": "#FFDFBA" },
+      { "id": "ip_packet", "name": "IP (Adressierung & Routing)", "correctLayerNumber": 3, "color": "#FFFFBA" },
+      { "id": "ethernet_frame", "name": "Ethernet (Lokale Übertragung)", "correctLayerNumber": 2, "color": "#BAFFC9" }
+    ]
+  },
+  {
+    "id": "web_browsing_task_1",
+    "scenario": "Webseitenaufruf (HTTP): Protokolle zuordnen",
+    "instructions": "Du rufst eine Webseite über HTTP in deinem Browser auf. Ordne die Protokolle/Elemente den korrekten OSI-Schichten zu.",
+    "draggableItems": [
+      { "id": "http", "name": "HTTP (Webseitenabruf)", "correctLayerNumber": 7, "color": "#FFB3BA" },
+      { "id": "dns_query", "name": "DNS (Namensauflösung)", "correctLayerNumber": 7, "color": "#FFB3BA" },
+      { "id": "tcp_segment_web", "name": "TCP (Verbindungsaufbau)", "correctLayerNumber": 4, "color": "#FFDFBA" },
+      { "id": "ip_packet_web", "name": "IP (Globale Adressierung)", "correctLayerNumber": 3, "color": "#FFFFBA" },
+      { "id": "ethernet_frame_web", "name": "Ethernet (Netzwerkzugriff)", "correctLayerNumber": 2, "color": "#BAFFC9" }
+    ]
+  }
+]
