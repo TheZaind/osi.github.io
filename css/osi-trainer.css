@@ -88,44 +88,10 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
+/* Dark Theme Styles - Direct Application */
 body[data-theme="dark"] {
-    --bg-color-light: var(--bg-color-dark);
-    --text-color-light: var(--text-color-dark);
-    --container-bg-light: var(--container-bg-dark);
-    --header-bg-light: var(--header-bg-dark);
-    --header-text-light: var(--header-text-dark);
-    --button-bg-light: var(--button-bg-dark);
-    --button-text-light: var(--button-text-dark);
-    --button-hover-light: var(--button-hover-dark);
-    --button-disabled-bg-light: var(--button-disabled-bg-dark);
-    --back-button-bg-light: var(--back-button-bg-dark);
-    --back-button-hover-light: var(--back-button-hover-dark);
-    --exercise-bg-light: var(--exercise-bg-dark);
-    --exercise-border-light: var(--exercise-border-dark);
-    --exercise-header-text-light: var(--exercise-header-text-dark);
-    --draggable-container-bg-light: var(--draggable-container-bg-dark);
-    --draggable-border-light: var(--draggable-border-dark);
-    --slot-bg-light: var(--slot-bg-dark);
-    --slot-border-light: var(--slot-border-dark);
-    --slot-text-light: var(--slot-text-dark);
-    --slot-correct-border-light: var(--slot-correct-border-dark);
-    --slot-correct-bg-light: var(--slot-correct-bg-dark);
-    --slot-incorrect-border-light: var(--slot-incorrect-border-dark);
-    --slot-incorrect-bg-light: var(--slot-incorrect-bg-dark);
-    --modal-bg-light: var(--modal-bg-dark);
-    --modal-content-bg-light: var(--modal-content-bg-dark);
-    --modal-content-border-light: var(--modal-content-border-dark);
-    --close-button-text-light: var(--close-button-text-dark);
-    --close-button-hover-text-light: var(--close-button-hover-text-dark);
-    --protocol-name-text-light: var(--protocol-name-text-dark);
-    --protocol-option-bg-light: var(--protocol-option-bg-dark);
-    --protocol-option-hover-bg-light: var(--protocol-option-hover-bg-dark);
-    --feedback-correct-bg-light: var(--feedback-correct-bg-dark);
-    --feedback-correct-text-light: var(--feedback-correct-text-dark);
-    --feedback-correct-border-light: var(--feedback-correct-border-dark);
-    --feedback-incorrect-bg-light: var(--feedback-incorrect-bg-dark);
-    --feedback-incorrect-text-light: var(--feedback-incorrect-text-dark);
-    --feedback-incorrect-border-light: var(--feedback-incorrect-border-dark);
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
 }
 
 .container {
@@ -142,6 +108,7 @@ body[data-theme="dark"] {
 }
 
 body[data-theme="dark"] .container {
+    background-color: var(--container-bg-dark);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
@@ -159,6 +126,10 @@ header {
     padding-left: 25px; /* Increased padding */
     padding-right: 25px; /* Increased padding */
 }
+body[data-theme="dark"] header {
+    background-color: var(--header-bg-dark);
+    color: var(--header-text-dark);
+}
 
 header h1 {
     margin: 0;
@@ -173,13 +144,23 @@ header h1 {
     border: 1px solid var(--header-text-light); /* Subtle border */
     border-radius: 20px; /* Pill shape */
 }
+body[data-theme="dark"] #theme-toggle-button {
+    color: var(--header-text-dark);
+    border: 1px solid var(--header-text-dark);
+}
+
 
 #theme-toggle-button:hover {
     background-color: rgba(255, 255, 255, 0.1); /* Subtle hover for dark theme */
     border-color: var(--button-hover-light); /* Use button hover color for consistency */
 }
-body[data-theme="light"] #theme-toggle-button:hover {
-    background-color: rgba(0, 0, 0, 0.05); /* Subtle hover for light theme */
+body[data-theme="light"] #theme-toggle-button:hover { /* Specific for light theme hover */
+    background-color: rgba(0, 0, 0, 0.05);
+    border-color: var(--button-hover-light);
+}
+body[data-theme="dark"] #theme-toggle-button:hover { /* Specific for dark theme hover */
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: var(--button-hover-dark);
 }
 
 
@@ -195,6 +176,10 @@ footer {
     color: var(--header-text-light);
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
+}
+body[data-theme="dark"] footer {
+    background-color: var(--header-bg-dark);
+    color: var(--header-text-dark);
 }
 
 button {
@@ -212,6 +197,8 @@ button {
     box-shadow: 0 2px 3px rgba(0,0,0,0.1);
 }
 body[data-theme="dark"] button {
+    background-color: var(--button-bg-dark);
+    color: var(--button-text-dark);
     box-shadow: 0 2px 3px rgba(0,0,0,0.3);
 }
 
@@ -222,7 +209,8 @@ button:hover {
     box-shadow: 0 4px 6px rgba(0,0,0,0.15);
 }
 body[data-theme="dark"] button:hover {
-     box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+    background-color: var(--button-hover-dark);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.4);
 }
 
 button:active {
@@ -243,6 +231,7 @@ button:disabled {
     box-shadow: none;
 }
 body[data-theme="dark"] button:disabled {
+    background-color: var(--button-disabled-bg-dark);
     color: var(--text-color-dark);
 }
 
@@ -250,9 +239,15 @@ body[data-theme="dark"] button:disabled {
 .back-to-menu {
     background-color: var(--back-button-bg-light);
 }
+body[data-theme="dark"] .back-to-menu {
+    background-color: var(--back-button-bg-dark);
+}
 
 .back-to-menu:hover {
     background-color: var(--back-button-hover-light);
+}
+body[data-theme="dark"] .back-to-menu:hover {
+    background-color: var(--back-button-hover-dark);
 }
 
 /* Main Menu Styles */
@@ -266,6 +261,9 @@ body[data-theme="dark"] button:disabled {
     color: var(--text-color-light);
     font-size: 1.8em;
 }
+body[data-theme="dark"] #main-menu h2 {
+    color: var(--text-color-dark);
+}
 
 #progress-overview {
     margin-top: 25px; /* Increased margin */
@@ -273,6 +271,9 @@ body[data-theme="dark"] button:disabled {
     color: var(--text-color-light);
     opacity: 0.8;
     font-size: 0.95em;
+}
+body[data-theme="dark"] #progress-overview {
+    color: var(--text-color-dark);
 }
 
 /* Exercise Container Styles */
@@ -283,12 +284,19 @@ body[data-theme="dark"] button:disabled {
     margin-top: 25px; /* Increased margin */
     background-color: var(--exercise-bg-light);
 }
+body[data-theme="dark"] .exercise-container {
+    border: 1px solid var(--exercise-border-dark);
+    background-color: var(--exercise-bg-dark);
+}
 
 .exercise-container h3 {
     margin-top: 0;
     color: var(--exercise-header-text-light);
     margin-bottom: 20px; /* Increased margin */
     font-size: 1.5em;
+}
+body[data-theme="dark"] .exercise-container h3 {
+    color: var(--exercise-header-text-dark);
 }
 
 /* Drag & Drop Puzzle Styles */
@@ -300,6 +308,11 @@ body[data-theme="dark"] button:disabled {
     border-radius: 6px; /* Consistent rounding */
     background-color: var(--draggable-container-bg-light);
 }
+body[data-theme="dark"] #draggable-layers-container,
+body[data-theme="dark"] #layer-slots-container {
+    border: 1px dashed var(--draggable-border-dark);
+    background-color: var(--draggable-container-bg-dark);
+}
 
 #draggable-layers-container p,
 #layer-slots-container p {
@@ -307,6 +320,10 @@ body[data-theme="dark"] button:disabled {
     margin-bottom: 15px; /* Increased margin */
     color: var(--text-color-light);
     font-size: 1.1em;
+}
+body[data-theme="dark"] #draggable-layers-container p,
+body[data-theme="dark"] #layer-slots-container p {
+    color: var(--text-color-dark);
 }
 
 
@@ -339,12 +356,14 @@ body[data-theme="dark"] button:disabled {
     font-weight: bold;
     min-width: 160px; /* Increased width */
     box-shadow: 0 2px 5px rgba(0,0,0,0.12);
-    background-color: var(--container-bg-light);
+    background-color: var(--container-bg-light); /* Uses a light var by default */
     color: var(--text-color-light);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 body[data-theme="dark"] .draggable-layer {
+    border: 1px solid var(--draggable-border-dark);
+    background-color: var(--container-bg-dark); /* Use dark var */
+    color: var(--text-color-dark);
     box-shadow: 0 2px 5px rgba(0,0,0,0.35);
 }
 
@@ -371,6 +390,11 @@ body[data-theme="dark"] .draggable-layer:hover {
     transition: background-color 0.3s, border-color 0.3s;
     font-size: 0.9em; /* Slightly smaller placeholder text */
 }
+body[data-theme="dark"] .layer-slot {
+    border: 2px dashed var(--slot-border-dark);
+    background-color: var(--slot-bg-dark);
+    color: var(--slot-text-dark);
+}
 
 .layer-slot.correct {
     border-color: var(--slot-correct-border-light);
@@ -378,6 +402,8 @@ body[data-theme="dark"] .draggable-layer:hover {
     color: var(--text-color-light);
 }
 body[data-theme="dark"] .layer-slot.correct {
+    border-color: var(--slot-correct-border-dark);
+    background-color: var(--slot-correct-bg-dark);
     color: var(--text-color-dark);
 }
 
@@ -388,14 +414,23 @@ body[data-theme="dark"] .layer-slot.correct {
     color: var(--text-color-light);
 }
 body[data-theme="dark"] .layer-slot.incorrect {
+    border-color: var(--slot-incorrect-border-dark);
+    background-color: var(--slot-incorrect-bg-dark);
     color: var(--text-color-dark);
 }
 
-.layer-slot .draggable-layer {
+.layer-slot .draggable-layer { /* This is a layer INSIDE a slot */
     cursor: default;
     box-shadow: none;
     width: 90%;
     padding: 12px 15px; /* Slightly smaller when in slot */
+    /* It will inherit its parent slot's theme or its own if more specific */
+}
+/* Ensure draggable layer inside a slot also respects dark theme if its own rules are not enough */
+body[data-theme="dark"] .layer-slot .draggable-layer {
+    background-color: var(--container-bg-dark); /* Or a specific color for items in dark slots */
+    color: var(--text-color-dark);
+    border-color: var(--draggable-border-dark);
 }
 
 
@@ -415,6 +450,9 @@ body[data-theme="dark"] .layer-slot.incorrect {
     padding: 20px; /* Add padding for smaller screens */
     box-sizing: border-box;
 }
+body[data-theme="dark"] .modal {
+    background-color: var(--modal-bg-dark);
+}
 
 .modal-content {
     background-color: var(--modal-content-bg-light);
@@ -428,6 +466,9 @@ body[data-theme="dark"] .layer-slot.incorrect {
     color: var(--text-color-light);
 }
 body[data-theme="dark"] .modal-content {
+    background-color: var(--modal-content-bg-dark);
+    border: 1px solid var(--modal-content-border-dark);
+    color: var(--text-color-dark);
     box-shadow: 0 8px 30px rgba(0,0,0,0.5);
 }
 
@@ -438,10 +479,14 @@ body[data-theme="dark"] .modal-content {
     color: var(--exercise-header-text-light);
     font-size: 1.4em;
 }
+body[data-theme="dark"] .modal-content h4 {
+    color: var(--exercise-header-text-dark);
+}
 
 .modal-content p {
     font-size: 1.05em; /* Slightly larger text in modal */
     line-height: 1.7;
+    /* color will be inherited from .modal-content */
 }
 
 .close-button {
@@ -456,12 +501,19 @@ body[data-theme="dark"] .modal-content {
     padding: 0;
     line-height: 1;
 }
+body[data-theme="dark"] .close-button {
+    color: var(--close-button-text-dark);
+}
 
 .close-button:hover,
 .close-button:focus {
     color: var(--close-button-hover-text-light);
     text-decoration: none;
     cursor: pointer;
+}
+body[data-theme="dark"] .close-button:hover,
+body[data-theme="dark"] .close-button:focus {
+    color: var(--close-button-hover-text-dark);
 }
 
 
@@ -471,10 +523,16 @@ body[data-theme="dark"] .modal-content {
     font-size: 1.25em; /* Slightly larger */
     color: var(--text-color-light);
 }
+body[data-theme="dark"] #protocol-question-area {
+    color: var(--text-color-dark);
+}
 
 #protocol-name-display {
     font-weight: bold;
     color: var(--protocol-name-text-light);
+}
+body[data-theme="dark"] #protocol-name-display {
+    color: var(--protocol-name-text-dark);
 }
 
 #protocol-options-area {
@@ -484,15 +542,23 @@ body[data-theme="dark"] .modal-content {
     margin-bottom: 25px; /* Increased margin */
 }
 
-#protocol-options-area button {
-    background-color: var(--protocol-option-bg-light);
+#protocol-options-area button { /* These are general buttons, already themed */
+    background-color: var(--protocol-option-bg-light); /* Specific for these options */
     width: 100%;
     text-align: left;
     padding: 14px 18px; /* Consistent padding */
     font-size: 0.95em; /* Adjust font size if needed */
 }
+body[data-theme="dark"] #protocol-options-area button {
+    background-color: var(--protocol-option-bg-dark);
+    /* color and border from general button dark theme */
+}
+
 #protocol-options-area button:hover {
     background-color: var(--protocol-option-hover-bg-light);
+}
+body[data-theme="dark"] #protocol-options-area button:hover {
+    background-color: var(--protocol-option-hover-bg-dark);
 }
 
 
@@ -503,6 +569,7 @@ body[data-theme="dark"] .modal-content {
     font-weight: bold;
     min-height: 2.5em; /* Prevent layout shift */
     font-size: 1.05em;
+    /* Base text color will be inherited */
 }
 
 .feedback-correct {
@@ -510,11 +577,21 @@ body[data-theme="dark"] .modal-content {
     color: var(--feedback-correct-text-light);
     border: 1px solid var(--feedback-correct-border-light);
 }
+body[data-theme="dark"] .feedback-correct {
+    background-color: var(--feedback-correct-bg-dark);
+    color: var(--feedback-correct-text-dark);
+    border: 1px solid var(--feedback-correct-border-dark);
+}
 
 .feedback-incorrect {
     background-color: var(--feedback-incorrect-bg-light);
     color: var(--feedback-incorrect-text-light);
     border: 1px solid var(--feedback-incorrect-border-light);
+}
+body[data-theme="dark"] .feedback-incorrect {
+    background-color: var(--feedback-incorrect-bg-dark);
+    color: var(--feedback-incorrect-text-dark);
+    border: 1px solid var(--feedback-incorrect-border-dark);
 }
 
 /* Responsive Design */

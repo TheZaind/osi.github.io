@@ -77,7 +77,7 @@ function toggleTheme() {
 }
 
 function loadTheme() {
-    const savedTheme = localStorage.getItem('osiTheme') || 'light'; // Standardmäßig hell
+    const savedTheme = localStorage.getItem('osiTheme') || 'dark'; // Standardmäßig dunkel
     applyTheme(savedTheme);
     console.log("Design geladen:", savedTheme);
 }
@@ -265,10 +265,15 @@ function renderLayerSlots() {
 
         slotEl.addEventListener('drop', (e) => {
             e.preventDefault();
-            if (draggedItem && e.target.classList.contains('layer-slot') && !e.target.hasChildNodes()) { // Only drop if slot is empty
+            // Only drop if slot is empty (does not already contain a draggable-layer)
+            if (draggedItem && e.target.classList.contains('layer-slot') && !e.target.querySelector('.draggable-layer')) {
                 const slotNumber = parseInt(e.target.dataset.slotNumber);
                 const layerNumber = parseInt(draggedItem.dataset.layerNumber);
 
+                // Clear placeholder text before appending
+                if (e.target.childNodes.length === 1 && e.target.firstChild.nodeType === Node.TEXT_NODE) {
+                    e.target.textContent = '';
+                }
                 e.target.appendChild(draggedItem);
                 draggedItem.setAttribute('draggable', false); // Prevent re-dragging from slot for now
                 draggedItem.style.cursor = 'default';
@@ -301,9 +306,18 @@ function checkLayerPlacement(layerElement, slotElement, layerNumber, slotNumber)
         // Wenn falsch, kurz rot anzeigen, dann zurück in den ziehbaren Bereich verschieben
         setTimeout(() => {
             provideVisualFeedback(slotElement, null); // Reset slot visual
+            // Ensure the slot is cleared of the incorrect item before moving it
+            if (slotElement.contains(layerElement)) {
+                slotElement.removeChild(layerElement);
+            }
             draggableLayersContainer.appendChild(layerElement); // Move back
             layerElement.setAttribute('draggable', true);
             layerElement.style.cursor = 'grab';
+            // Restore placeholder text if slot is now empty and doesn't have another draggable layer
+            if (!slotElement.querySelector('.draggable-layer')) {
+                 const slotNum = slotElement.dataset.slotNumber;
+                 slotElement.textContent = `Schicht ${slotNum} Steckplatz`;
+            }
         }, 1000); // 1 second delay
     }
 }
