@@ -300,13 +300,21 @@ body[data-theme="dark"] .exercise-container h3 {
 }
 
 /* Drag & Drop Puzzle Styles */
+.drag-drop-layout-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Abstand zwischen den Containern */
+    margin-bottom: 25px;
+}
+
 #draggable-layers-container,
 #layer-slots-container {
-    margin-bottom: 25px; /* Increased margin */
     padding: 20px; /* Increased padding */
     border: 1px dashed var(--draggable-border-light);
     border-radius: 6px; /* Consistent rounding */
     background-color: var(--draggable-container-bg-light);
+    flex-basis: 48%; /* Each container takes roughly half the space */
+    /* margin-bottom is removed as parent container handles it */
 }
 body[data-theme="dark"] #draggable-layers-container,
 body[data-theme="dark"] #layer-slots-container {
@@ -356,14 +364,15 @@ body[data-theme="dark"] #layer-slots-container p {
     font-weight: bold;
     min-width: 160px; /* Increased width */
     box-shadow: 0 2px 5px rgba(0,0,0,0.12);
-    background-color: var(--container-bg-light); /* Uses a light var by default */
-    color: var(--text-color-light);
+    /* background-color is set by JS based on layer.color */
+    color: #000000; /* Text color set to black as requested */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+/* Ensure dark theme overrides for border if needed, though layer.color might dominate */
 body[data-theme="dark"] .draggable-layer {
     border: 1px solid var(--draggable-border-dark);
-    background-color: var(--container-bg-dark); /* Use dark var */
-    color: var(--text-color-dark);
+    /* color: #000000; already set, should be fine with most layer.color values */
+    /* background-color is set by JS based on layer.color */
     box-shadow: 0 2px 5px rgba(0,0,0,0.35);
 }
 
