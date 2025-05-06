@@ -331,11 +331,18 @@ function renderDraggableItemsForTask(items) {
 function renderLayerSlots() {
     if (!layerSlotsContainer) return;
     layerSlotsContainer.innerHTML = ''; // Clear previous slots
+
+    // Ensure layersData is available and sorted by number for correct mapping
+    const sortedLayers = [...layersData].sort((a, b) => a.number - b.number);
+
     for (let i = 1; i <= 7; i++) {
         const slotEl = document.createElement('div');
         slotEl.classList.add('layer-slot');
         slotEl.dataset.slotNumber = i;
-        slotEl.textContent = `Schicht ${i} Steckplatz`; // Placeholder text in German
+        
+        const layerData = sortedLayers.find(l => l.number === i);
+        const slotText = layerData ? `Schicht ${i}: ${layerData.name}` : `Schicht ${i} Steckplatz`;
+        slotEl.textContent = slotText;
 
         slotEl.addEventListener('dragover', (e) => {
             e.preventDefault(); // Notwendig, um Ablegen zu erlauben
@@ -403,8 +410,12 @@ function checkLayerPlacement(itemElement, slotElement, itemCorrectLayerNumber, s
             itemElement.setAttribute('draggable', true);
             itemElement.style.cursor = 'grab';
             if (!slotElement.querySelector('.draggable-layer')) {
-                 const slotNum = slotElement.dataset.slotNumber;
-                 slotElement.textContent = `Schicht ${slotNum} Steckplatz`;
+                // Restore placeholder text with layer name
+                const slotNum = parseInt(slotElement.dataset.slotNumber);
+                // layersData should be globally available and sorted if necessary, or find directly
+                const layerInfo = layersData.find(l => l.number === slotNum);
+                const restoredText = layerInfo ? `Schicht ${slotNum}: ${layerInfo.name}` : `Schicht ${slotNum} Steckplatz`;
+                slotElement.textContent = restoredText;
             }
         }, 1000);
     }

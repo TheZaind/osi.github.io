@@ -1,25 +1,78 @@
 [
   {
     "id": "email_sending_task_1",
-    "scenario": "E-Mail Versand: Protokolle zuordnen",
-    "instructions": "Du schreibst und sendest eine E-Mail. Ziehe die folgenden Protokolle/Elemente auf die OSI-Schicht, auf der sie primär während dieses Vorgangs aktiv sind.",
+    "scenario": "E-Mail Versand (Senden)",
+    "instructions": "Du schreibst und sendest eine E-Mail mit einem Client-Programm. Ordne die primär genutzten Protokolle/Elemente den korrekten OSI-Schichten zu.",
     "draggableItems": [
       { "id": "smtp", "name": "SMTP (E-Mail Senden)", "correctLayerNumber": 7, "color": "#FFB3BA" },
-      { "id": "tcp_segment", "name": "TCP (Zuverlässiger Transport)", "correctLayerNumber": 4, "color": "#FFDFBA" },
-      { "id": "ip_packet", "name": "IP (Adressierung & Routing)", "correctLayerNumber": 3, "color": "#FFFFBA" },
-      { "id": "ethernet_frame", "name": "Ethernet (Lokale Übertragung)", "correctLayerNumber": 2, "color": "#BAFFC9" }
+      { "id": "dns_lookup_mail", "name": "DNS (Mailserver-Lookup)", "correctLayerNumber": 7, "color": "#FFC8BA" },
+      { "id": "tcp_email", "name": "TCP (Zuverlässiger Transport)", "correctLayerNumber": 4, "color": "#FFDFBA" },
+      { "id": "ip_email", "name": "IP (Adressierung & Routing)", "correctLayerNumber": 3, "color": "#FFFFBA" },
+      { "id": "ethernet_email", "name": "Ethernet (Lokale Übertragung)", "correctLayerNumber": 2, "color": "#BAFFC9" }
     ]
   },
   {
-    "id": "web_browsing_task_1",
-    "scenario": "Webseitenaufruf (HTTP): Protokolle zuordnen",
+    "id": "web_browsing_http_task_1",
+    "scenario": "Webseitenaufruf (HTTP)",
     "instructions": "Du rufst eine Webseite über HTTP in deinem Browser auf. Ordne die Protokolle/Elemente den korrekten OSI-Schichten zu.",
     "draggableItems": [
       { "id": "http", "name": "HTTP (Webseitenabruf)", "correctLayerNumber": 7, "color": "#FFB3BA" },
-      { "id": "dns_query", "name": "DNS (Namensauflösung)", "correctLayerNumber": 7, "color": "#FFB3BA" },
-      { "id": "tcp_segment_web", "name": "TCP (Verbindungsaufbau)", "correctLayerNumber": 4, "color": "#FFDFBA" },
-      { "id": "ip_packet_web", "name": "IP (Globale Adressierung)", "correctLayerNumber": 3, "color": "#FFFFBA" },
-      { "id": "ethernet_frame_web", "name": "Ethernet (Netzwerkzugriff)", "correctLayerNumber": 2, "color": "#BAFFC9" }
+      { "id": "dns_lookup_web", "name": "DNS (Namensauflösung)", "correctLayerNumber": 7, "color": "#FFC8BA" },
+      { "id": "tcp_web", "name": "TCP (Verbindungsaufbau)", "correctLayerNumber": 4, "color": "#FFDFBA" },
+      { "id": "ip_web", "name": "IP (Globale Adressierung)", "correctLayerNumber": 3, "color": "#FFFFBA" }
+    ]
+  },
+  {
+    "id": "web_browsing_https_task_1",
+    "scenario": "Sicherer Webseitenaufruf (HTTPS)",
+    "instructions": "Du rufst eine Webseite sicher über HTTPS auf. Welche Elemente sind auf welchen Schichten primär aktiv?",
+    "draggableItems": [
+      { "id": "https", "name": "HTTPS (Sicherer Webabruf)", "correctLayerNumber": 7, "color": "#FFB3BA" },
+      { "id": "ssl_tls", "name": "SSL/TLS (Verschlüsselung)", "correctLayerNumber": 6, "color": "#BAE1FF" },
+      { "id": "tcp_https", "name": "TCP (Gesicherter Transport)", "correctLayerNumber": 4, "color": "#FFDFBA" },
+      { "id": "ip_https", "name": "IP (Routing)", "correctLayerNumber": 3, "color": "#FFFFBA" }
+    ]
+  },
+  {
+    "id": "file_transfer_ftp_task_1",
+    "scenario": "Dateiübertragung mit FTP",
+    "instructions": "Du lädst eine Datei von einem FTP-Server herunter. Ordne die beteiligten Protokolle/Elemente zu.",
+    "draggableItems": [
+      { "id": "ftp_control", "name": "FTP (Steuerverbindung)", "correctLayerNumber": 7, "color": "#FFB3BA" },
+      { "id": "ftp_data", "name": "FTP (Datenverbindung)", "correctLayerNumber": 7, "color": "#FFC8BA" },
+      { "id": "tcp_ftp", "name": "TCP (Für FTP-Verbindungen)", "correctLayerNumber": 4, "color": "#FFDFBA" },
+      { "id": "ip_ftp", "name": "IP (Adressierung des Servers)", "correctLayerNumber": 3, "color": "#FFFFBA" }
+    ]
+  },
+  {
+    "id": "email_receiving_pop3_task_1",
+    "scenario": "E-Mail Empfang (POP3)",
+    "instructions": "Dein E-Mail-Client ruft neue Nachrichten über POP3 ab. Welche Protokolle/Elemente sind beteiligt?",
+    "draggableItems": [
+      { "id": "pop3", "name": "POP3 (E-Mail Abruf)", "correctLayerNumber": 7, "color": "#FFB3BA" },
+      { "id": "tcp_pop3", "name": "TCP (Verbindung zum Mailserver)", "correctLayerNumber": 4, "color": "#FFDFBA" },
+      { "id": "ip_pop3", "name": "IP (Erreichbarkeit Mailserver)", "correctLayerNumber": 3, "color": "#FFFFBA" }
+    ]
+  },
+  {
+    "id": "network_ping_task_1",
+    "scenario": "Netzwerk-Ping",
+    "instructions": "Du sendest einen Ping-Request an einen anderen Host, um dessen Erreichbarkeit zu testen. Ordne die Elemente zu.",
+    "draggableItems": [
+      { "id": "icmp_ping", "name": "ICMP (Echo Request/Reply)", "correctLayerNumber": 3, "color": "#D4FFBA" },
+      { "id": "ip_ping", "name": "IP (Adressierung Zielhost)", "correctLayerNumber": 3, "color": "#FFFFBA" },
+      { "id": "ethernet_ping", "name": "Ethernet (Lokaler Versand)", "correctLayerNumber": 2, "color": "#BAFFC9" }
+    ]
+  },
+  {
+    "id": "dhcp_address_request_task_1",
+    "scenario": "DHCP-Adressanforderung",
+    "instructions": "Dein Computer startet und fordert eine IP-Adresse über DHCP an. Welche Protokolle sind beteiligt?",
+    "draggableItems": [
+        { "id": "dhcp_discover", "name": "DHCP Discover/Request", "correctLayerNumber": 7, "color": "#FFB3BA"},
+        { "id": "udp_dhcp", "name": "UDP (Transport für DHCP)", "correctLayerNumber": 4, "color": "#FFDFBA"},
+        { "id": "ip_broadcast_dhcp", "name": "IP (Broadcast/Unicast)", "correctLayerNumber": 3, "color": "#FFFFBA"},
+        { "id": "ethernet_dhcp", "name": "Ethernet (Broadcast)", "correctLayerNumber": 2, "color": "#BAFFC9"}
     ]
   }
 ]
