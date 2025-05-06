@@ -31,29 +31,57 @@ const submitProtocolAnswerButton = document.getElementById('submit-protocol-answ
 const nextProtocolTaskButton = document.getElementById('next-protocol-task');
 const protocolFeedbackArea = document.getElementById('protocol-feedback-area');
 const progressOverviewDisplay = document.getElementById('progress-overview');
+const themeToggleButton = document.getElementById('theme-toggle-button');
 
 
 // --- Initialization ---
 document.addEventListener('DOMContentLoaded', initApp);
 
 async function initApp() {
-    console.log("Initializing OSI Learning Tool...");
-    loadProgress(); // Load progress first
+    console.log("Initialisiere OSI Lerntool...");
+    loadTheme(); // Lade Design-Präferenz zuerst
+    loadProgress(); // Lade Fortschritt
 
     try {
         await loadLayerData();
         await loadProtocolData();
     } catch (error) {
-        console.error("Failed to load initial data:", error);
-        // Display an error message to the user if critical data fails to load
-        if (mainMenuSection) mainMenuSection.innerHTML = "<p>Error loading application data. Please try refreshing the page.</p>";
+        console.error("Fehler beim Laden der initialen Daten:", error);
+        // Zeige eine Fehlermeldung an, wenn kritische Daten nicht geladen werden können
+        if (mainMenuSection) mainMenuSection.innerHTML = "<p>Fehler beim Laden der Anwendungsdaten. Bitte versuche, die Seite neu zu laden.</p>";
         return;
     }
 
     setupEventListeners();
-    showMainMenu(); // Or restore last state based on userProgress.lastExercise
+    showMainMenu(); // Oder stelle letzten Zustand wieder her basierend auf userProgress.lastExercise
     updateProgressOverview();
 }
+
+// --- Theme Management ---
+function applyTheme(theme) {
+    if (theme === 'dark') {
+        document.body.setAttribute('data-theme', 'dark');
+        if (themeToggleButton) themeToggleButton.textContent = '☀️ Design'; // Sonnen-Emoji für Light-Mode-Option
+    } else {
+        document.body.removeAttribute('data-theme');
+        if (themeToggleButton) themeToggleButton.textContent = '🌓 Design'; // Mond-Emoji für Dark-Mode-Option
+    }
+}
+
+function toggleTheme() {
+    const currentTheme = document.body.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    applyTheme(newTheme);
+    localStorage.setItem('osiTheme', newTheme);
+    console.log("Design geändert zu:", newTheme);
+}
+
+function loadTheme() {
+    const savedTheme = localStorage.getItem('osiTheme') || 'light'; // Standardmäßig hell
+    applyTheme(savedTheme);
+    console.log("Design geladen:", savedTheme);
+}
+
 
 // --- Data Handling ---
 async function loadLayerData() {
@@ -87,26 +115,29 @@ function loadProgress() {
     const savedProgress = localStorage.getItem('osiUserProgress');
     if (savedProgress) {
         userProgress = JSON.parse(savedProgress);
-        console.log("Progress loaded:", userProgress);
+        console.log("Fortschritt geladen:", userProgress);
     } else {
-        console.log("No saved progress found, using default.");
-        // Default userProgress is already defined globally
+        console.log("Kein gespeicherter Fortschritt gefunden, verwende Standard.");
+        // Standard userProgress ist bereits global definiert
     }
 }
 
 function saveProgress() {
     localStorage.setItem('osiUserProgress', JSON.stringify(userProgress));
-    console.log("Progress saved:", userProgress);
+    console.log("Fortschritt gespeichert:", userProgress);
     updateProgressOverview();
 }
 
 function updateProgressOverview() {
     if (progressOverviewDisplay) {
-        let overviewText = "Welcome! Select an exercise to begin.";
+        let overviewText = "Willkommen! Wähle eine Übung, um zu beginnen.";
         if (userProgress.lastExercise && userProgress.lastExercise !== "menu") {
-            overviewText = `Last time you were working on: ${userProgress.lastExercise.replace(/([A-Z])/g, ' $1').trim()}.`;
+            let exerciseNameDe = userProgress.lastExercise;
+            if (exerciseNameDe === 'dragDropPuzzle') exerciseNameDe = 'Drag & Drop Schichten-Puzzle';
+            if (exerciseNameDe === 'protocolMatching') exerciseNameDe = 'Protokoll-Zuordnungsspiel';
+            overviewText = `Zuletzt gearbeitet an: ${exerciseNameDe}.`;
         }
-        // Add more detailed progress if needed, e.g., scores or completion status
+        // Füge hier bei Bedarf detailliertere Fortschrittsinformationen hinzu
         progressOverviewDisplay.textContent = overviewText;
     }
 }
@@ -173,17 +204,20 @@ function setupEventListeners() {
     if (nextProtocolTaskButton) {
         nextProtocolTaskButton.addEventListener('click', displayProtocolTask);
     }
+    if (themeToggleButton) {
+        themeToggleButton.addEventListener('click', toggleTheme);
+    }
 }
 
 // --- Drag & Drop Puzzle Logic ---
 let draggedItem = null;
 
 function initDragDropPuzzle() {
-    console.log("Initializing Drag & Drop Puzzle...");
+    console.log("Initialisiere Drag & Drop Puzzle...");
     renderDraggableLayers();
     renderLayerSlots();
-    // Reset any previous state if necessary
-    userProgress.dragDropPuzzle.correctPlacements = 0; // Reset for a new session of the puzzle
+    // Setze ggf. vorherigen Zustand zurück
+    userProgress.dragDropPuzzle.correctPlacements = 0; // Zurücksetzen für eine neue Puzzle-Sitzung
     saveProgress();
 }
 
@@ -223,10 +257,10 @@ function renderLayerSlots() {
         const slotEl = document.createElement('div');
         slotEl.classList.add('layer-slot');
         slotEl.dataset.slotNumber = i;
-        slotEl.textContent = `Layer ${i} Slot`; // Placeholder text
+        slotEl.textContent = `Schicht ${i} Steckplatz`; // Placeholder text in German
 
         slotEl.addEventListener('dragover', (e) => {
-            e.preventDefault(); // Necessary to allow dropping
+            e.preventDefault(); // Notwendig, um Ablegen zu erlauben
         });
 
         slotEl.addEventListener('drop', (e) => {
@@ -255,13 +289,16 @@ function checkLayerPlacement(layerElement, slotElement, layerNumber, slotNumber)
         saveProgress();
         // Make the correctly placed layer clickable for explanation
         layerElement.addEventListener('click', () => showLayerExplanation(layerId));
-        // Check if all layers are placed correctly
+        // Überprüfe, ob alle Schichten korrekt platziert sind
         if (userProgress.dragDropPuzzle.correctPlacements === layersData.length) {
-            alert("Congratulations! You've correctly placed all OSI layers!");
-            // Optionally, disable further interaction or offer to reset/go to menu
+            // Verzögerung, um das letzte Feedback anzuzeigen, bevor der Alert kommt
+            setTimeout(() => {
+                alert("Glückwunsch! Du hast alle OSI-Schichten korrekt platziert!");
+            }, 100);
+            // Optional: Weitere Interaktion deaktivieren oder Zurücksetzen/Menü anbieten
         }
     } else {
-        // If incorrect, briefly show red, then move back to draggable area
+        // Wenn falsch, kurz rot anzeigen, dann zurück in den ziehbaren Bereich verschieben
         setTimeout(() => {
             provideVisualFeedback(slotElement, null); // Reset slot visual
             draggableLayersContainer.appendChild(layerElement); // Move back
@@ -300,39 +337,39 @@ function resetDragDropPuzzle() {
 
 // --- Protocol Matching Game Logic ---
 let currentProtocolTask = null;
-let protocolTasks = []; // Will hold a shuffled subset of protocolsData for the current game
+let protocolTasks = []; // Wird eine zufällige Untermenge von protocolsData für das aktuelle Spiel enthalten
 
 function initProtocolMatchingGame() {
-    console.log("Initializing Protocol Matching Game...");
-    // Shuffle and select a subset of protocols for the game, e.g., 5-10 tasks
+    console.log("Initialisiere Protokoll-Zuordnungsspiel...");
+    // Mische und wähle eine Untermenge von Protokollen für das Spiel, z.B. 5-10 Aufgaben
     protocolTasks = [...protocolsData].sort(() => 0.5 - Math.random()).slice(0, Math.min(10, protocolsData.length));
     userProgress.protocolMatching.currentTaskIndex = 0;
-    userProgress.protocolMatching.score = 0; // Reset score for a new game
+    userProgress.protocolMatching.score = 0; // Punktzahl für ein neues Spiel zurücksetzen
     userProgress.protocolMatching.completedTasksInCurrentGame = 0;
     saveProgress();
 
     if (protocolTasks.length > 0) {
         displayProtocolTask();
     } else {
-        protocolNameDisplay.textContent = "No protocol tasks available.";
+        protocolNameDisplay.textContent = "Keine Protokollaufgaben verfügbar.";
         protocolOptionsArea.innerHTML = "";
-        submitProtocolAnswerButton.style.display = 'none';
-        nextProtocolTaskButton.style.display = 'none';
+        if(submitProtocolAnswerButton) submitProtocolAnswerButton.style.display = 'none';
+        if(nextProtocolTaskButton) nextProtocolTaskButton.style.display = 'none';
     }
     protocolFeedbackArea.textContent = '';
-    protocolFeedbackArea.className = 'protocol-feedback-area'; // Reset classes
+    protocolFeedbackArea.className = 'protocol-feedback-area'; // Klassen zurücksetzen
 }
 
 function displayProtocolTask() {
     const taskIndex = userProgress.protocolMatching.currentTaskIndex;
     if (taskIndex >= protocolTasks.length) {
-        // Game over
-        protocolFeedbackArea.textContent = `Game Over! Your score: ${userProgress.protocolMatching.score} / ${protocolTasks.length}`;
-        protocolFeedbackArea.className = 'protocol-feedback-area feedback-correct'; // Use a general positive feedback style
-        protocolNameDisplay.textContent = "All tasks completed!";
+        // Spiel vorbei
+        protocolFeedbackArea.textContent = `Spiel beendet! Deine Punktzahl: ${userProgress.protocolMatching.score} / ${protocolTasks.length}`;
+        protocolFeedbackArea.className = 'protocol-feedback-area feedback-correct'; // Nutze einen allgemeinen positiven Feedback-Stil
+        protocolNameDisplay.textContent = "Alle Aufgaben abgeschlossen!";
         protocolOptionsArea.innerHTML = "";
-        submitProtocolAnswerButton.style.display = 'none';
-        nextProtocolTaskButton.style.display = 'none';
+        if(submitProtocolAnswerButton) submitProtocolAnswerButton.style.display = 'none';
+        if(nextProtocolTaskButton) nextProtocolTaskButton.style.display = 'none';
         return;
     }
 
@@ -343,41 +380,28 @@ function displayProtocolTask() {
 
     renderProtocolOptions();
 
-    submitProtocolAnswerButton.style.display = 'inline-block';
-    nextProtocolTaskButton.style.display = 'none';
-    submitProtocolAnswerButton.disabled = false;
+    // submitProtocolAnswerButton wird nicht mehr benötigt, da Optionen direkt absenden
+    // if(submitProtocolAnswerButton) submitProtocolAnswerButton.style.display = 'inline-block';
+    if(nextProtocolTaskButton) nextProtocolTaskButton.style.display = 'none';
+    // if(submitProtocolAnswerButton) submitProtocolAnswerButton.disabled = false;
 }
 
 function renderProtocolOptions() {
     protocolOptionsArea.innerHTML = '';
-    // Create buttons for each of the 7 layers
-    layersData.sort((a,b) => a.number - b.number).forEach(layer => {
-        const optionButton = document.createElement('button');
-        optionButton.textContent = `Layer ${layer.number}: ${layer.name}`;
-        optionButton.dataset.layerNumber = layer.number;
-        optionButton.addEventListener('click', () => {
-            // Optionally, handle selection visually before submitting
-            // For now, direct submission via main button
-            // For a better UX, clicking an option could highlight it and set a selectedLayer variable
-        });
-        protocolOptionsArea.appendChild(optionButton);
-    });
-    // For a more robust selection, you might want radio buttons or a way to clearly indicate selection
-    // For now, we'll assume the user clicks one and then "Submit Answer"
-    // A simpler approach for now: user clicks a layer button, and that IS the submission.
-    // Let's refine this: add event listeners to option buttons to directly check answer.
+    // Erstelle Buttons für jede der 7 Schichten
+    // Stelle sicher, dass layersData sortiert ist, falls nicht bereits geschehen
+    const sortedLayers = [...layersData].sort((a, b) => a.number - b.number);
 
-    protocolOptionsArea.innerHTML = ''; // Clear again
-    layersData.sort((a,b) => a.number - b.number).forEach(layer => {
+    sortedLayers.forEach(layer => {
         const optionButton = document.createElement('button');
-        optionButton.textContent = `Layer ${layer.number}: ${layer.name}`;
+        optionButton.textContent = `Schicht ${layer.number}: ${layer.name}`;
         optionButton.dataset.layerNumber = layer.number;
         optionButton.addEventListener('click', (e) => {
             handleProtocolOptionClick(parseInt(e.target.dataset.layerNumber));
         });
         protocolOptionsArea.appendChild(optionButton);
     });
-    submitProtocolAnswerButton.style.display = 'none'; // Hide if options directly submit
+    if(submitProtocolAnswerButton) submitProtocolAnswerButton.style.display = 'none'; // Verstecke, da Optionen direkt absenden
 }
 
 function handleProtocolOptionClick(selectedLayerNumber) {
@@ -393,46 +417,46 @@ function handleProtocolOptionClick(selectedLayerNumber) {
     userProgress.protocolMatching.currentTaskIndex++;
     saveProgress();
 
-    // Disable options after selection
+    // Deaktiviere Optionen nach der Auswahl
     const optionButtons = protocolOptionsArea.querySelectorAll('button');
     optionButtons.forEach(btn => btn.disabled = true);
 
 
     if (userProgress.protocolMatching.currentTaskIndex < protocolTasks.length) {
-        nextProtocolTaskButton.style.display = 'inline-block';
+        if(nextProtocolTaskButton) nextProtocolTaskButton.style.display = 'inline-block';
     } else {
-        // Game over logic (already handled in displayProtocolTask, but can be reiterated here)
-        setTimeout(() => { // Delay to show feedback before "Game Over"
-            protocolFeedbackArea.textContent = `Game Over! Your final score: ${userProgress.protocolMatching.score} / ${protocolTasks.length}`;
+        // Spiel-Ende-Logik (bereits in displayProtocolTask behandelt, kann hier wiederholt werden)
+        setTimeout(() => { // Verzögerung, um Feedback vor "Spiel beendet" anzuzeigen
+            protocolFeedbackArea.textContent = `Spiel beendet! Deine finale Punktzahl: ${userProgress.protocolMatching.score} / ${protocolTasks.length}`;
             protocolFeedbackArea.className = 'protocol-feedback-area feedback-correct';
-            protocolNameDisplay.textContent = "All tasks completed!";
+            protocolNameDisplay.textContent = "Alle Aufgaben abgeschlossen!";
             protocolOptionsArea.innerHTML = "";
-            nextProtocolTaskButton.style.display = 'none';
+            if(nextProtocolTaskButton) nextProtocolTaskButton.style.display = 'none';
         }, 1500);
     }
 }
 
 
 function handleSubmitProtocolAnswer() {
-    // This function might be deprecated if options directly trigger answer checking.
-    // If used, it would need to get the selected layer from radio buttons or a similar mechanism.
-    // For now, assuming handleProtocolOptionClick is the primary path.
-    console.warn("handleSubmitProtocolAnswer called, but options might directly submit.");
+    // Diese Funktion könnte veraltet sein, wenn Optionen direkt die Antwortprüfung auslösen.
+    // Falls verwendet, müsste sie die ausgewählte Schicht von Radio-Buttons o.ä. erhalten.
+    // Momentan wird angenommen, dass handleProtocolOptionClick der primäre Pfad ist.
+    console.warn("handleSubmitProtocolAnswer aufgerufen, aber Optionen könnten direkt absenden.");
 }
 
 
 function provideProtocolFeedback(isCorrect) {
     if (isCorrect) {
-        protocolFeedbackArea.textContent = "Correct! " + (currentProtocolTask.explanation || "");
+        protocolFeedbackArea.textContent = "Richtig! " + (currentProtocolTask.explanation || "");
         protocolFeedbackArea.className = 'protocol-feedback-area feedback-correct';
     } else {
         const correctLayer = layersData.find(l => l.number === currentProtocolTask.correctLayerNumber);
-        protocolFeedbackArea.textContent = `Incorrect. The correct layer was Layer ${currentProtocolTask.correctLayerNumber}: ${correctLayer ? correctLayer.name : 'Unknown'}. ` + (currentProtocolTask.explanation || "");
+        protocolFeedbackArea.textContent = `Falsch. Die korrekte Schicht war Schicht ${currentProtocolTask.correctLayerNumber}: ${correctLayer ? correctLayer.name : 'Unbekannt'}. ` + (currentProtocolTask.explanation || "");
         protocolFeedbackArea.className = 'protocol-feedback-area feedback-incorrect';
     }
 }
 
 // --- UI Utility Functions ---
-// (Add any helper functions for DOM manipulation if needed, e.g., showElement, hideElement)
+// (Füge hier bei Bedarf Hilfsfunktionen für DOM-Manipulation hinzu, z.B. showElement, hideElement)
 
-console.log("osi-trainer.js loaded");
+console.log("osi-trainer.js geladen");

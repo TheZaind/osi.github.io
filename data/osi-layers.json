@@ -2,50 +2,50 @@
   {
     "id": "phys",
     "number": 1,
-    "name": "Physical Layer",
-    "description": "Transmits raw bit stream over the physical medium. Deals with the physical characteristics of the transmission medium, such as voltage levels, timing of voltage changes, physical data rates, maximum transmission distances, and physical connectors.",
+    "name": "Bitübertragungsschicht (Physical Layer)",
+    "description": "Definiert die elektrischen, mechanischen und funktionalen Schnittstellen zum Übertragungsmedium. Überträgt Bits als rohen Datenstrom. Zuständig für Spannungspegel, Timing, Datenraten und physische Verbinder.",
     "color": "#FFADAD"
   },
   {
     "id": "link",
     "number": 2,
-    "name": "Data Link Layer",
-    "description": "Defines how data is formatted for transmission and how access to the physical media is controlled. It provides reliable transit of data across a physical link by using mechanisms like physical addressing (MAC addresses), network topology, error notification, sequencing of frames, and flow control.",
+    "name": "Sicherungsschicht (Data Link Layer)",
+    "description": "Stellt eine zuverlässige Übertragung über ein physisches Medium sicher. Formatiert Daten in Frames, handhabt physische Adressierung (MAC-Adressen), Fehlererkennung und -korrektur sowie Flusskontrolle.",
     "color": "#FFD6A5"
   },
   {
     "id": "netw",
     "number": 3,
-    "name": "Network Layer",
-    "description": "Determines how data is routed from source to destination across multiple networks (internetworking). It handles logical addressing (IP addresses), routing, and path determination.",
+    "name": "Vermittlungsschicht (Network Layer)",
+    "description": "Verantwortlich für das Routing von Datenpaketen durch das Netzwerk von der Quelle zum Ziel. Behandelt logische Adressierung (IP-Adressen), Wegewahl und die Fragmentierung von Paketen.",
     "color": "#FDFFB6"
   },
   {
     "id": "tran",
     "number": 4,
-    "name": "Transport Layer",
-    "description": "Provides reliable message delivery or connectionless message delivery between end systems. It segments data from the sending host's system and reassembles the data into a data stream on the receiving host's system. Services include connection-oriented communication, reliability, flow control, and multiplexing.",
+    "name": "Transportschicht (Transport Layer)",
+    "description": "Stellt eine Ende-zu-Ende-Kommunikation zwischen Anwendungen sicher. Bietet wahlweise verbindungsorientierte (TCP) oder verbindungslose (UDP) Dienste, Segmentierung, Fehlerkontrolle und Flusskontrolle.",
     "color": "#CAFFBF"
   },
   {
     "id": "sess",
     "number": 5,
-    "name": "Session Layer",
-    "description": "Manages sessions (connections) between applications. It establishes, manages, and terminates connections between local and remote applications. It also handles session checkpointing, and recovery.",
+    "name": "Sitzungsschicht (Session Layer)",
+    "description": "Erstellt, verwaltet und beendet Sitzungen (Verbindungen) zwischen Anwendungen. Synchronisiert den Datenaustausch und stellt Wiederherstellungspunkte (Checkpoints) bereit.",
     "color": "#9BF6FF"
   },
   {
     "id": "pres",
     "number": 6,
-    "name": "Presentation Layer",
-    "description": "Translates data between application and network formats. It is responsible for data encryption, decryption, compression, and character set conversion, ensuring that data sent from the application layer of one system can be read by the application layer of another system.",
+    "name": "Darstellungsschicht (Presentation Layer)",
+    "description": "Übersetzt Daten zwischen dem Anwendungsformat und einem netzwerkgeeigneten Format. Verantwortlich für Datenkompression, Verschlüsselung und die Konvertierung von Zeichensätzen.",
     "color": "#BDB2FF"
   },
   {
     "id": "app",
     "number": 7,
-    "name": "Application Layer",
-    "description": "Provides network services directly to user applications. This layer is closest to the end user. It includes protocols that applications use to exchange data, such as HTTP for web browsing, FTP for file transfer, and SMTP for email.",
+    "name": "Anwendungsschicht (Application Layer)",
+    "description": "Stellt Netzwerkdienste direkt für Benutzeranwendungen bereit. Enthält Protokolle, die Anwendungen zum Datenaustausch verwenden, z.B. HTTP für Web-Browsing, FTP für Dateiübertragung und SMTP für E-Mail.",
     "color": "#A0C4FF"
   }
 ]

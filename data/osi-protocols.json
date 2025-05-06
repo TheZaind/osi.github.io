@@ -2,116 +2,116 @@
   {
     "protocolName": "HTTP",
     "correctLayerNumber": 7,
-    "explanation": "HyperText Transfer Protocol is used for web browsing, enabling communication between web browsers and web servers."
+    "explanation": "HyperText Transfer Protocol wird für das Surfen im Web verwendet und ermöglicht die Kommunikation zwischen Webbrowsern und Webservern."
   },
   {
     "protocolName": "HTTPS",
     "correctLayerNumber": 7,
-    "explanation": "HyperText Transfer Protocol Secure is the secure version of HTTP, encrypting data for secure web communication."
+    "explanation": "HyperText Transfer Protocol Secure ist die sichere Version von HTTP und verschlüsselt Daten für eine sichere Webkommunikation."
   },
   {
     "protocolName": "FTP",
     "correctLayerNumber": 7,
-    "explanation": "File Transfer Protocol is used for transferring files between a client and a server on a computer network."
+    "explanation": "File Transfer Protocol wird für die Übertragung von Dateien zwischen einem Client und einem Server in einem Computernetzwerk verwendet."
   },
   {
     "protocolName": "SMTP",
     "correctLayerNumber": 7,
-    "explanation": "Simple Mail Transfer Protocol is used for sending email messages between servers."
+    "explanation": "Simple Mail Transfer Protocol wird für das Senden von E-Mail-Nachrichten zwischen Servern verwendet."
   },
   {
     "protocolName": "DNS",
     "correctLayerNumber": 7,
-    "explanation": "Domain Name System translates human-readable domain names (e.g., www.example.com) into machine-readable IP addresses."
+    "explanation": "Domain Name System übersetzt für Menschen lesbare Domainnamen (z.B. www.example.com) in maschinenlesbare IP-Adressen."
   },
   {
     "protocolName": "Telnet",
     "correctLayerNumber": 7,
-    "explanation": "Telnet provides bidirectional interactive text-oriented communication facility using a virtual terminal connection. (Largely superseded by SSH for security)."
+    "explanation": "Telnet bietet eine bidirektionale, interaktive, textorientierte Kommunikationsmöglichkeit über eine virtuelle Terminalverbindung. (Größtenteils aus Sicherheitsgründen durch SSH ersetzt)."
   },
   {
     "protocolName": "SSL/TLS",
     "correctLayerNumber": 6,
-    "explanation": "Secure Sockets Layer (SSL) and Transport Layer Security (TLS) are cryptographic protocols designed to provide communications security over a computer network. They operate at the Presentation layer to encrypt data from the Application layer."
+    "explanation": "Secure Sockets Layer (SSL) und Transport Layer Security (TLS) sind kryptographische Protokolle zur Gewährleistung der Kommunikationssicherheit über ein Computernetzwerk. Sie arbeiten auf der Darstellungsschicht, um Daten von der Anwendungsschicht zu verschlüsseln."
   },
   {
     "protocolName": "JPEG",
     "correctLayerNumber": 6,
-    "explanation": "JPEG is a common image format that specifies how an image is compressed and stored. The Presentation layer handles such data formatting."
+    "explanation": "JPEG ist ein gängiges Bildformat, das angibt, wie ein Bild komprimiert und gespeichert wird. Die Darstellungsschicht behandelt solche Datenformatierungen."
   },
   {
     "protocolName": "MPEG",
     "correctLayerNumber": 6,
-    "explanation": "MPEG is a standard for video and audio compression. The Presentation layer is responsible for encoding and decoding multimedia data."
+    "explanation": "MPEG ist ein Standard für Video- und Audiokompression. Die Darstellungsschicht ist für die Kodierung und Dekodierung von Multimediadaten zuständig."
   },
   {
     "protocolName": "NetBIOS",
     "correctLayerNumber": 5,
-    "explanation": "Network Basic Input/Output System allows applications on separate computers to communicate over a local area network, managing sessions between them."
+    "explanation": "Network Basic Input/Output System ermöglicht Anwendungen auf getrennten Computern die Kommunikation über ein lokales Netzwerk und verwaltet die Sitzungen zwischen ihnen."
   },
   {
-    "protocolName": "RPC",
+    "protocolName": "RPC (Remote Procedure Call)",
     "correctLayerNumber": 5,
-    "explanation": "Remote Procedure Call allows a program on one computer to cause a procedure (subroutine) to execute in another computer's address space, managing the session for this interaction."
+    "explanation": "Remote Procedure Call ermöglicht es einem Programm auf einem Computer, eine Prozedur (Subroutine) im Adressraum eines anderen Computers auszuführen und verwaltet die Sitzung für diese Interaktion."
   },
   {
     "protocolName": "TCP",
     "correctLayerNumber": 4,
-    "explanation": "Transmission Control Protocol provides reliable, ordered, and error-checked delivery of a stream of octets between applications running on hosts communicating via an IP network."
+    "explanation": "Transmission Control Protocol bietet eine zuverlässige, geordnete und fehlergeprüfte Übertragung eines Oktettstroms zwischen Anwendungen, die auf Hosts laufen, die über ein IP-Netzwerk kommunizieren."
   },
   {
     "protocolName": "UDP",
     "correctLayerNumber": 4,
-    "explanation": "User Datagram Protocol is a connectionless protocol that offers minimal overhead. It's used for applications where speed is prioritized over reliability, like video streaming or online gaming."
+    "explanation": "User Datagram Protocol ist ein verbindungsloses Protokoll, das minimalen Overhead bietet. Es wird für Anwendungen verwendet, bei denen Geschwindigkeit Vorrang vor Zuverlässigkeit hat, wie z.B. Videostreaming oder Online-Spiele."
   },
   {
     "protocolName": "IP",
     "correctLayerNumber": 3,
-    "explanation": "Internet Protocol is the principal communications protocol for relaying datagrams across network boundaries. It provides logical addressing (IP addresses) and routing."
+    "explanation": "Internet Protocol ist das Hauptkommunikationsprotokoll für die Weiterleitung von Datagrammen über Netzwerkgrenzen hinweg. Es stellt logische Adressierung (IP-Adressen) und Routing bereit."
   },
   {
     "protocolName": "ICMP",
     "correctLayerNumber": 3,
-    "explanation": "Internet Control Message Protocol is used by network devices, like routers, to send error messages and operational information indicating, for example, that a requested service is not available or that a host or router could not be reached."
+    "explanation": "Internet Control Message Protocol wird von Netzwerkgeräten wie Routern verwendet, um Fehlermeldungen und Betriebsinformationen zu senden, die z.B. anzeigen, dass ein angeforderter Dienst nicht verfügbar ist oder ein Host/Router nicht erreicht werden konnte."
   },
   {
     "protocolName": "ARP",
     "correctLayerNumber": 2,
-    "explanation": "Address Resolution Protocol resolves IP addresses (Network Layer) to MAC addresses (Data Link Layer) for communication within a local network segment."
+    "explanation": "Address Resolution Protocol löst IP-Adressen (Vermittlungsschicht) in MAC-Adressen (Sicherungsschicht) für die Kommunikation innerhalb eines lokalen Netzwerksegments auf."
   },
   {
     "protocolName": "PPP",
     "correctLayerNumber": 2,
-    "explanation": "Point-to-Point Protocol is a data link layer communication protocol used to establish a direct connection between two nodes. It's commonly used for dial-up and DSL connections."
+    "explanation": "Point-to-Point Protocol ist ein Kommunikationsprotokoll der Sicherungsschicht, das verwendet wird, um eine direkte Verbindung zwischen zwei Knoten herzustellen. Es wird häufig für Einwahl- und DSL-Verbindungen verwendet."
   },
   {
     "protocolName": "Ethernet",
     "correctLayerNumber": 2,
-    "explanation": "Ethernet is a family of wired computer networking technologies commonly used in local area networks (LAN). It defines how data packets are framed and transmitted."
+    "explanation": "Ethernet ist eine Familie von Technologien für kabelgebundene Computernetzwerke, die häufig in lokalen Netzwerken (LANs) verwendet werden. Es definiert, wie Datenpakete gerahmt und übertragen werden."
   },
   {
-    "protocolName": "Wi-Fi (802.11)",
+    "protocolName": "WLAN (802.11)",
     "correctLayerNumber": 2,
-    "explanation": "Wi-Fi is a family of wireless network protocols, based on the IEEE 802.11 family of standards. It operates at the Data Link Layer (MAC sublayer) and Physical Layer."
+    "explanation": "WLAN (Wi-Fi) ist eine Familie von drahtlosen Netzwerkprotokollen, die auf der IEEE 802.11-Standardfamilie basieren. Es arbeitet auf der Sicherungsschicht (MAC-Unterschicht) und der Bitübertragungsschicht."
   },
   {
     "protocolName": "Bluetooth",
     "correctLayerNumber": 1,
-    "explanation": "Bluetooth is a short-range wireless technology standard used for exchanging data between fixed and mobile devices over short distances. It defines physical layer specifications like radio frequencies."
+    "explanation": "Bluetooth ist ein Standard für drahtlose Technologie mit kurzer Reichweite, der für den Datenaustausch zwischen festen und mobilen Geräten über kurze Distanzen verwendet wird. Er definiert Spezifikationen der Bitübertragungsschicht wie Funkfrequenzen."
   },
   {
     "protocolName": "USB",
     "correctLayerNumber": 1,
-    "explanation": "Universal Serial Bus is an industry standard that establishes specifications for cables, connectors and protocols for connection, communication and power supply between personal computers and their peripheral devices. It primarily operates at the Physical Layer."
+    "explanation": "Universal Serial Bus ist ein Industriestandard, der Spezifikationen für Kabel, Anschlüsse und Protokolle für Verbindung, Kommunikation und Stromversorgung zwischen PCs und Peripheriegeräten festlegt. Er arbeitet primär auf der Bitübertragungsschicht."
   },
   {
     "protocolName": "DSL",
     "correctLayerNumber": 1,
-    "explanation": "Digital Subscriber Line is a family of technologies that are used to transmit digital data over telephone lines. It operates at the Physical Layer."
+    "explanation": "Digital Subscriber Line ist eine Familie von Technologien, die zur Übertragung digitaler Daten über Telefonleitungen verwendet werden. Sie arbeitet auf der Bitübertragungsschicht."
   },
   {
     "protocolName": "CSMA/CD",
     "correctLayerNumber": 2,
-    "explanation": "Carrier Sense Multiple Access with Collision Detection is a media access control method used most notably in early Ethernet technology for local area networking. It's a Data Link Layer protocol."
+    "explanation": "Carrier Sense Multiple Access with Collision Detection ist ein Medienzugriffsverfahren, das vor allem in der frühen Ethernet-Technologie für lokale Netzwerke verwendet wurde. Es ist ein Protokoll der Sicherungsschicht."
   }
 ]

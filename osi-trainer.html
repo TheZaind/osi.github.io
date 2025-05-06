@@ -3,72 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSI Model Learning Tool</title>
+    <title>OSI-Modell Lerntool</title>
     <link rel="stylesheet" href="css/osi-trainer.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>OSI Model Learning Tool</h1>
-            <!-- Theme toggle button can be added here later if desired -->
+            <h1>OSI-Modell Lerntool</h1>
+            <button id="theme-toggle-button">🌓 Design</button>
         </header>
 
         <main>
             <section id="main-menu">
-                <h2>OSI Learning Exercises</h2>
-                <button id="select-drag-drop-puzzle">Drag & Drop Layers Puzzle</button>
-                <button id="select-protocol-matching">Protocol Matching Game</button>
+                <h2>OSI Lernübungen</h2>
+                <button id="select-drag-drop-puzzle">Drag & Drop Schichten-Puzzle</button>
+                <button id="select-protocol-matching">Protokoll-Zuordnungsspiel</button>
                 <div id="progress-overview">
-                    <!-- Progress will be displayed here -->
+                    <!-- Fortschritt wird hier angezeigt -->
                 </div>
             </section>
 
             <section id="drag-drop-exercise" class="exercise-container" style="display: none;">
-                <h3>Drag & Drop Layers Puzzle</h3>
-                <p id="drag-drop-instructions">Drag the layers to their correct positions.</p>
+                <h3>Drag & Drop Schichten-Puzzle</h3>
+                <p id="drag-drop-instructions">Ziehe die Schichten an ihre korrekten Positionen.</p>
                 <div id="draggable-layers-container">
-                    <p>Layers to Drag:</p>
+                    <p>Zu ziehende Schichten:</p>
                     <div id="draggable-layers">
-                        <!-- Draggable layer cards will be generated here by JS -->
+                        <!-- Ziehbare Schichtkarten werden hier per JS generiert -->
                     </div>
                 </div>
                 <div id="layer-slots-container">
-                    <p>Target Slots:</p>
+                    <p>Ziel-Steckplätze:</p>
                     <div id="layer-slots">
-                        <!-- Layer drop slots will be generated here by JS -->
+                        <!-- Schicht-Steckplätze werden hier per JS generiert -->
                     </div>
                 </div>
-                <button id="reset-drag-drop-puzzle">Reset Puzzle</button>
-                <button class="back-to-menu">Back to Menu</button>
+                <button id="reset-drag-drop-puzzle">Puzzle zurücksetzen</button>
+                <button class="back-to-menu">Zurück zum Menü</button>
                 <div id="layer-explanation-popup" class="modal" style="display: none;">
                     <div class="modal-content">
                         <span class="close-button">&times;</span>
-                        <h4 id="explanation-title">Layer Explanation</h4>
+                        <h4 id="explanation-title">Schichterklärung</h4>
                         <p id="explanation-text"></p>
                     </div>
                 </div>
             </section>
 
             <section id="protocol-matching-exercise" class="exercise-container" style="display: none;">
-                <h3>Protocol Matching Game</h3>
-                <p id="protocol-matching-instructions">Match the protocol to its correct OSI layer.</p>
+                <h3>Protokoll-Zuordnungsspiel</h3>
+                <p id="protocol-matching-instructions">Ordne das Protokoll seiner korrekten OSI-Schicht zu.</p>
                 <div id="protocol-question-area">
-                    <p>Protocol: <span id="protocol-name-display"></span></p>
+                    <p>Protokoll: <span id="protocol-name-display"></span></p>
                 </div>
                 <div id="protocol-options-area">
-                    <!-- Layer options will be generated here by JS -->
+                    <!-- Schichtoptionen werden hier per JS generiert -->
                 </div>
-                <button id="submit-protocol-answer">Submit Answer</button>
-                <button id="next-protocol-task" style="display: none;">Next Task</button>
+                <button id="submit-protocol-answer">Antwort absenden</button>
+                <button id="next-protocol-task" style="display: none;">Nächste Aufgabe</button>
                 <div id="protocol-feedback-area">
-                    <!-- Feedback (correct/incorrect) will be displayed here -->
+                    <!-- Feedback (richtig/falsch) wird hier angezeigt -->
                 </div>
-                <button class="back-to-menu">Back to Menu</button>
+                <button class="back-to-menu">Zurück zum Menü</button>
             </section>
         </main>
 
         <footer>
-            <p>&copy; 2025 OSI Learning Tool</p>
+            <p>&copy; 2025 OSI-Modell Lerntool</p>
         </footer>
     </div>
 
