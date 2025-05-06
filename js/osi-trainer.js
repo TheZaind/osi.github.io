@@ -26,6 +26,8 @@ const explanationText = document.getElementById('explanation-text');
 const closeExplanationButton = explanationPopup.querySelector('.close-button');
 
 const protocolNameDisplay = document.getElementById('protocol-name-display');
+const protocolFullnameDisplay = document.getElementById('protocol-fullname-display');
+const protocolExplanationDisplay = document.getElementById('protocol-explanation-display');
 const protocolOptionsArea = document.getElementById('protocol-options-area');
 const submitProtocolAnswerButton = document.getElementById('submit-protocol-answer');
 const nextProtocolTaskButton = document.getElementById('next-protocol-task');
@@ -365,12 +367,14 @@ function initProtocolMatchingGame() {
     if (protocolTasks.length > 0) {
         displayProtocolTask();
     } else {
-        protocolNameDisplay.textContent = "Keine Protokollaufgaben verfügbar.";
-        protocolOptionsArea.innerHTML = "";
+        if(protocolNameDisplay) protocolNameDisplay.textContent = "N/A";
+        if(protocolFullnameDisplay) protocolFullnameDisplay.textContent = "Keine Protokollaufgaben verfügbar.";
+        if(protocolExplanationDisplay) protocolExplanationDisplay.textContent = "";
+        if(protocolOptionsArea) protocolOptionsArea.innerHTML = "";
         if(submitProtocolAnswerButton) submitProtocolAnswerButton.style.display = 'none';
         if(nextProtocolTaskButton) nextProtocolTaskButton.style.display = 'none';
     }
-    protocolFeedbackArea.textContent = '';
+    if(protocolFeedbackArea) protocolFeedbackArea.textContent = '';
     protocolFeedbackArea.className = 'protocol-feedback-area'; // Klassen zurücksetzen
 }
 
@@ -378,19 +382,28 @@ function displayProtocolTask() {
     const taskIndex = userProgress.protocolMatching.currentTaskIndex;
     if (taskIndex >= protocolTasks.length) {
         // Spiel vorbei
-        protocolFeedbackArea.textContent = `Spiel beendet! Deine Punktzahl: ${userProgress.protocolMatching.score} / ${protocolTasks.length}`;
-        protocolFeedbackArea.className = 'protocol-feedback-area feedback-correct'; // Nutze einen allgemeinen positiven Feedback-Stil
-        protocolNameDisplay.textContent = "Alle Aufgaben abgeschlossen!";
-        protocolOptionsArea.innerHTML = "";
+        if(protocolFeedbackArea) {
+            protocolFeedbackArea.textContent = `Spiel beendet! Deine Punktzahl: ${userProgress.protocolMatching.score} / ${protocolTasks.length}`;
+            protocolFeedbackArea.className = 'protocol-feedback-area feedback-correct';
+        }
+        if(protocolNameDisplay) protocolNameDisplay.textContent = "N/A";
+        if(protocolFullnameDisplay) protocolFullnameDisplay.textContent = "Alle Aufgaben abgeschlossen!";
+        if(protocolExplanationDisplay) protocolExplanationDisplay.textContent = "";
+        if(protocolOptionsArea) protocolOptionsArea.innerHTML = "";
         if(submitProtocolAnswerButton) submitProtocolAnswerButton.style.display = 'none';
         if(nextProtocolTaskButton) nextProtocolTaskButton.style.display = 'none';
         return;
     }
 
     currentProtocolTask = protocolTasks[taskIndex];
-    protocolNameDisplay.textContent = currentProtocolTask.protocolName;
-    protocolFeedbackArea.textContent = '';
-    protocolFeedbackArea.className = 'protocol-feedback-area';
+    if(protocolNameDisplay) protocolNameDisplay.textContent = currentProtocolTask.protocolName;
+    if(protocolFullnameDisplay) protocolFullnameDisplay.textContent = currentProtocolTask.fullName || "Nicht verfügbar";
+    if(protocolExplanationDisplay) protocolExplanationDisplay.textContent = currentProtocolTask.explanation || "Keine Beschreibung verfügbar.";
+    
+    if(protocolFeedbackArea) {
+        protocolFeedbackArea.textContent = '';
+        protocolFeedbackArea.className = 'protocol-feedback-area';
+    }
 
     renderProtocolOptions();
 
@@ -441,10 +454,14 @@ function handleProtocolOptionClick(selectedLayerNumber) {
     } else {
         // Spiel-Ende-Logik (bereits in displayProtocolTask behandelt, kann hier wiederholt werden)
         setTimeout(() => { // Verzögerung, um Feedback vor "Spiel beendet" anzuzeigen
-            protocolFeedbackArea.textContent = `Spiel beendet! Deine finale Punktzahl: ${userProgress.protocolMatching.score} / ${protocolTasks.length}`;
-            protocolFeedbackArea.className = 'protocol-feedback-area feedback-correct';
-            protocolNameDisplay.textContent = "Alle Aufgaben abgeschlossen!";
-            protocolOptionsArea.innerHTML = "";
+            if(protocolFeedbackArea) {
+                protocolFeedbackArea.textContent = `Spiel beendet! Deine finale Punktzahl: ${userProgress.protocolMatching.score} / ${protocolTasks.length}`;
+                protocolFeedbackArea.className = 'protocol-feedback-area feedback-correct';
+            }
+            if(protocolNameDisplay) protocolNameDisplay.textContent = "N/A";
+            if(protocolFullnameDisplay) protocolFullnameDisplay.textContent = "Alle Aufgaben abgeschlossen!";
+            if(protocolExplanationDisplay) protocolExplanationDisplay.textContent = "";
+            if(protocolOptionsArea) protocolOptionsArea.innerHTML = "";
             if(nextProtocolTaskButton) nextProtocolTaskButton.style.display = 'none';
         }, 1500);
     }

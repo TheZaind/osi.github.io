@@ -1,117 +1,170 @@
 [
   {
     "protocolName": "HTTP",
+    "fullName": "HyperText Transfer Protocol",
     "correctLayerNumber": 7,
-    "explanation": "HyperText Transfer Protocol wird für das Surfen im Web verwendet und ermöglicht die Kommunikation zwischen Webbrowsern und Webservern."
+    "explanation": "Ein Protokoll zur Übertragung von Webseiten (Hypertext) zwischen Webservern und Webbrowsern. Es definiert, wie Nachrichten formatiert und übertragen werden und welche Aktionen Webserver und Browser als Reaktion auf verschiedene Befehle ausführen sollen."
   },
   {
     "protocolName": "HTTPS",
+    "fullName": "HyperText Transfer Protocol Secure",
     "correctLayerNumber": 7,
-    "explanation": "HyperText Transfer Protocol Secure ist die sichere Version von HTTP und verschlüsselt Daten für eine sichere Webkommunikation."
+    "explanation": "Die sichere Version von HTTP. Es verschlüsselt die Kommunikation zwischen Webbrowser und Webserver mithilfe von SSL/TLS, um die Vertraulichkeit und Integrität der ausgetauschten Daten zu gewährleisten."
   },
   {
     "protocolName": "FTP",
+    "fullName": "File Transfer Protocol",
     "correctLayerNumber": 7,
-    "explanation": "File Transfer Protocol wird für die Übertragung von Dateien zwischen einem Client und einem Server in einem Computernetzwerk verwendet."
+    "explanation": "Ein Standard-Netzwerkprotokoll, das zur Übertragung von Computerdateien zwischen einem Client und einem Server in einem Computernetzwerk verwendet wird. Es ermöglicht das Hochladen, Herunterladen und Verwalten von Dateien auf einem entfernten Server."
   },
   {
     "protocolName": "SMTP",
+    "fullName": "Simple Mail Transfer Protocol",
     "correctLayerNumber": 7,
-    "explanation": "Simple Mail Transfer Protocol wird für das Senden von E-Mail-Nachrichten zwischen Servern verwendet."
+    "explanation": "Ein Protokoll zum Senden von E-Mail-Nachrichten zwischen Servern. Es ist auch dafür zuständig, E-Mails von einem E-Mail-Client an einen E-Mail-Server weiterzuleiten."
   },
   {
     "protocolName": "DNS",
+    "fullName": "Domain Name System",
     "correctLayerNumber": 7,
-    "explanation": "Domain Name System übersetzt für Menschen lesbare Domainnamen (z.B. www.example.com) in maschinenlesbare IP-Adressen."
+    "explanation": "Ein hierarchisches und dezentrales Namenssystem, das für Menschen lesbare Domainnamen (z.B. www.beispiel.com) in maschinenlesbare IP-Adressen (z.B. 192.0.2.1) übersetzt und umgekehrt. Es ist ein wesentlicher Bestandteil des Internets."
   },
   {
     "protocolName": "Telnet",
+    "fullName": "Teletype Network",
     "correctLayerNumber": 7,
-    "explanation": "Telnet bietet eine bidirektionale, interaktive, textorientierte Kommunikationsmöglichkeit über eine virtuelle Terminalverbindung. (Größtenteils aus Sicherheitsgründen durch SSH ersetzt)."
+    "explanation": "Ein Netzwerkprotokoll, das eine bidirektionale, interaktive, textorientierte Kommunikationsmöglichkeit über eine virtuelle Terminalverbindung bietet. Es wird verwendet, um sich remote bei Servern anzumelden und Befehle auszuführen, ist aber unsicher und wurde weitgehend durch SSH ersetzt."
+  },
+  {
+    "protocolName": "POP3",
+    "fullName": "Post Office Protocol version 3",
+    "correctLayerNumber": 7,
+    "explanation": "Ein Standard-Mail-Protokoll, das von E-Mail-Clients verwendet wird, um E-Mails von einem Mailserver abzurufen. Typischerweise werden E-Mails heruntergeladen und dann vom Server gelöscht."
+  },
+  {
+    "protocolName": "IMAP",
+    "fullName": "Internet Message Access Protocol",
+    "correctLayerNumber": 7,
+    "explanation": "Ein E-Mail-Protokoll, das es Clients ermöglicht, auf E-Mails auf einem Remote-Mailserver zuzugreifen und diese zu verwalten. Im Gegensatz zu POP3 bleiben E-Mails standardmäßig auf dem Server, was den Zugriff von mehreren Geräten aus ermöglicht."
+  },
+  {
+    "protocolName": "DHCP",
+    "fullName": "Dynamic Host Configuration Protocol",
+    "correctLayerNumber": 7,
+    "explanation": "Ein Netzwerkmanagementprotokoll, das verwendet wird, um Geräten in einem Netzwerk automatisch IP-Adressen und andere zugehörige Netzwerkkonfigurationsinformationen (wie Subnetzmaske und Gateway) zuzuweisen."
+  },
+  {
+    "protocolName": "SSH",
+    "fullName": "Secure Shell",
+    "correctLayerNumber": 7,
+    "explanation": "Ein kryptographisches Netzwerkprotokoll für den sicheren Betrieb von Netzwerkdiensten über ein ungesichertes Netzwerk. Typische Anwendungen sind Remote-Login und Kommandozeilenausführung."
+  },
+  {
+    "protocolName": "NTP",
+    "fullName": "Network Time Protocol",
+    "correctLayerNumber": 7,
+    "explanation": "Ein Netzwerkprotokoll zur Synchronisierung der Uhren von Computersystemen über paketvermittelte Datennetze mit variabler Latenz. Es ist darauf ausgelegt, die Auswirkungen variabler Latenzzeiten zu minimieren."
   },
   {
     "protocolName": "SSL/TLS",
+    "fullName": "Secure Sockets Layer / Transport Layer Security",
     "correctLayerNumber": 6,
-    "explanation": "Secure Sockets Layer (SSL) und Transport Layer Security (TLS) sind kryptographische Protokolle zur Gewährleistung der Kommunikationssicherheit über ein Computernetzwerk. Sie arbeiten auf der Darstellungsschicht, um Daten von der Anwendungsschicht zu verschlüsseln."
+    "explanation": "Kryptographische Protokolle, die die Kommunikationssicherheit über ein Computernetzwerk gewährleisten. Sie verschlüsseln Daten, die von Anwendungsprotokollen (wie HTTP) gesendet werden, und sorgen so für Vertraulichkeit und Integrität. Sie agieren typischerweise zwischen der Anwendungs- und der Transportschicht, werden aber oft der Darstellungsschicht zugeordnet, da sie Datenformatierung (Verschlüsselung) handhaben."
   },
   {
     "protocolName": "JPEG",
+    "fullName": "Joint Photographic Experts Group",
     "correctLayerNumber": 6,
-    "explanation": "JPEG ist ein gängiges Bildformat, das angibt, wie ein Bild komprimiert und gespeichert wird. Die Darstellungsschicht behandelt solche Datenformatierungen."
+    "explanation": "Ein weit verbreitetes Verfahren zur Komprimierung digitaler Bilder. Die Darstellungsschicht ist für die Handhabung solcher Datenformate und deren Konvertierung zuständig, um sicherzustellen, dass Daten von der Anwendungsschicht eines Systems von der Anwendungsschicht eines anderen Systems gelesen werden können."
   },
   {
     "protocolName": "MPEG",
+    "fullName": "Moving Picture Experts Group",
     "correctLayerNumber": 6,
-    "explanation": "MPEG ist ein Standard für Video- und Audiokompression. Die Darstellungsschicht ist für die Kodierung und Dekodierung von Multimediadaten zuständig."
+    "explanation": "Eine Gruppe von Standards für die Komprimierung von Audio- und Videodaten. Ähnlich wie JPEG fällt die Handhabung dieser Formate in den Aufgabenbereich der Darstellungsschicht, die Daten für die Netzwerkübertragung oder Präsentation formatiert."
   },
   {
     "protocolName": "NetBIOS",
+    "fullName": "Network Basic Input/Output System",
     "correctLayerNumber": 5,
-    "explanation": "Network Basic Input/Output System ermöglicht Anwendungen auf getrennten Computern die Kommunikation über ein lokales Netzwerk und verwaltet die Sitzungen zwischen ihnen."
+    "explanation": "Eine Programmierschnittstelle (API), die es Anwendungen auf verschiedenen Computern ermöglicht, über ein lokales Netzwerk (LAN) zu kommunizieren. Es stellt Mechanismen für Namensauflösung, Sitzungsmanagement und Datagramm-Dienste bereit."
   },
   {
-    "protocolName": "RPC (Remote Procedure Call)",
+    "protocolName": "RPC",
+    "fullName": "Remote Procedure Call",
     "correctLayerNumber": 5,
-    "explanation": "Remote Procedure Call ermöglicht es einem Programm auf einem Computer, eine Prozedur (Subroutine) im Adressraum eines anderen Computers auszuführen und verwaltet die Sitzung für diese Interaktion."
+    "explanation": "Eine Technologie, die es einem Programm auf einem Computer ermöglicht, eine Prozedur (Subroutine) im Adressraum eines anderen Computers auszuführen, ohne dass der Programmierer explizit die Details dieser Remote-Interaktion programmieren muss. Die Sitzungsschicht verwaltet den Dialog für solche Aufrufe."
   },
   {
     "protocolName": "TCP",
+    "fullName": "Transmission Control Protocol",
     "correctLayerNumber": 4,
-    "explanation": "Transmission Control Protocol bietet eine zuverlässige, geordnete und fehlergeprüfte Übertragung eines Oktettstroms zwischen Anwendungen, die auf Hosts laufen, die über ein IP-Netzwerk kommunizieren."
+    "explanation": "Ein verbindungsorientiertes Protokoll, das eine zuverlässige, geordnete und fehlergeprüfte Übertragung von Datenströmen (Oktettströmen) zwischen Anwendungen gewährleistet, die auf Hosts in einem IP-Netzwerk laufen. Es baut eine Verbindung auf, bevor Daten gesendet werden."
   },
   {
     "protocolName": "UDP",
+    "fullName": "User Datagram Protocol",
     "correctLayerNumber": 4,
-    "explanation": "User Datagram Protocol ist ein verbindungsloses Protokoll, das minimalen Overhead bietet. Es wird für Anwendungen verwendet, bei denen Geschwindigkeit Vorrang vor Zuverlässigkeit hat, wie z.B. Videostreaming oder Online-Spiele."
+    "explanation": "Ein verbindungsloses Protokoll, das einen minimalen Mechanismus zum Senden von Datagrammen bietet. Es ist schnell, aber unzuverlässig, da es keine Garantie für Zustellung, Reihenfolge oder Duplikatsschutz bietet. Wird für zeitkritische Anwendungen wie DNS, DHCP, Streaming oder Online-Spiele verwendet."
   },
   {
     "protocolName": "IP",
+    "fullName": "Internet Protocol",
     "correctLayerNumber": 3,
-    "explanation": "Internet Protocol ist das Hauptkommunikationsprotokoll für die Weiterleitung von Datagrammen über Netzwerkgrenzen hinweg. Es stellt logische Adressierung (IP-Adressen) und Routing bereit."
+    "explanation": "Das Hauptkommunikationsprotokoll in der Internetprotokollfamilie für die Weiterleitung von Datagrammen (Paketen) über Netzwerkgrenzen hinweg. Es ist verantwortlich für die Adressierung von Hosts (IP-Adressen) und das Routing von Paketen von einer Quelle zu einem Ziel durch ein oder mehrere IP-Netzwerke."
   },
   {
     "protocolName": "ICMP",
+    "fullName": "Internet Control Message Protocol",
     "correctLayerNumber": 3,
-    "explanation": "Internet Control Message Protocol wird von Netzwerkgeräten wie Routern verwendet, um Fehlermeldungen und Betriebsinformationen zu senden, die z.B. anzeigen, dass ein angeforderter Dienst nicht verfügbar ist oder ein Host/Router nicht erreicht werden konnte."
+    "explanation": "Ein unterstützendes Protokoll in der Internetprotokollfamilie. Es wird von Netzwerkgeräten wie Routern verwendet, um Fehlermeldungen und Betriebsinformationen zu senden, z.B. wenn ein angeforderter Dienst nicht verfügbar ist oder ein Host/Router nicht erreicht werden konnte (z.B. 'Destination Unreachable'). Ping verwendet ICMP."
   },
   {
     "protocolName": "ARP",
+    "fullName": "Address Resolution Protocol",
     "correctLayerNumber": 2,
-    "explanation": "Address Resolution Protocol löst IP-Adressen (Vermittlungsschicht) in MAC-Adressen (Sicherungsschicht) für die Kommunikation innerhalb eines lokalen Netzwerksegments auf."
+    "explanation": "Ein Protokoll zur Auflösung von Netzwerkadressen (wie IP-Adressen) in physische Adressen (wie MAC-Adressen) auf der Sicherungsschicht. Es wird verwendet, wenn ein Gerät die MAC-Adresse eines anderen Geräts im selben lokalen Netzwerk ermitteln muss, dessen IP-Adresse es kennt."
   },
   {
     "protocolName": "PPP",
+    "fullName": "Point-to-Point Protocol",
     "correctLayerNumber": 2,
-    "explanation": "Point-to-Point Protocol ist ein Kommunikationsprotokoll der Sicherungsschicht, das verwendet wird, um eine direkte Verbindung zwischen zwei Knoten herzustellen. Es wird häufig für Einwahl- und DSL-Verbindungen verwendet."
+    "explanation": "Ein Datenübertragungsprotokoll der Sicherungsschicht, das verwendet wird, um eine direkte Verbindung zwischen zwei Netwerkknoten herzustellen. Es kann Authentifizierung, Übertragungsverschlüsselung und Kompression bereitstellen. Häufig bei Einwahlverbindungen und DSL verwendet."
   },
   {
     "protocolName": "Ethernet",
+    "fullName": "Ethernet",
     "correctLayerNumber": 2,
-    "explanation": "Ethernet ist eine Familie von Technologien für kabelgebundene Computernetzwerke, die häufig in lokalen Netzwerken (LANs) verwendet werden. Es definiert, wie Datenpakete gerahmt und übertragen werden."
+    "explanation": "Eine Familie von Technologien für kabelgebundene Computernetzwerke, die in lokalen Netzwerken (LANs), Metropolitan Area Networks (MANs) und Wide Area Networks (WANs) weit verbreitet ist. Es definiert, wie Datenpakete (Frames) formatiert und über ein gemeinsames Medium übertragen werden, einschließlich MAC-Adressierung und CSMA/CD oder Vollduplex."
   },
   {
     "protocolName": "WLAN (802.11)",
+    "fullName": "Wireless Local Area Network (IEEE 802.11)",
     "correctLayerNumber": 2,
-    "explanation": "WLAN (Wi-Fi) ist eine Familie von drahtlosen Netzwerkprotokollen, die auf der IEEE 802.11-Standardfamilie basieren. Es arbeitet auf der Sicherungsschicht (MAC-Unterschicht) und der Bitübertragungsschicht."
-  },
-  {
-    "protocolName": "Bluetooth",
-    "correctLayerNumber": 1,
-    "explanation": "Bluetooth ist ein Standard für drahtlose Technologie mit kurzer Reichweite, der für den Datenaustausch zwischen festen und mobilen Geräten über kurze Distanzen verwendet wird. Er definiert Spezifikationen der Bitübertragungsschicht wie Funkfrequenzen."
-  },
-  {
-    "protocolName": "USB",
-    "correctLayerNumber": 1,
-    "explanation": "Universal Serial Bus ist ein Industriestandard, der Spezifikationen für Kabel, Anschlüsse und Protokolle für Verbindung, Kommunikation und Stromversorgung zwischen PCs und Peripheriegeräten festlegt. Er arbeitet primär auf der Bitübertragungsschicht."
-  },
-  {
-    "protocolName": "DSL",
-    "correctLayerNumber": 1,
-    "explanation": "Digital Subscriber Line ist eine Familie von Technologien, die zur Übertragung digitaler Daten über Telefonleitungen verwendet werden. Sie arbeitet auf der Bitübertragungsschicht."
+    "explanation": "Eine Familie von Spezifikationen für drahtlose lokale Netzwerke (WLANs), entwickelt von der IEEE (oft als Wi-Fi bezeichnet). Es definiert die MAC-Unterschicht und mehrere Spezifikationen der Bitübertragungsschicht für die drahtlose Kommunikation."
   },
   {
     "protocolName": "CSMA/CD",
+    "fullName": "Carrier Sense Multiple Access with Collision Detection",
     "correctLayerNumber": 2,
-    "explanation": "Carrier Sense Multiple Access with Collision Detection ist ein Medienzugriffsverfahren, das vor allem in der frühen Ethernet-Technologie für lokale Netzwerke verwendet wurde. Es ist ein Protokoll der Sicherungsschicht."
+    "explanation": "Ein Medienzugriffskontrollverfahren, das in frühen Ethernet-Netzwerken verwendet wurde, um Kollisionen zu erkennen und zu behandeln, die auftreten, wenn mehrere Geräte gleichzeitig versuchen, über ein gemeinsames Medium zu senden. Geräte hören vor dem Senden (Carrier Sense) und erkennen Kollisionen während des Sendens."
+  },
+  {
+    "protocolName": "Bluetooth",
+    "fullName": "Bluetooth",
+    "correctLayerNumber": 1,
+    "explanation": "Ein Standard für drahtlose Technologie mit kurzer Reichweite, der für den Datenaustausch zwischen festen und mobilen Geräten über kurze Distanzen (Personal Area Networks, PANs) verwendet wird. Er definiert Spezifikationen der Bitübertragungsschicht wie Funkfrequenzen und Modulationsverfahren."
+  },
+  {
+    "protocolName": "USB",
+    "fullName": "Universal Serial Bus",
+    "correctLayerNumber": 1,
+    "explanation": "Ein Industriestandard, der Spezifikationen für Kabel, Anschlüsse und Kommunikationsprotokolle für Verbindung, Kommunikation und Stromversorgung zwischen Computern und Peripheriegeräten festlegt. Er operiert primär auf der Bitübertragungsschicht und definiert elektrische Signale und physische Verbindungen."
+  },
+  {
+    "protocolName": "DSL",
+    "fullName": "Digital Subscriber Line",
+    "correctLayerNumber": 1,
+    "explanation": "Eine Familie von Technologien, die zur Übertragung digitaler Daten über Telefonleitungen verwendet werden. Sie ermöglicht schnellere Datenübertragungsraten als herkömmliche Modemverbindungen und operiert auf der Bitübertragungsschicht, indem sie die physische Übertragung von Bits definiert."
   }
 ]

@@ -537,9 +537,9 @@ body[data-theme="dark"] #protocol-name-display {
 
 #protocol-options-area {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
-    gap: 15px; /* Increased gap */
-    margin-bottom: 25px; /* Increased margin */
+    grid-template-columns: 1fr; /* Single column for vertical stacking */
+    gap: 10px; /* Adjusted gap for single column */
+    margin-bottom: 25px;
 }
 
 #protocol-options-area button { /* These are general buttons, already themed */
