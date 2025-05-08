@@ -285,25 +285,100 @@ footer {
 /* #layer2 { } */
 /* #layer1 { } */
 
-/* Responsive Anpassungen */
+/* --- Mobile Optimizations --- */
 @media (max-width: 768px) {
-    .layer-content {
+    header {
         flex-direction: column;
+        align-items: center; /* Center title and button group */
+        padding: 1rem; /* Reduced padding */
+        gap: 15px; /* Add gap between title and button group */
     }
+
     header h1 {
-        font-size: 1.8rem;
+        font-size: 1.6rem; /* Slightly smaller title */
+        margin-bottom: 0; /* Reset margin as flex gap handles spacing */
+        text-align: center;
     }
-    section h2 {
-        font-size: 1.5rem;
+
+    .navigation-buttons {
+        width: 100%;
+        display: flex;
+        justify-content: space-around; /* Evenly space buttons */
     }
-    section h3 {
-        font-size: 1.2rem;
-    }
+
     .navigation-buttons button {
-        padding: 10px 20px;
+        padding: 10px 15px; /* Adjust padding for smaller screens */
         font-size: 0.9rem;
+        /* flex-grow: 1; Consider if buttons should fill width or be sized by content */
     }
+
+    main {
+        width: 95%; /* Closer to full width */
+        padding: 10px; /* Reduced padding for main content area */
+        margin: 20px auto;
+    }
+
+    .osi-layer,
+    .osi-exercise {
+        padding: 20px 15px; /* Adjust padding for layer/exercise blocks */
+        border-radius: 15px; /* Slightly smaller border-radius */
+        width: 100%; /* Ensure they take full width of main */
+    }
+
+    .layer-content {
+        flex-direction: column; /* Stack text and visual content */
+        gap: 20px; /* Space between stacked text and visual */
+    }
+
+    .text-content,
     .visual-content {
-        min-height: 200px; /* Adjust for smaller screens */
+        flex-basis: 100%; /* Make them take full width of the parent */
+        min-width: unset; /* Reset min-width from desktop styles */
+        width: 100%; /* Explicitly set width */
     }
+    
+    .visual-content {
+        padding: 15px; /* Adjust padding for visual content block */
+        min-height: 200px; /* Ensure some space, can be auto if content dictates */
+    }
+
+    .visual-content iframe {
+        /* width: 100% is usually set inline, height might need adjustment */
+        /* Consider making iframe heights more dynamic if content varies greatly */
+        /* For now, rely on inline styles or specific iframe content responsiveness */
+    }
+
+    .exercise-iframe-container {
+        padding: 10px; /* Reduced padding for exercise iframe container */
+        min-height: auto; /* Allow height to be determined by iframe content or inline style */
+        width: 100%;
+    }
+    
+    .exercise-iframe-container iframe {
+         /* height will be set inline, ensure it's appropriate for mobile */
+         /* e.g., style="width: 100%; height: 350px; ..." */
+    }
+
+    /* Adjust general font sizes for better readability on mobile */
+    section h2 { /* Layer titles */
+        font-size: 1.4rem; /* Further reduce for mobile */
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+    section h3 { /* Sub-headings in text-content */
+        font-size: 1.1rem; /* Further reduce for mobile */
+        margin-top: 15px;
+        margin-bottom: 8px;
+    }
+    p, li, blockquote {
+        font-size: 0.9rem; /* Adjust base text size */
+    }
+    section blockquote {
+        padding: 10px 15px;
+        margin: 15px 0;
+    }
+
+    /* Ensure iframes within exercises are also responsive if not handled by their internal CSS */
+    /* This might require adding a class to iframes in exercise HTMLs and styling here, */
+    /* or ensuring their internal body/wrapper is 100% width. */
 }
