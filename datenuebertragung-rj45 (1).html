@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datenübertragungsberechnung für RJ45</title>
+    <style>
+        :root {
+            --primary-color: #5ba1e0;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --bg-color: #121212;
+            --container-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --element-bg: #2a2a2a;
+            --element-border: #3a3a3a;
+            --highlight-color: #4cbeff;
+            --svg-bg-color: #2c3e50;
+            --svg-text-color: #ecf0f1;
+            --svg-border-color: #7f8c8d;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--container-bg);
+            padding: 30px;
+            padding-top: 100px; 
+            border-radius: 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1, h2, h3, h4, h5 { /* h5 hinzugefügt */
+            color: var(--highlight-color);
+        }
+
+        h4 {
+            margin-top: 20px; 
+            margin-bottom: 10px;
+            color: var(--secondary-color); 
+        }
+        h5 { /* Styling für h5 im Detailbeispiel */
+            margin-top: 15px;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+            font-size: 1.1em;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+        
+        .intro {
+            margin-bottom: 30px;
+            background-color: #1a2733;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid var(--secondary-color);
+        }
+        
+        .rj45-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .rj45-img {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+        
+        .rj45-img img {
+            max-width: 100%;
+            height: auto; 
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .rj45-info {
+            flex: 2;
+            min-width: 300px;
+        }
+        
+        .calculation-steps {
+            counter-reset: step;
+        }
+        
+        .step {
+            background-color: #2a2a2a;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0.3;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; 
+            position: relative;
+            border-left: 5px solid #444;
+        }
+        
+        .step::before {
+            counter-increment: step;
+            content: "Schritt " counter(step);
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .step.active {
+            opacity: 1;
+            transform: translateY(0);
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        .step ul ul { 
+            margin-left: 20px;
+            list-style-type: circle;
+        }
+        .step ul li {
+            margin-bottom: 5px; /* Etwas Abstand zwischen Listenelementen */
+        }
+        
+        .formula, .calculation {
+            background-color: #222;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 15px 0;
+            font-size: 1.1rem; /* Etwas kleiner für bessere Lesbarkeit bei mehr Inhalt */
+            color: #4cbeff;
+            border: 1px solid #444;
+            overflow-x: auto; 
+        }
+        .calculation {
+            text-align: left; /* Linksbündig für Rechenschritte */
+            padding-left: 20px;
+        }
+        
+        .highlight {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 0;
+            padding: 15px 0;
+            background-color: rgba(26, 26, 26, 0.95); 
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000; /* Höherer z-index für Navigationsleiste */
+            backdrop-filter: blur(5px); 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .title-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 1000; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .title-nav h2 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.1s; 
+        }
+
+        button:active { 
+            transform: scale(0.95);
+        }
+        
+        button:hover {
+            background-color: #2980b9; 
+        }
+        
+        button:disabled {
+            background-color: #444;
+            cursor: not-allowed;
+            color: #888;
+        }
+        
+        .cat-selector {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .cat-btn {
+            background-color: #333;
+            color: var(--text-color);
+            border: 2px solid #444;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cat-btn.active {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .efficiency-meter {
+            height: 30px;
+            background-color: #333;
+            border-radius: 15px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #444;
+        }
+        
+        .efficiency-fill {
+            height: 100%;
+            width: 0; 
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            transition: width 1s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border: 1px solid #444;
+            border-radius: 5px; 
+            overflow: hidden; 
+        }
+        
+        .comparison-table th, .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+        
+        .comparison-table th {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .comparison-table tr:nth-child(even) { 
+            background-color: #252525;
+        }
+
+        .overhead-svg-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .overhead-svg {
+            border: 1px solid var(--svg-border-color);
+            border-radius: 8px;
+            background-color: var(--element-bg); 
+            padding: 10px;
+            max-width: 100%; 
+        }
+
+        .overhead-svg text {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 10px; 
+            fill: var(--svg-text-color);
+        }
+        .overhead-svg .field-rect {
+            stroke: var(--svg-border-color);
+            stroke-width: 1;
+        }
+        .overhead-svg .field-text {
+            text-anchor: middle;
+            dominant-baseline: central;
+            font-size: 9px; 
+        }
+         .overhead-svg .label-text { 
+            fill: var(--text-color);
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .svg-group { 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+            background-color: #252525; 
+            padding: 15px;
+            border-radius: 8px;
+            width: 100%; /* Damit die SVGs die Breite nutzen können */
+            box-sizing: border-box;
+        }
+        .svg-group p {
+            margin-top: 5px;
+            font-size: 0.9em;
+            text-align: center;
+        }
+        
+        .example-calculation-box {
+            background-color: #252525;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid var(--element-border);
+        }
+        .example-calculation-box h5 {
+            margin-top: 0;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px; 
+                padding-top: 120px; 
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            .title-nav {
+                flex-direction: column;
+                padding: 10px;
+                align-items: stretch; 
+            }
+            .title-nav h2 {
+                margin-bottom: 10px;
+                text-align: center; 
+            }
+            .controls {
+                position: static; 
+                background-color: transparent;
+                backdrop-filter: none;
+                box-shadow: none;
+                padding: 10px 0;
+                width: 100%; 
+                justify-content: space-around; 
+            }
+            .overhead-svg {
+                overflow-x: auto; 
+            }
+        }
+         @media (max-width: 480px) {
+            .overhead-svg text {
+                font-size: 8px; 
+            }
+            .overhead-svg .field-text {
+                font-size: 7px;
+            }
+            .formula, .calculation {
+                font-size: 1.0rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Datenübertragungsberechnung für RJ45</h1>
+        
+        <div class="intro">
+            <p>Diese Präsentation zeigt eine animierte Beispielberechnung der Datenübertragungsrate für den RJ45-Stecker, der häufig in Netzwerktechnik verwendet wird. Wir werden die Brutto- und Nettowerte berechnen und die Effizienz bestimmen.</p>
+        </div>
+        
+        <div class="rj45-section">
+            <div class="rj45-img">
+                <img src="https://placehold.co/400x300/3498db/ffffff?text=RJ45+Stecker" alt="RJ45-Stecker Illustration" onerror="this.onerror=null;this.src='https://placehold.co/400x300/cccccc/000000?text=Bild+nicht+gefunden';">
+                <p><small>RJ45-Stecker und Ethernet-Kabel</small></p>
+            </div>
+            <div class="rj45-info">
+                <h2>Was ist RJ45?</h2>
+                <p>Der RJ45-Stecker ist ein standardisierter 8-poliger Stecker, der hauptsächlich in Ethernet-Netzwerken verwendet wird. Er verbindet Netzwerkgeräte über Twisted-Pair-Kabel und ist der gängige Anschluss für LAN-Verbindungen.</p>
+                
+                <h3>Ethernet-Kategorien mit RJ45</h3>
+                <p>Es gibt verschiedene Kategorien (CAT) von Ethernet-Kabeln mit RJ45-Steckern, die unterschiedliche Datenübertragungsraten unterstützen:</p>
+                
+                <div class="cat-selector">
+                    <button class="cat-btn" data-cat="5e">CAT 5e</button>
+                    <button class="cat-btn" data-cat="6">CAT 6</button>
+                    <button class="cat-btn active" data-cat="6a">CAT 6a</button>
+                    <button class="cat-btn" data-cat="7">CAT 7</button>
+                    <button class="cat-btn" data-cat="8">CAT 8</button>
+                </div>
+                
+                <div id="cat-info">
+                    <p><strong>Kategorie:</strong> <span id="cat-name">CAT 6a</span></p>
+                    <p><strong>Max. Brutto-Übertragungsrate:</strong> <span id="cat-speed">10 Gbit/s</span></p>
+                    <p><strong>Max. Länge:</strong> <span id="cat-length">100 m</span></p>
+                    <p><strong>Frequenzbereich:</strong> <span id="cat-freq">500 MHz</span></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="title-nav"> <h2>Berechnungsschritte</h2>
+            <div class="controls">
+                <button id="prev-btn" disabled>Zurück</button>
+                <button id="next-btn">Weiter</button>
+                <button id="reset-btn">Neu starten</button>
+            </div>
+        </div>
+        
+        <div class="calculation-steps">
+            <div class="step active" id="step1">
+                <h3>Grundlagen der Datenübertragung</h3>
+                <p>Bei der Datenübertragung in Netzwerken gibt es zwei wichtige Werte:</p>
+                <ul>
+                    <li><strong>Brutto-Datenrate:</strong> Die theoretische maximale Übertragungsrate des Mediums.</li>
+                    <li><strong>Netto-Datenrate:</strong> Die tatsächlich für Nutzdaten verfügbare Übertragungsrate.</li>
+                </ul>
+                <p>Die Differenz entsteht durch Overhead wie Protokoll-Header, Fehlerkorrektur und andere Steuerinformationen.</p>
+            </div>
+            
+            <div class="step" id="step2">
+                <h3>Die Brutto-Datenrate</h3>
+                <p>Die Brutto-Datenrate wird durch die technischen Eigenschaften des Ethernet-Standards (z.B. Kabelkategorie) bestimmt. Für <span id="current-cat">CAT 6a</span> beträgt sie <span id="current-speed">10 Gbit/s</span>.</p>
+                <div class="formula">
+                    Brutto-Datenrate (<span class="formula-cat-name">CAT 6a</span>) = <span id="formula-br">10 Gbit/s</span>
+                </div>
+                <p>Dies entspricht der maximalen Übertragungsgeschwindigkeit auf physikalischer Ebene für die gewählte Kategorie.</p>
+            </div>
+            
+            <div class="step" id="step3"> 
+                <h3>Der Overhead-Faktor im Detail</h3>
+                <p>Der Overhead-Faktor quantifiziert den Anteil der Brutto-Datenrate, der nicht für die Übertragung von reinen Nutzdaten zur Verfügung steht. Er setzt sich aus verschiedenen Komponenten zusammen:</p>
+                
+                <div class="overhead-svg-container">
+                    <div class="svg-group">
+                        <h4>1. Ethernet-Frame-Overhead:</h4>
+                        <svg class="overhead-svg" viewBox="0 0 620 60" preserveAspectRatio="xMidYMid meet">
+                            <title>Ethernet Frame Struktur</title>
+                            <desc>Zeigt die Komponenten eines Ethernet Frames: Präambel, SFD, Ziel-MAC, Quell-MAC, EtherType, Nutzdaten (Payload), CRC/FCS.</desc>
+                            <rect x="10" y="10" width="70" height="40" fill="#e67e22" class="field-rect"/>
+                            <text x="45" y="30" class="field-text">Präambel (7B)</text>
+                            <rect x="80" y="10" width="30" height="40" fill="#e67e22" class="field-rect"/>
+                            <text x="95" y="30" class="field-text">SFD (1B)</text>
+                            <rect x="110" y="10" width="60" height="40" fill="#d35400" class="field-rect"/>
+                            <text x="140" y="30" class="field-text">Ziel MAC (6B)</text>
+                            <rect x="170" y="10" width="60" height="40" fill="#d35400" class="field-rect"/>
+                            <text x="200" y="30" class="field-text">Quell MAC (6B)</text>
+                            <rect x="230" y="10" width="50" height="40" fill="#c0392b" class="field-rect"/>
+                            <text x="255" y="30" class="field-text">Typ (2B)</text>
+                            <rect x="280" y="10" width="200" height="40" fill="#bdc3c7" class="field-rect"/>
+                            <text x="380" y="30" class="field-text">Nutzdaten (46-1500 Bytes)</text>
+                            <rect x="480" y="10" width="50" height="40" fill="#c0392b" class="field-rect"/>
+                            <text x="505" y="30" class="field-text">FCS (4B)</text>
+                             <text x="565" y="30" class="field-text" fill="var(--text-color)">(+IFG 12B)</text>
+                        </svg>
+                        <p>Ein Ethernet-Frame hat fixe Felder für Adressierung, Synchronisation und Fehlerprüfung, sowie den Inter Frame Gap zwischen den Frames.</p>
+                    </div>
+
+                    <div class="svg-group">
+                        <h4>2. Protokoll-Overhead höherer Schichten (Beispiel TCP/IPv4):</h4>
+                        <svg class="overhead-svg" viewBox="0 0 450 100" preserveAspectRatio="xMidYMid meet">
+                             <title>IP und TCP Header Struktur</title>
+                             <desc>Zeigt die typische Größe von IP und TCP Headern.</desc>
+                            <rect x="10" y="10" width="200" height="40" fill="#2980b9" class="field-rect"/>
+                            <text x="110" y="30" class="field-text">IPv4 Header (min. 20 Bytes)</text>
+                            <rect x="10" y="50" width="200" height="40" fill="#3498db" class="field-rect"/>
+                            <text x="110" y="70" class="field-text">TCP Header (min. 20 Bytes)</text>
+                            <rect x="220" y="10" width="200" height="80" fill="#bdc3c7" class="field-rect"/>
+                            <text x="320" y="50" class="field-text">Applikationsdaten (Nutzlast)</text>
+                        </svg>
+                         <p>IP- und TCP-Header fügen weitere Kontrollinformationen hinzu (Adressen, Ports, Sequenznummern etc.).</p>
+                    </div>
+                </div>
+                <p>Zusätzlich zu diesen Headern können noch weitere Faktoren wie Kollisionen (in älteren Netzen), Übertragungsfehler und notwendige Wiederholungen den Overhead erhöhen.</p>
+                <p>Die genaue Berechnung des Overhead-Faktors ist komplex. Für typische Anwendungen wird oft ein pauschaler Faktor von ca. <strong><span id="overhead-percent-detail">20</span>% bis 30%</strong> angenommen. Für die allgemeine Berechnung auf dieser Seite wird vereinfachend mit <span id="overhead-percent-example">20</span>% kalkuliert, wie im nächsten Schritt gezeigt wird.</p>
+            </div>
+
+            <div class="step" id="step4">
+                <h3>Berechnung der Netto-Datenrate</h3>
+                <p>Die Netto-Datenrate ist die tatsächlich für Nutzdaten verfügbare Bandbreite. Sie ergibt sich aus der Brutto-Datenrate abzüglich des Overheads.</p>
+                <p>Die allgemeine Formel lautet:</p>
+                <div class="formula">
+                    Netto-Datenrate = Brutto-Datenrate × (1 - Overhead-Faktor)
+                </div>
+                <p>Wobei der Overhead-Faktor als Dezimalzahl (z.B. 0.2 für <span id="config-overhead-display">20</span>%) eingesetzt wird.</p>
+
+                <div class="example-calculation-box">
+                    <h4>🔧 Beispielrechnung: Overhead bei Gigabit Ethernet (1000 Mbit/s) mit TCP/IP</h4>
+                    <p>Um den Overhead-Faktor greifbarer zu machen, betrachten wir ein konkretes Beispiel für eine typische Datenübertragung mittels TCP/IP über Gigabit Ethernet. Angenommen, wir wollen 1500 Bytes Nutzdaten (Payload) senden, was der maximalen Übertragungseinheit (MTU) für Standard-Ethernet entspricht.</p>
+                    <h5>1. Komponenten des Overheads pro Paket (typische Größen):</h5>
+                    <ul>
+                        <li><strong>Präambel & SFD (Start Frame Delimiter):</strong> 8 Bytes</li>
+                        <li><strong>Ethernet-Header:</strong> 14 Bytes (6B Ziel-MAC, 6B Quell-MAC, 2B Typ/Länge)</li>
+                        <li><strong>IP-Header (IPv4):</strong> 20 Bytes (Standard, ohne Optionen)</li>
+                        <li><strong>TCP-Header:</strong> 20 Bytes (Standard, ohne Optionen)</li>
+                        <li><strong>FCS (Frame Check Sequence):</strong> 4 Bytes (Zur Fehlererkennung)</li>
+                    </ul>
+                    <p><strong>Summe dieser Header-Anteile (Frame-Overhead):</strong> 8 + 14 + 20 + 20 + 4 = <strong>66 Bytes</strong>.</p>
+                    <p>Zusätzlich ist der <strong>Inter Frame Gap (IFG)</strong> zu berücksichtigen. Dies ist eine Pause zwischen den Frames, die auf dem Medium einer Übertragungszeit von typischerweise 12 Bytes entspricht.</p>
+                
+                    <h5>2. Netto-Datenrate für dieses Beispiel:</h5>
+                    <p>Formel: Netto-Datenrate = Brutto-Datenrate &times; (Nutzdaten / (Nutzdaten + Frame-Overhead))</p>
+                    <ul>
+                        <li><strong>Brutto-Datenrate:</strong> 1000 Mbit/s</li>
+                        <li><strong>Nutzdaten (Payload):</strong> 1500 Bytes</li>
+                        <li><strong>Frame-Overhead (wie oben):</strong> 66 Bytes</li>
+                        <li><strong>Gesamtdaten pro Frame (Payload + Frame-Overhead):</strong> 1500 Bytes + 66 Bytes = 1566 Bytes</li>
+                    </ul>
+                    <div class="calculation">
+                        Netto-Datenrate = 1000 Mbit/s &times; (1500 Bytes / 1566 Bytes)<br>
+                        Netto-Datenrate &approx; 1000 Mbit/s &times; 0.95785<br>
+                        Netto-Datenrate &approx; <span class="highlight">957.85 Mbit/s</span>
+                    </div>
+                    <p><em>Hinweis:</em> Bezieht man den Inter Frame Gap (12 Bytes) mit in die Gesamtbetrachtung der Kanalbelegung ein (d.h. Nenner = 1500 + 66 + 12 = 1578 Bytes), ergibt sich eine Netto-Datenrate von ca. 950.57 Mbit/s. Die exakte Netto-Rate hängt von vielen Faktoren ab, aber dieses Beispiel illustriert die Größenordnung.</p>
+                    <p>✅ <strong>Ergebnis für dieses Beispiel:</strong> Bei einer Brutto-Rate von 1000 Mbit/s liegt die Netto-Datenrate für TCP/IP über Ethernet typischerweise im Bereich von <strong>950-960 Mbit/s</strong>.</p>
+                </div>
+
+                <h4>Einsetzen der Werte für die gewählte CAT-Kategorie (<span class="calc-cat-name">CAT 6a</span>):</h4>
+                <p>Für die allgemeine Berechnung auf dieser Seite verwenden wir den pauschalen Overhead-Faktor von <span id="calc-overhead-value-display">0.2</span> (20%).</p>
+                <p>Mit der Brutto-Datenrate von <span class="calc-cat-name-inline">CAT 6a</span> (<span id="calc-br-value">10 Gbit/s</span>) ergibt sich:</p>
+                <div class="calculation">
+                    Netto-Datenrate = <span id="calc-br">10 Gbit/s</span> × (1 - <span id="calc-overhead">0.2</span>)<br>
+                    Netto-Datenrate = <span id="calc-br2">10 Gbit/s</span> × <span id="calc-factor">0.8</span><br>
+                    Netto-Datenrate = <span class="highlight" id="calc-net">8 Gbit/s</span>
+                </div>
+                <p>Damit stehen für die eigentliche Datenübertragung bei <span id="result-cat">CAT 6a</span> mit dem pauschalen Overhead etwa <span id="result-net">8 Gbit/s</span> zur Verfügung.</p>
+            </div>
+            
+            <div class="step" id="step5"> 
+                <h3>Berechnung der Effizienz</h3>
+                <p>Die Effizienz der Datenübertragung ist das Verhältnis von Netto- zu Brutto-Datenrate, basierend auf dem pauschalen Overhead:</p>
+                <div class="formula">
+                    Effizienz = (Netto-Datenrate / Brutto-Datenrate) × 100%
+                </div>
+                <div class="calculation">
+                    Effizienz = (<span id="eff-net">8 Gbit/s</span> / <span id="eff-br">10 Gbit/s</span>) × 100%<br>
+                    Effizienz = <span class="highlight" id="eff-result">80</span>%
+                </div>
+                <div class="efficiency-meter">
+                    <div class="efficiency-fill" id="efficiency-fill">0%</div> 
+                </div>
+                <p>Eine Effizienz von <span id="eff-text">80</span>% bedeutet, dass <span id="eff-text2">80</span>% der theoretischen Bandbreite tatsächlich für Nutzdaten zur Verfügung stehen (bei Annahme von 20% Overhead).</p>
+            </div>
+            
+            <div class="step" id="step6"> 
+                <h3>Vergleich verschiedener Ethernet-Kategorien</h3>
+                <p>Die folgende Tabelle vergleicht Brutto-Datenraten, geschätzte Netto-Datenraten und die daraus resultierende Effizienz für verschiedene Ethernet-Kategorien (basierend auf ca. 20% pauschalem Overhead):</p>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Kategorie</th>
+                            <th>Brutto-Datenrate</th>
+                            <th>Netto-Datenrate (ca.)</th>
+                            <th>Effizienz</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>CAT 5e</td><td>1 Gbit/s</td><td>0.8 Gbit/s (800 Mbit/s)</td><td>80%</td></tr>
+                        <tr><td>CAT 6</td><td>1 Gbit/s (bis 10 Gbit/s*)</td><td>0.8 Gbit/s (bis 8 Gbit/s*)</td><td>80%</td></tr>
+                        <tr><td>CAT 6a</td><td>10 Gbit/s</td><td>8 Gbit/s</td><td>80%</td></tr>
+                        <tr><td>CAT 7</td><td>10 Gbit/s</td><td>8 Gbit/s</td><td>80%</td></tr>
+                        <tr><td>CAT 8</td><td>40 Gbit/s</td><td>32 Gbit/s</td><td>80%</td></tr>
+                    </tbody>
+                </table>
+                <p><small>* CAT 6 unterstützt 10 Gbit/s nur auf sehr kurzen Distanzen (bis ca. 55m), ansonsten typischerweise 1 Gbit/s.</small></p>
+                <p>In der Praxis kann die Effizienz je nach Paketgröße, Protokollen und Netzwerkauslastung variieren, wie das Detailbeispiel in Schritt 4 zeigt.</p>
+            </div>
+            
+            <div class="step" id="step7"> 
+                <h3>Zusammenfassung</h3>
+                <p>Die Datenübertragungsrate bei Ethernet mit RJ45-Steckern hängt von mehreren Faktoren ab:</p>
+                <ul>
+                    <li>Der verwendeten Kabelkategorie (CAT 5e bis CAT 8)</li>
+                    <li>Der Länge der Kabelverbindung und Qualität der Installation</li>
+                    <li>Dem Overhead durch die verwendeten Protokolle (Ethernet, IP, TCP/UDP etc.)</li>
+                    <li>Der Größe der übertragenen Datenpakete (Payload)</li>
+                    <li>Der Netzwerkauslastung und möglichen Störeinflüssen</li>
+                </ul>
+                <p>Die Netto-Datenrate beträgt unter typischen Annahmen und Verwendung eines pauschalen Overheads (z.B. 20%) etwa 80% der Brutto-Datenrate. Das detaillierte Beispiel zeigt, dass die tatsächliche Netto-Rate auch etwas höher liegen kann (ca. 95% Effizienz), wenn man von optimalen Bedingungen und großen Paketen ausgeht.</p>
+                <p>Bei der Planung von Netzwerken ist es entscheidend, die <strong>tatsächlich verfügbare Bandbreite (Netto-Datenrate)</strong> zu berücksichtigen.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 - Datenübertragungsberechnung für RJ45</p>
+        </div>
+    </div>
+
+    <script>
+        // Konfigurationsdaten für verschiedene Ethernet-Kategorien
+        const catData = {
+            '5e': { name: 'CAT 5e', speedText: '1 Gbit/s', length: '100 m', freq: '100 MHz', overheadFactor: 0.2, bruttoGbit: 1 },
+            '6': { name: 'CAT 6', speedText: '1 Gbit/s (bis 10 Gbit/s*)', length: '100 m (55 m für 10 Gbit/s)', freq: '250 MHz', overheadFactor: 0.2, bruttoGbit: 1 },
+            '6a': { name: 'CAT 6a', speedText: '10 Gbit/s', length: '100 m', freq: '500 MHz', overheadFactor: 0.2, bruttoGbit: 10 },
+            '7': { name: 'CAT 7', speedText: '10 Gbit/s', length: '100 m', freq: '600 MHz', overheadFactor: 0.2, bruttoGbit: 10 },
+            '8': { name: 'CAT 8', speedText: '40 Gbit/s', length: '30 m', freq: '2000 MHz', overheadFactor: 0.2, bruttoGbit: 40 }
+        };
+
+        // Element-Referenzen
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const steps = document.querySelectorAll('.step'); // Now 7 steps
+        const catButtons = document.querySelectorAll('.cat-btn');
+        const efficiencyFill = document.getElementById('efficiency-fill');
+        
+        let currentStep = 0;
+        let selectedCat = '6a'; 
+        
+        function getNettoGbit(brutto, overhead) {
+            return brutto * (1 - overhead);
+        }
+
+        function updateCategoryInfo() {
+            const data = catData[selectedCat];
+            document.getElementById('cat-name').textContent = data.name;
+            document.getElementById('cat-speed').textContent = data.speedText;
+            document.getElementById('cat-length').textContent = data.length;
+            document.getElementById('cat-freq').textContent = data.freq;
+            
+            document.querySelectorAll('#current-cat, .formula-cat-name, .calc-cat-name, .calc-cat-name-inline').forEach(el => {
+                if (el) el.textContent = data.name;
+            });
+            document.getElementById('current-speed').textContent = data.speedText;
+        }
+        
+        function updateCalculations() {
+            const data = catData[selectedCat];
+            const nettoGbit = getNettoGbit(data.bruttoGbit, data.overheadFactor);
+            const efficiencyPercent = (nettoGbit / data.bruttoGbit) * 100;
+
+            // Step 2: Brutto-Datenrate
+            document.getElementById('formula-br').textContent = `${data.bruttoGbit} Gbit/s`;
+            
+            // Step 3: Overhead-Detail (pauschaler Wert für Text)
+            document.getElementById('overhead-percent-detail').textContent = `${data.overheadFactor * 100}`;
+            document.getElementById('overhead-percent-example').textContent = `${data.overheadFactor * 100}`;
+
+            // Step 4: Berechnung Netto-Datenrate
+            // Allgemeiner Teil
+            document.getElementById('config-overhead-display').textContent = `${data.overheadFactor * 100}`;
+            // CAT-spezifischer Teil
+            const calcBrValueEl = document.getElementById('calc-br-value');
+            if (calcBrValueEl) calcBrValueEl.textContent = `${data.bruttoGbit} Gbit/s`;
+            
+            const calcOverheadValueDisplayEl = document.getElementById('calc-overhead-value-display');
+            if(calcOverheadValueDisplayEl) calcOverheadValueDisplayEl.textContent = data.overheadFactor.toString();
+
+            document.getElementById('calc-br').textContent = `${data.bruttoGbit} Gbit/s`;
+            document.getElementById('calc-br2').textContent = `${data.bruttoGbit} Gbit/s`;
+            document.getElementById('calc-overhead').textContent = data.overheadFactor.toString();
+            document.getElementById('calc-factor').textContent = (1 - data.overheadFactor).toFixed(1);
+            document.getElementById('calc-net').textContent = `${nettoGbit.toFixed(1)} Gbit/s`;
+            document.getElementById('result-cat').textContent = data.name;
+            document.getElementById('result-net').textContent = `${nettoGbit.toFixed(1)} Gbit/s`;
+            
+            // Step 5: Effizienz
+            document.getElementById('eff-net').textContent = `${nettoGbit.toFixed(1)} Gbit/s`;
+            document.getElementById('eff-br').textContent = `${data.bruttoGbit} Gbit/s`;
+            document.getElementById('eff-result').textContent = `${efficiencyPercent.toFixed(0)}`;
+            document.getElementById('eff-text').textContent = `${efficiencyPercent.toFixed(0)}`;
+            document.getElementById('eff-text2').textContent = `${efficiencyPercent.toFixed(0)}`;
+            
+            // Effizienz-Meter nur aktualisieren, wenn der Schritt aktiv ist oder wird
+            // Step 5 ist Index 4
+            if (steps[currentStep] && steps[currentStep].id === 'step5') {
+                 efficiencyFill.style.width = `${efficiencyPercent}%`;
+                 efficiencyFill.textContent = `${efficiencyPercent.toFixed(0)}%`;
+            } else if (currentStep < 4) { // Reset if before efficiency step
+                 efficiencyFill.style.width = '0%';
+                 efficiencyFill.textContent = '0%';
+            }
+        }
+        
+        function showStep(index) {
+            // Alte Animation zurücksetzen, bevor neuer Schritt angezeigt wird
+            // Step 5 (Effizienz) ist Index 4
+            if (steps[currentStep] && steps[currentStep].id === 'step5') {
+                 efficiencyFill.style.width = '0%'; 
+                 efficiencyFill.textContent = '0%';
+            }
+
+            steps.forEach((step, i) => {
+                step.classList.toggle('active', i === index);
+            });
+            
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === steps.length - 1; // steps.length ist jetzt 7
+            
+            currentStep = index;
+
+            // Animation für Effizienz starten, wenn der entsprechende Schritt aktiv wird
+            // Step 5 (Effizienz) ist Index 4
+            if (steps[currentStep].id === 'step5') {
+                const data = catData[selectedCat];
+                const nettoGbit = getNettoGbit(data.bruttoGbit, data.overheadFactor);
+                const efficiencyPercent = (nettoGbit / data.bruttoGbit) * 100;
+                setTimeout(() => { 
+                    efficiencyFill.style.width = `${efficiencyPercent}%`;
+                    efficiencyFill.textContent = `${efficiencyPercent.toFixed(0)}%`;
+                }, 100); 
+            }
+        }
+        
+        prevBtn.addEventListener('click', () => { if (currentStep > 0) showStep(currentStep - 1); });
+        nextBtn.addEventListener('click', () => { if (currentStep < steps.length - 1) showStep(currentStep + 1); });
+        resetBtn.addEventListener('click', () => {
+            selectedCat = '6a'; 
+            catButtons.forEach(b => b.classList.remove('active'));
+            const activeCatBtn = document.querySelector('.cat-btn[data-cat="6a"]');
+            if (activeCatBtn) activeCatBtn.classList.add('active');
+            updateCategoryInfo();
+            updateCalculations(); 
+            showStep(0);
+        });
+        
+        catButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                catButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedCat = btn.dataset.cat;
+                updateCategoryInfo();
+                updateCalculations(); 
+                // Wenn der Effizienzschritt gerade aktiv ist, die Animation neu starten
+                if (steps[currentStep].id === 'step5') { // Step 5 ist Effizienz
+                    showStep(currentStep); 
+                }
+            });
+        });
+        
+        // Initialisierung
+        updateCategoryInfo();
+        updateCalculations();
+        showStep(0);
+    </script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Übung Schicht 2 - True/False</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: transparent;
+            color: #E0E0E0;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100%;
+            box-sizing: border-box;
+        }
+        .exercise-wrapper {
+            width: 100%;
+            max-width: 700px;
+            text-align: left;
+        }
+        h2.exercise-title {
+            color: #FF6B39;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .question-block {
+            margin-bottom: 20px;
+            background-color: rgba(42, 42, 42, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #383838;
+        }
+        .question-text {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            line-height: 1.5;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 8px;
+            padding: 10px;
+            background-color: #252525;
+            border-radius: 8px;
+            border: 1px solid #333;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .options label:hover {
+            background-color: #303030;
+        }
+        .options input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.1);
+            accent-color: #FF6B39;
+        }
+        .confirm-btn {
+            background-color: #FF6B39;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1em;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: block;
+            margin: 25px auto 0 auto;
+        }
+        .confirm-btn:hover {
+            background-color: #E05A30;
+            transform: translateY(-2px);
+        }
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        .feedback.correct {
+            background-color: rgba(95, 217, 164, 0.15);
+            border: 1px solid rgba(95, 217, 164, 0.5);
+            color: #8FE3BF;
+        }
+        .feedback.incorrect {
+            background-color: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.4);
+            color: #F08080;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise-wrapper">
+        <h2 class="exercise-title">Checkpoint: Sicherungsschicht</h2>
+
+        <div id="q1" class="question-block">
+            <p class="question-text">1. Die Sicherungsschicht (Layer 2) verwendet IP-Adressen zur Adressierung von Geräten im lokalen Netzwerk.</p>
+            <div class="options">
+                <label><input type="radio" name="q1" value="false"> Wahr</label>
+                <label><input type="radio" name="q1" value="true"> Falsch</label> <!-- Correct (Layer 2 uses MAC addresses) -->
+            </div>
+            <div id="feedback-q1" class="feedback hidden"></div>
+        </div>
+
+        <div id="q2" class="question-block">
+            <p class="question-text">2. "Framing", also das Aufteilen von Bitströmen in Datenrahmen (Frames), ist eine Hauptaufgabe der Sicherungsschicht.</p>
+            <div class="options">
+                <label><input type="radio" name="q2" value="true"> Wahr</label> <!-- Correct -->
+                <label><input type="radio" name="q2" value="false"> Falsch</label>
+            </div>
+            <div id="feedback-q2" class="feedback hidden"></div>
+        </div>
+
+        <div id="q3" class="question-block">
+            <p class="question-text">3. Die Sicherungsschicht ist für die fehlerfreie Übertragung von Daten über das gesamte Internet von Ende-zu-Ende verantwortlich.</p>
+            <div class="options">
+                <label><input type="radio" name="q3" value="false"> Wahr</label>
+                <label><input type="radio" name="q3" value="true"> Falsch</label> <!-- Correct (Layer 2 is for direct links; Layer 4 for end-to-end) -->
+            </div>
+            <div id="feedback-q3" class="feedback hidden"></div>
+        </div>
+
+        <button id="confirmBtn" class="confirm-btn">Antworten prüfen</button>
+        <div id="overall-feedback" class="feedback hidden" style="text-align: center; margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        const questions = [
+            { id: 'q1', correctAnswer: 'true' }, // Falsch is correct
+            { id: 'q2', correctAnswer: 'true' },
+            { id: 'q3', correctAnswer: 'true' }  // Falsch is correct
+        ];
+        const confirmBtn = document.getElementById('confirmBtn');
+        const overallFeedbackEl = document.getElementById('overall-feedback');
+
+        confirmBtn.addEventListener('click', () => {
+            let allCorrect = true;
+            let answeredAll = true;
+
+            questions.forEach(qInfo => {
+                const feedbackEl = document.getElementById(`feedback-${qInfo.id}`);
+                const selectedOption = document.querySelector(`input[name="${qInfo.id}"]:checked`);
+
+                if (!selectedOption) {
+                    answeredAll = false;
+                    feedbackEl.textContent = "Bitte wähle eine Antwort.";
+                    feedbackEl.className = 'feedback incorrect';
+                    feedbackEl.classList.remove('hidden');
+                    allCorrect = false; 
+                    return; 
+                }
+
+                if (selectedOption.value === qInfo.correctAnswer) {
+                    feedbackEl.textContent = "Richtig!";
+                    feedbackEl.className = 'feedback correct';
+                } else {
+                    feedbackEl.textContent = "Leider falsch. Überlege noch einmal.";
+                    feedbackEl.className = 'feedback incorrect';
+                    allCorrect = false;
+                }
+                feedbackEl.classList.remove('hidden');
+            });
+
+            if (!answeredAll) {
+                overallFeedbackEl.textContent = "Bitte beantworte alle Fragen.";
+                overallFeedbackEl.className = 'feedback incorrect';
+                overallFeedbackEl.classList.remove('hidden');
+                return;
+            }
+
+            if (allCorrect) {
+                overallFeedbackEl.textContent = "Sehr gut! Alle Antworten sind richtig.";
+                overallFeedbackEl.className = 'feedback correct';
+                confirmBtn.disabled = true; 
+                confirmBtn.style.backgroundColor = '#555';
+                confirmBtn.textContent = "Erfolgreich!";
+                if (window.parent && typeof window.parent.exerciseCompletedSuccessfully === 'function') {
+                    window.parent.exerciseCompletedSuccessfully();
+                }
+            } else {
+                overallFeedbackEl.textContent = "Einige Antworten sind noch nicht korrekt. Bitte versuche es erneut!";
+                overallFeedbackEl.className = 'feedback incorrect';
+            }
+            overallFeedbackEl.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>

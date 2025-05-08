@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Übung Schicht 5 - Drag & Drop</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: transparent;
+            color: #E0E0E0;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100%;
+            box-sizing: border-box;
+        }
+        .exercise-wrapper {
+            width: 100%;
+            max-width: 700px;
+            text-align: center; /* Center content like title and sentence block */
+        }
+        h2.exercise-title {
+            color: #FF6B39;
+            margin-bottom: 25px;
+        }
+        .sentence-container {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: rgba(42, 42, 42, 0.7);
+            border-radius: 10px;
+            border: 1px solid #383838;
+            font-size: 1.2em;
+            line-height: 1.8;
+            text-align: left; /* Align sentence text to the left */
+        }
+        .dropzone {
+            display: inline-block;
+            width: 120px; /* Adjust as needed */
+            height: 30px;
+            padding: 5px;
+            margin: 0 5px;
+            border: 2px dashed #555;
+            background-color: #252525;
+            border-radius: 6px;
+            text-align: center;
+            vertical-align: middle;
+            color: #FF6B39; /* Color for dropped text */
+        }
+        .dropzone.over {
+            border-color: #FF6B39;
+            background-color: #303030;
+        }
+        .draggable-words {
+            margin: 30px 0;
+            padding: 15px;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .draggable {
+            padding: 8px 15px;
+            background-color: #FF6B39;
+            color: white;
+            border-radius: 6px;
+            cursor: grab;
+            border: 1px solid #E05A30;
+            user-select: none; /* Prevent text selection while dragging */
+        }
+        .draggable:active {
+            cursor: grabbing;
+        }
+        .confirm-btn {
+            background-color: #FF6B39;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1em;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: block;
+            margin: 25px auto 0 auto;
+        }
+        .confirm-btn:hover {
+            background-color: #E05A30;
+            transform: translateY(-2px);
+        }
+        .feedback {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            text-align: center;
+        }
+        .feedback.correct {
+            background-color: rgba(95, 217, 164, 0.15);
+            border: 1px solid rgba(95, 217, 164, 0.5);
+            color: #8FE3BF;
+        }
+        .feedback.incorrect {
+            background-color: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.4);
+            color: #F08080;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise-wrapper">
+        <h2 class="exercise-title">Checkpoint: Sitzungsschicht</h2>
+        <p>Vervollständige den Satz, indem du die Wörter an die richtige Stelle ziehst:</p>
+
+        <div class="sentence-container">
+            Die Sitzungsschicht ist für den <div class="dropzone" id="dz1" data-expected="Aufbau"></div>,
+            die <div class="dropzone" id="dz2" data-expected="Wartung"></div> und
+            die <div class="dropzone" id="dz3" data-expected="Beendigung"></div> von Sitzungen zuständig.
+            Sie verwendet auch <div class="dropzone" id="dz4" data-expected="Checkpoints"></div> zur Synchronisation.
+        </div>
+
+        <div class="draggable-words">
+            <div class="draggable" draggable="true" id="word1">Checkpoints</div>
+            <div class="draggable" draggable="true" id="word2">Wartung</div>
+            <div class="draggable" draggable="true" id="word3">Beendigung</div>
+            <div class="draggable" draggable="true" id="word4">Aufbau</div>
+        </div>
+
+        <button id="confirmBtn" class="confirm-btn">Antwort prüfen</button>
+        <div id="overall-feedback" class="feedback hidden"></div>
+    </div>
+
+    <script>
+        const draggables = document.querySelectorAll('.draggable');
+        const dropzones = document.querySelectorAll('.dropzone');
+        const confirmBtn = document.getElementById('confirmBtn');
+        const overallFeedbackEl = document.getElementById('overall-feedback');
+
+        let draggedItem = null;
+
+        draggables.forEach(draggable => {
+            draggable.addEventListener('dragstart', (e) => {
+                draggedItem = e.target;
+                setTimeout(() => e.target.style.opacity = '0.5', 0);
+            });
+
+            draggable.addEventListener('dragend', (e) => {
+                draggedItem = null;
+                setTimeout(() => e.target.style.opacity = '1', 0);
+            });
+        });
+
+        dropzones.forEach(dropzone => {
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault(); // Necessary to allow dropping
+                dropzone.classList.add('over');
+            });
+
+            dropzone.addEventListener('dragleave', () => {
+                dropzone.classList.remove('over');
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('over');
+                if (draggedItem) {
+                    // If dropzone already has a word, move it back to draggable-words
+                    if (dropzone.firstChild && dropzone.firstChild.classList && dropzone.firstChild.classList.contains('draggable')) {
+                        document.querySelector('.draggable-words').appendChild(dropzone.firstChild);
+                    }
+                    dropzone.textContent = ''; // Clear any previous text
+                    dropzone.appendChild(draggedItem);
+                    draggedItem.style.opacity = '1'; // Ensure it's fully visible
+                }
+            });
+        });
+        
+        // Allow dragging words back to the pool
+        const draggableWordsContainer = document.querySelector('.draggable-words');
+        draggableWordsContainer.addEventListener('dragover', (e) => e.preventDefault());
+        draggableWordsContainer.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (draggedItem && draggedItem.parentElement.classList.contains('dropzone')) {
+                 draggableWordsContainer.appendChild(draggedItem);
+                 draggedItem.style.opacity = '1';
+            }
+        });
+
+
+        confirmBtn.addEventListener('click', () => {
+            let allCorrect = true;
+            let allDropzonesFilled = true;
+
+            dropzones.forEach(dz => {
+                const droppedChild = dz.firstChild;
+                if (!droppedChild || !droppedChild.classList || !droppedChild.classList.contains('draggable')) {
+                    allDropzonesFilled = false;
+                    // Optionally mark empty dropzones, or just rely on overall feedback
+                    dz.style.borderColor = '#dc3545'; // Highlight empty dropzones
+                } else {
+                     dz.style.borderColor = '#555'; // Reset border
+                    if (droppedChild.textContent !== dz.dataset.expected) {
+                        allCorrect = false;
+                    }
+                }
+            });
+
+            if (!allDropzonesFilled) {
+                overallFeedbackEl.textContent = "Bitte fülle alle Lücken aus.";
+                overallFeedbackEl.className = 'feedback incorrect';
+                overallFeedbackEl.classList.remove('hidden');
+                return;
+            }
+            
+            // Reset borders if all filled before checking correctness
+            if(allDropzonesFilled) {
+                 dropzones.forEach(dz => dz.style.borderColor = '#555');
+            }
+
+
+            if (allCorrect) {
+                overallFeedbackEl.textContent = "Perfekt! Alles richtig zugeordnet.";
+                overallFeedbackEl.className = 'feedback correct';
+                confirmBtn.disabled = true;
+                confirmBtn.style.backgroundColor = '#555';
+                confirmBtn.textContent = "Erfolgreich!";
+                if (window.parent && typeof window.parent.exerciseCompletedSuccessfully === 'function') {
+                    window.parent.exerciseCompletedSuccessfully();
+                }
+            } else {
+                overallFeedbackEl.textContent = "Nicht ganz richtig. Überprüfe die Wörter in den Lücken.";
+                overallFeedbackEl.className = 'feedback incorrect';
+            }
+            overallFeedbackEl.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>

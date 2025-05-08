@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Übung Schicht 4 - Problem lösen</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: transparent;
+            color: #E0E0E0;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100%;
+            box-sizing: border-box;
+        }
+        .exercise-wrapper {
+            width: 100%;
+            max-width: 700px;
+            text-align: left;
+        }
+        h2.exercise-title {
+            color: #FF6B39;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .problem-description {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            line-height: 1.6;
+            background-color: rgba(42, 42, 42, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .options-container label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 12px;
+            background-color: #252525;
+            border-radius: 8px;
+            border: 1px solid #333;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+        .options-container label:hover {
+            background-color: #303030;
+            border-color: #444;
+        }
+        .options-container input[type="checkbox"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+            accent-color: #FF6B39;
+        }
+        .confirm-btn {
+            background-color: #FF6B39;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1em;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: block;
+            margin: 25px auto 0 auto;
+        }
+        .confirm-btn:hover {
+            background-color: #E05A30;
+            transform: translateY(-2px);
+        }
+        .feedback {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            text-align: center;
+        }
+        .feedback.correct {
+            background-color: rgba(95, 217, 164, 0.15);
+            border: 1px solid rgba(95, 217, 164, 0.5);
+            color: #8FE3BF;
+        }
+        .feedback.incorrect {
+            background-color: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.4);
+            color: #F08080;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise-wrapper">
+        <h2 class="exercise-title">Checkpoint: Transportschicht</h2>
+        <div class="problem-description">
+            Ein Computer möchte eine große Datei zuverlässig an einen anderen Computer senden. Welche der folgenden Aufgaben übernimmt die Transportschicht (Schicht 4) maßgeblich, um dies zu ermöglichen? Wähle alle zutreffenden Optionen aus.
+        </div>
+
+        <div class="options-container">
+            <label><input type="checkbox" name="transport_tasks" value="segmentation"> Segmentierung der Daten in kleinere Einheiten und deren Wiederzusammensetzung beim Empfänger.</label>
+            <label><input type="checkbox" name="transport_tasks" value="routing"> Auswahl des besten Weges (Routing) durch das Netzwerk.</label>
+            <label><input type="checkbox" name="transport_tasks" value="addressing_mac"> Physikalische Adressierung mittels MAC-Adressen.</label>
+            <label><input type="checkbox" name="transport_tasks" value="connection_control"> Aufbau, Aufrechterhaltung und Beendigung einer Verbindung (z.B. TCP).</label>
+            <label><input type="checkbox" name="transport_tasks" value="error_control_endtoend"> Fehlerkontrolle und Sicherstellung der Datenintegrität von Ende-zu-Ende.</label>
+            <label><input type="checkbox" name="transport_tasks" value="flow_control"> Flusskontrolle, um ein Überlasten des Empfängers zu verhindern.</label>
+            <label><input type="checkbox" name="transport_tasks" value="encryption"> Verschlüsselung der Dateninhalte.</label>
+        </div>
+
+        <button id="confirmBtn" class="confirm-btn">Antworten prüfen</button>
+        <div id="overall-feedback" class="feedback hidden"></div>
+    </div>
+
+    <script>
+        const confirmBtn = document.getElementById('confirmBtn');
+        const overallFeedbackEl = document.getElementById('overall-feedback');
+        // Correct answers for Layer 4 tasks
+        const correctAnswers = new Set(['segmentation', 'connection_control', 'error_control_endtoend', 'flow_control']);
+
+        confirmBtn.addEventListener('click', () => {
+            const selectedOptions = document.querySelectorAll('input[name="transport_tasks"]:checked');
+            const userAnswers = new Set();
+            selectedOptions.forEach(option => userAnswers.add(option.value));
+
+            let allCorrect = true;
+            let message = "";
+
+            if (userAnswers.size === 0) {
+                message = "Bitte wähle mindestens eine Option aus.";
+                allCorrect = false;
+            } else {
+                // Check if user selected all correct answers and no incorrect ones
+                if (userAnswers.size !== correctAnswers.size) {
+                    allCorrect = false;
+                } else {
+                    for (const userAnswer of userAnswers) {
+                        if (!correctAnswers.has(userAnswer)) {
+                            allCorrect = false;
+                            break;
+                        }
+                    }
+                }
+                // More detailed feedback could be added here to show which specific ones were missed or wrongly selected.
+                // For simplicity, we'll keep it general for now.
+                if (allCorrect) {
+                    message = "Sehr gut! Das sind die wesentlichen Aufgaben der Transportschicht für eine zuverlässige Übertragung.";
+                } else {
+                    message = "Nicht ganz richtig. Überprüfe deine Auswahl. Die Transportschicht kümmert sich um Segmentierung, Verbindungssteuerung, Ende-zu-Ende Fehlerkontrolle und Flusskontrolle.";
+                }
+            }
+            
+            overallFeedbackEl.textContent = message;
+            if (allCorrect) {
+                overallFeedbackEl.className = 'feedback correct';
+                confirmBtn.disabled = true;
+                confirmBtn.style.backgroundColor = '#555';
+                confirmBtn.textContent = "Erfolgreich!";
+                if (window.parent && typeof window.parent.exerciseCompletedSuccessfully === 'function') {
+                    window.parent.exerciseCompletedSuccessfully();
+                }
+            } else {
+                overallFeedbackEl.className = 'feedback incorrect';
+            }
+            overallFeedbackEl.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>

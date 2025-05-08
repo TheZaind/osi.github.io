@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Übung Schicht 3 - Anwendungsaufgabe</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: transparent;
+            color: #E0E0E0;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100%;
+            box-sizing: border-box;
+        }
+        .exercise-wrapper {
+            width: 100%;
+            max-width: 750px; /* Slightly wider for this layout */
+            text-align: left;
+        }
+        h2.exercise-title {
+            color: #FF6B39;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .scenario-description {
+            margin-bottom: 15px;
+            font-size: 1.05em;
+            line-height: 1.6;
+            background-color: rgba(42, 42, 42, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .network-diagram-container {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #181818;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+        .network-diagram-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            text-align: center;
+        }
+        .options-container {
+            display: flex;
+            justify-content: space-around; /* Distribute buttons */
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .option-btn {
+            background-color: #252525;
+            color: #E0E0E0;
+            border: 1px solid #444;
+            padding: 10px 15px;
+            font-size: 0.95em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            min-width: 120px;
+            text-align: center;
+        }
+        .option-btn:hover {
+            background-color: #303030;
+            border-color: #FF6B39;
+        }
+        .option-btn.selected {
+            background-color: #FF6B39;
+            color: white;
+            border-color: #E05A30;
+        }
+        .confirm-btn {
+            background-color: #FF6B39;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1em;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: block;
+            margin: 25px auto 0 auto;
+        }
+        .confirm-btn:hover {
+            background-color: #E05A30;
+            transform: translateY(-2px);
+        }
+        .feedback {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            text-align: center;
+        }
+        .feedback.correct {
+            background-color: rgba(95, 217, 164, 0.15);
+            border: 1px solid rgba(95, 217, 164, 0.5);
+            color: #8FE3BF;
+        }
+        .feedback.incorrect {
+            background-color: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.4);
+            color: #F08080;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="exercise-wrapper">
+        <h2 class="exercise-title">Checkpoint: Vermittlungsschicht</h2>
+        <div class="scenario-description">
+            Stell dir vor, PC A (IP: 192.168.1.10) möchte ein Datenpaket an PC B (IP: 192.168.2.20) senden.
+            PC A ist mit Router R1 verbunden. Router R1 hat folgende Einträge in seiner Routing-Tabelle (vereinfacht):
+            <ul>
+                <li>Zielnetz 192.168.1.0/24 -> Direkt verbunden (Interface eth0)</li>
+                <li>Zielnetz 192.168.2.0/24 -> Nächster Hop: Router R2 (IP: 10.0.0.2) (Interface eth1)</li>
+                <li>Zielnetz 0.0.0.0/0 (Default Route) -> Nächster Hop: Router R3 (IP: 10.0.1.2) (Interface eth2)</li>
+            </ul>
+        </div>
+        <!-- Simple visual representation could be added here if desired, or rely on text -->
+        <!-- For now, no image to keep it simple -->
+
+        <p class="question-text">An welchen Router wird R1 das Paket für PC B (192.168.2.20) als nächstes weiterleiten?</p>
+
+        <div class="options-container">
+            <button class="option-btn" data-value="R1_self">Behält es (Ziel im eigenen Netz)</button>
+            <button class="option-btn" data-value="R2">Router R2</button> <!-- Correct Answer -->
+            <button class="option-btn" data-value="R3">Router R3</button>
+            <button class="option-btn" data-value="Direct_To_B">Direkt an PC B</button>
+        </div>
+
+        <button id="confirmBtn" class="confirm-btn">Antwort prüfen</button>
+        <div id="overall-feedback" class="feedback hidden"></div>
+    </div>
+
+    <script>
+        const confirmBtn = document.getElementById('confirmBtn');
+        const overallFeedbackEl = document.getElementById('overall-feedback');
+        const optionButtons = document.querySelectorAll('.option-btn');
+        const correctAnswerValue = "R2";
+        let selectedAnswer = null;
+
+        optionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                optionButtons.forEach(btn => btn.classList.remove('selected')); // Deselect others
+                button.classList.add('selected');
+                selectedAnswer = button.dataset.value;
+            });
+        });
+
+        confirmBtn.addEventListener('click', () => {
+            let message = "";
+            let allCorrect = false;
+
+            if (!selectedAnswer) {
+                message = "Bitte wähle eine Option aus.";
+            } else {
+                if (selectedAnswer === correctAnswerValue) {
+                    message = "Korrekt! R1 verwendet den spezifischen Eintrag für das Zielnetz 192.168.2.0/24 und leitet das Paket an R2 weiter.";
+                    allCorrect = true;
+                } else if (selectedAnswer === "R3") {
+                    message = "Nicht ganz. Die Default Route (R3) wird nur genutzt, wenn kein spezifischerer Eintrag passt.";
+                } else if (selectedAnswer === "R1_self" || selectedAnswer === "Direct_To_B") {
+                    message = "Das Ziel (192.168.2.20) befindet sich nicht im direkt angeschlossenen Netz von PC A (192.168.1.0/24). R1 muss es weiterleiten.";
+                } else {
+                    message = "Das ist nicht die beste Wahl. Überprüfe die Routing-Tabelle.";
+                }
+            }
+            
+            overallFeedbackEl.textContent = message;
+            if (allCorrect) {
+                overallFeedbackEl.className = 'feedback correct';
+                confirmBtn.disabled = true;
+                confirmBtn.style.backgroundColor = '#555';
+                confirmBtn.textContent = "Erfolgreich!";
+                if (window.parent && typeof window.parent.exerciseCompletedSuccessfully === 'function') {
+                    window.parent.exerciseCompletedSuccessfully();
+                }
+            } else {
+                overallFeedbackEl.className = 'feedback incorrect';
+            }
+            overallFeedbackEl.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
