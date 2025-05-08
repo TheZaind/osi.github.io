@@ -2,77 +2,141 @@
   {
     "id": "email_sending_task_1",
     "scenario": "E-Mail Versand (Senden)",
-    "instructions": "Du schreibst und sendest eine E-Mail mit einem Client-Programm. Ordne die primär genutzten Protokolle/Elemente den korrekten OSI-Schichten zu.",
+    "instructions": "Du schreibst und sendest eine E-Mail mit einem Client-Programm. Ordne die primär genutzten Protokolle/Elemente den korrekten OSI-Schichten zu. HINWEIS: Zu jeder Schicht gibt es genau ein passendes Element.",
     "draggableItems": [
       { "id": "smtp", "name": "SMTP (E-Mail Senden)", "correctLayerNumber": 7, "color": "#FFB3BA" },
-      { "id": "dns_lookup_mail", "name": "DNS (Mailserver-Lookup)", "correctLayerNumber": 7, "color": "#FFC8BA" },
+      { "id": "presentation_email", "name": "MIME (Dateicodierung)", "correctLayerNumber": 6, "color": "#BAE1FF" },
+      { "id": "session_email", "name": "SMTP Session Management", "correctLayerNumber": 5, "color": "#BAFFC9" },
       { "id": "tcp_email", "name": "TCP (Zuverlässiger Transport)", "correctLayerNumber": 4, "color": "#FFDFBA" },
       { "id": "ip_email", "name": "IP (Adressierung & Routing)", "correctLayerNumber": 3, "color": "#FFFFBA" },
-      { "id": "ethernet_email", "name": "Ethernet (Lokale Übertragung)", "correctLayerNumber": 2, "color": "#BAFFC9" }
+      { "id": "ethernet_email", "name": "Ethernet (Lokale Übertragung)", "correctLayerNumber": 2, "color": "#FFC8BA" },
+      { "id": "physical_email", "name": "Übertragung durch Kabel/Funk", "correctLayerNumber": 1, "color": "#D4FFBA" }
     ]
   },
   {
     "id": "web_browsing_http_task_1",
     "scenario": "Webseitenaufruf (HTTP)",
-    "instructions": "Du rufst eine Webseite über HTTP in deinem Browser auf. Ordne die Protokolle/Elemente den korrekten OSI-Schichten zu.",
+    "instructions": "Du rufst eine Webseite über HTTP in deinem Browser auf. Ordne die Protokolle/Elemente den korrekten OSI-Schichten zu. HINWEIS: Zu jeder Schicht gibt es genau ein passendes Element.",
     "draggableItems": [
       { "id": "http", "name": "HTTP (Webseitenabruf)", "correctLayerNumber": 7, "color": "#FFB3BA" },
-      { "id": "dns_lookup_web", "name": "DNS (Namensauflösung)", "correctLayerNumber": 7, "color": "#FFC8BA" },
+      { "id": "html", "name": "HTML (Seitendarstellung)", "correctLayerNumber": 6, "color": "#BAE1FF" },
+      { "id": "cookies", "name": "HTTP-Sitzungs-Cookies", "correctLayerNumber": 5, "color": "#BAFFC9" },
       { "id": "tcp_web", "name": "TCP (Verbindungsaufbau)", "correctLayerNumber": 4, "color": "#FFDFBA" },
-      { "id": "ip_web", "name": "IP (Globale Adressierung)", "correctLayerNumber": 3, "color": "#FFFFBA" }
+      { "id": "ip_web", "name": "IP (Globale Adressierung)", "correctLayerNumber": 3, "color": "#FFFFBA" },
+      { "id": "mac_address_web", "name": "MAC-Adressierung", "correctLayerNumber": 2, "color": "#FFC8BA" },
+      { "id": "network_card_signals", "name": "Elektrische Signale", "correctLayerNumber": 1, "color": "#D4FFBA" }
     ]
   },
   {
     "id": "web_browsing_https_task_1",
     "scenario": "Sicherer Webseitenaufruf (HTTPS)",
-    "instructions": "Du rufst eine Webseite sicher über HTTPS auf. Welche Elemente sind auf welchen Schichten primär aktiv?",
+    "instructions": "Du rufst eine Webseite sicher über HTTPS auf. Welche Elemente sind auf welchen Schichten primär aktiv? HINWEIS: Zu jeder Schicht gibt es genau ein passendes Element.",
     "draggableItems": [
       { "id": "https", "name": "HTTPS (Sicherer Webabruf)", "correctLayerNumber": 7, "color": "#FFB3BA" },
       { "id": "ssl_tls", "name": "SSL/TLS (Verschlüsselung)", "correctLayerNumber": 6, "color": "#BAE1FF" },
+      { "id": "ssl_handshake", "name": "TLS-Sitzungs-Handshake", "correctLayerNumber": 5, "color": "#BAFFC9" },
       { "id": "tcp_https", "name": "TCP (Gesicherter Transport)", "correctLayerNumber": 4, "color": "#FFDFBA" },
-      { "id": "ip_https", "name": "IP (Routing)", "correctLayerNumber": 3, "color": "#FFFFBA" }
+      { "id": "ip_https", "name": "IP (Routing)", "correctLayerNumber": 3, "color": "#FFFFBA" },
+      { "id": "https_frame", "name": "Ethernet-Frames (HTTPS-Daten)", "correctLayerNumber": 2, "color": "#FFC8BA" },
+      { "id": "https_signals", "name": "Bitübertragung (Kabel/Funk)", "correctLayerNumber": 1, "color": "#D4FFBA" }
     ]
   },
   {
     "id": "file_transfer_ftp_task_1",
     "scenario": "Dateiübertragung mit FTP",
-    "instructions": "Du lädst eine Datei von einem FTP-Server herunter. Ordne die beteiligten Protokolle/Elemente zu.",
+    "instructions": "Du lädst eine Datei von einem FTP-Server herunter. Ordne die beteiligten Protokolle/Elemente zu. HINWEIS: Zu jeder Schicht gibt es genau ein passendes Element.",
     "draggableItems": [
       { "id": "ftp_control", "name": "FTP (Steuerverbindung)", "correctLayerNumber": 7, "color": "#FFB3BA" },
-      { "id": "ftp_data", "name": "FTP (Datenverbindung)", "correctLayerNumber": 7, "color": "#FFC8BA" },
+      { "id": "ascii_binary", "name": "ASCII/Binärmoduskonvertierung", "correctLayerNumber": 6, "color": "#BAE1FF" },
+      { "id": "ftp_session", "name": "FTP-Sitzungsverwaltung", "correctLayerNumber": 5, "color": "#BAFFC9" },
       { "id": "tcp_ftp", "name": "TCP (Für FTP-Verbindungen)", "correctLayerNumber": 4, "color": "#FFDFBA" },
-      { "id": "ip_ftp", "name": "IP (Adressierung des Servers)", "correctLayerNumber": 3, "color": "#FFFFBA" }
+      { "id": "ip_ftp", "name": "IP (Adressierung des Servers)", "correctLayerNumber": 3, "color": "#FFFFBA" },
+      { "id": "ftp_frames", "name": "Ethernet-Rahmung", "correctLayerNumber": 2, "color": "#FFC8BA" },
+      { "id": "ftp_signals", "name": "Physische Signalübertragung", "correctLayerNumber": 1, "color": "#D4FFBA" }
     ]
   },
   {
     "id": "email_receiving_pop3_task_1",
     "scenario": "E-Mail Empfang (POP3)",
-    "instructions": "Dein E-Mail-Client ruft neue Nachrichten über POP3 ab. Welche Protokolle/Elemente sind beteiligt?",
+    "instructions": "Dein E-Mail-Client ruft neue Nachrichten über POP3 ab. Welche Protokolle/Elemente sind beteiligt? HINWEIS: Zu jeder Schicht gibt es genau ein passendes Element.",
     "draggableItems": [
       { "id": "pop3", "name": "POP3 (E-Mail Abruf)", "correctLayerNumber": 7, "color": "#FFB3BA" },
+      { "id": "email_encoding", "name": "E-Mail-Codierung (MIME)", "correctLayerNumber": 6, "color": "#BAE1FF" },
+      { "id": "pop3_session", "name": "POP3-Sitzungsverwaltung", "correctLayerNumber": 5, "color": "#BAFFC9" },
       { "id": "tcp_pop3", "name": "TCP (Verbindung zum Mailserver)", "correctLayerNumber": 4, "color": "#FFDFBA" },
-      { "id": "ip_pop3", "name": "IP (Erreichbarkeit Mailserver)", "correctLayerNumber": 3, "color": "#FFFFBA" }
+      { "id": "ip_pop3", "name": "IP (Erreichbarkeit Mailserver)", "correctLayerNumber": 3, "color": "#FFFFBA" },
+      { "id": "pop3_frames", "name": "Ethernet-Frames für POP3", "correctLayerNumber": 2, "color": "#FFC8BA" },
+      { "id": "pop3_signals", "name": "Elektrische/Optische Signale", "correctLayerNumber": 1, "color": "#D4FFBA" }
     ]
   },
   {
     "id": "network_ping_task_1",
     "scenario": "Netzwerk-Ping",
-    "instructions": "Du sendest einen Ping-Request an einen anderen Host, um dessen Erreichbarkeit zu testen. Ordne die Elemente zu.",
+    "instructions": "Du sendest einen Ping-Request an einen anderen Host, um dessen Erreichbarkeit zu testen. Ordne die Elemente zu. HINWEIS: Zu jeder Schicht gibt es genau ein passendes Element.",
     "draggableItems": [
-      { "id": "icmp_ping", "name": "ICMP (Echo Request/Reply)", "correctLayerNumber": 3, "color": "#D4FFBA" },
-      { "id": "ip_ping", "name": "IP (Adressierung Zielhost)", "correctLayerNumber": 3, "color": "#FFFFBA" },
-      { "id": "ethernet_ping", "name": "Ethernet (Lokaler Versand)", "correctLayerNumber": 2, "color": "#BAFFC9" }
+      { "id": "ping_command", "name": "Ping-Kommando (Benutzerebene)", "correctLayerNumber": 7, "color": "#FFB3BA" },
+      { "id": "echo_request_format", "name": "Echo-Request-Format", "correctLayerNumber": 6, "color": "#BAE1FF" },
+      { "id": "ping_timeout", "name": "Ping-Timeout-Erkennung", "correctLayerNumber": 5, "color": "#BAFFC9" },
+      { "id": "icmp_protocol", "name": "ICMP (kein TCP/UDP notwendig)", "correctLayerNumber": 4, "color": "#FFDFBA" },
+      { "id": "icmp_ping", "name": "ICMP (Echo Request/Reply)", "correctLayerNumber": 3, "color": "#FFFFBA" },
+      { "id": "ethernet_ping", "name": "Ethernet (Lokaler Versand)", "correctLayerNumber": 2, "color": "#FFC8BA" },
+      { "id": "ping_signals", "name": "Signalübertragung im Kabel", "correctLayerNumber": 1, "color": "#D4FFBA" }
     ]
   },
   {
     "id": "dhcp_address_request_task_1",
     "scenario": "DHCP-Adressanforderung",
-    "instructions": "Dein Computer startet und fordert eine IP-Adresse über DHCP an. Welche Protokolle sind beteiligt?",
+    "instructions": "Dein Computer startet und fordert eine IP-Adresse über DHCP an. Welche Protokolle sind beteiligt? HINWEIS: Zu jeder Schicht gibt es genau ein passendes Element.",
     "draggableItems": [
-        { "id": "dhcp_discover", "name": "DHCP Discover/Request", "correctLayerNumber": 7, "color": "#FFB3BA"},
-        { "id": "udp_dhcp", "name": "UDP (Transport für DHCP)", "correctLayerNumber": 4, "color": "#FFDFBA"},
-        { "id": "ip_broadcast_dhcp", "name": "IP (Broadcast/Unicast)", "correctLayerNumber": 3, "color": "#FFFFBA"},
-        { "id": "ethernet_dhcp", "name": "Ethernet (Broadcast)", "correctLayerNumber": 2, "color": "#BAFFC9"}
+      { "id": "dhcp_discover", "name": "DHCP Discover/Request", "correctLayerNumber": 7, "color": "#FFB3BA" },
+      { "id": "dhcp_options", "name": "DHCP-Optionscodierung", "correctLayerNumber": 6, "color": "#BAE1FF" },
+      { "id": "dhcp_lease", "name": "DHCP-Lease-Management", "correctLayerNumber": 5, "color": "#BAFFC9" },
+      { "id": "udp_dhcp", "name": "UDP (Transport für DHCP)", "correctLayerNumber": 4, "color": "#FFDFBA" },
+      { "id": "ip_broadcast_dhcp", "name": "IP (Broadcast/Unicast)", "correctLayerNumber": 3, "color": "#FFFFBA" },
+      { "id": "ethernet_dhcp", "name": "Ethernet (Broadcast)", "correctLayerNumber": 2, "color": "#FFC8BA" },
+      { "id": "dhcp_physical", "name": "Kabelgebundene/Drahtlose Übertragung", "correctLayerNumber": 1, "color": "#D4FFBA" }
+    ]
+  },
+  {
+    "id": "voip_call_task_1",
+    "scenario": "VoIP-Telefonanruf",
+    "instructions": "Du führst ein Telefongespräch über das Internet (VoIP). Ordne die beteiligten Protokolle/Elemente den passenden OSI-Schichten zu. HINWEIS: Zu jeder Schicht gibt es genau ein passendes Element.",
+    "draggableItems": [
+      { "id": "sip_protocol", "name": "SIP (Verbindungsaufbau)", "correctLayerNumber": 7, "color": "#FFB3BA" },
+      { "id": "codec_g711", "name": "Audio-Codecs (G.711/G.729)", "correctLayerNumber": 6, "color": "#BAE1FF" },
+      { "id": "rtp_session", "name": "RTP-Sitzungsverwaltung", "correctLayerNumber": 5, "color": "#BAFFC9" },
+      { "id": "udp_voip", "name": "UDP (Echtzeitübertragung)", "correctLayerNumber": 4, "color": "#FFDFBA" },
+      { "id": "ip_voip", "name": "IP (Routing der Sprachpakete)", "correctLayerNumber": 3, "color": "#FFFFBA" },
+      { "id": "ethernet_voip", "name": "Ethernet-Rahmen", "correctLayerNumber": 2, "color": "#FFC8BA" },
+      { "id": "voip_signal", "name": "DSL/Glasfaser/LTE-Übertragung", "correctLayerNumber": 1, "color": "#D4FFBA" }
+    ]
+  },
+  {
+    "id": "dns_resolution_task_1",
+    "scenario": "DNS-Namensauflösung",
+    "instructions": "Dein Browser löst einen Domainnamen (z.B. www.beispiel.de) in eine IP-Adresse auf. Ordne die Protokolle und Komponenten den OSI-Schichten zu. HINWEIS: Zu jeder Schicht gibt es genau ein passendes Element.",
+    "draggableItems": [
+      { "id": "dns_query", "name": "DNS (Domain Name System)", "correctLayerNumber": 7, "color": "#FFB3BA" },
+      { "id": "dns_encoding", "name": "DNS-Datencodierung", "correctLayerNumber": 6, "color": "#BAE1FF" },
+      { "id": "dns_session", "name": "DNS-Wiederholungslogik", "correctLayerNumber": 5, "color": "#BAFFC9" },
+      { "id": "udp_dns", "name": "UDP (Transport DNS-Anfragen)", "correctLayerNumber": 4, "color": "#FFDFBA" },
+      { "id": "ip_dns", "name": "IP (Routing zum DNS-Server)", "correctLayerNumber": 3, "color": "#FFFFBA" },
+      { "id": "ethernet_dns", "name": "Ethernet-Rahmung", "correctLayerNumber": 2, "color": "#FFC8BA" },
+      { "id": "dns_physical", "name": "Physische Bitübertragung", "correctLayerNumber": 1, "color": "#D4FFBA" }
+    ]
+  },
+  {
+    "id": "wifi_connection_task_1",
+    "scenario": "WLAN-Verbindungsaufbau",
+    "instructions": "Dein Gerät verbindet sich mit einem WLAN-Netzwerk. Ordne die beteiligten Elemente den OSI-Schichten zu. HINWEIS: Zu jeder Schicht gibt es genau ein passendes Element.",
+    "draggableItems": [
+      { "id": "wifi_manager", "name": "WLAN-Manager (Benutzerschnittstelle)", "correctLayerNumber": 7, "color": "#FFB3BA" },
+      { "id": "wpa_encryption", "name": "WPA/WPA2-Verschlüsselung", "correctLayerNumber": 6, "color": "#BAE1FF" },
+      { "id": "wifi_session", "name": "WLAN-Verbindungsverwaltung", "correctLayerNumber": 5, "color": "#BAFFC9" },
+      { "id": "connection_monitoring", "name": "Verbindungsüberwachung", "correctLayerNumber": 4, "color": "#FFDFBA" },
+      { "id": "wifi_packets", "name": "WLAN-Paketrouting", "correctLayerNumber": 3, "color": "#FFFFBA" },
+      { "id": "wifi_frames", "name": "WLAN-Frames (802.11)", "correctLayerNumber": 2, "color": "#FFC8BA" },
+      { "id": "wifi_radio", "name": "WLAN-Funkübertragung", "correctLayerNumber": 1, "color": "#D4FFBA" }
     ]
   }
 ]
