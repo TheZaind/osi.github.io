@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSI-Modell Lernplattform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="rays">
+        <div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div>
+        <div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div>
+        <div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div>
+        <div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div>
+        <div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div>
+        <div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div>
+    </div>
+    <header>
+        <h1>Das OSI-Modell erklärt</h1>
+        <div class="navigation-buttons">
+            <button id="prevBtn">Zurück</button>
+            <button id="nextBtn">Weiter</button>
+        </div>
+    </header>
+
+    <main>
+        <section id="layer7" class="osi-layer active-layer">
+            <h2>Schicht 7: Anwendungsschicht (Application Layer)</h2>
+            <div class="layer-content">
+                <div class="text-content">
+                    <h3>Erklärung</h3>
+                    <p>Stellt Funktionen für die Anwendungen zur Verfügung und die Schnittstelle zu den unteren Schichten. Hier findet auch die Datenein- und -ausgabe statt.</p>
+                    <h3>Metapher</h3>
+                    <blockquote>Wie die spezifische Abteilung bei der Post, zu der Sie für einen bestimmten Dienst gehen (ein Paket senden, Briefmarken kaufen) oder die Anwendung (E-Mail, Webbrowser), die Sie verwenden.</blockquote>
+                    <h3>Wichtige Funktionen</h3>
+                    <ul>
+                        <li>Bereitstellung von Netzwerkdiensten für Anwendungen (z.B. Web-Browsing, E-Mail, Dateiübertragung).</li>
+                    </ul>
+                </div>
+                <div class="visual-content">
+                    <iframe src="visual_layer7.html" style="width: 100%; height: 200px; border: none;"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section id="exercise7" class="osi-exercise">
+            <!-- Content for exercise 7 will be an iframe -->
+            <div class="exercise-iframe-container">
+                <iframe src="exercise_layer7_tf.html" style="width: 100%; height: 450px; border: none; border-radius: 8px;"></iframe>
+            </div>
+        </section>
+
+        <section id="layer6" class="osi-layer">
+            <h2>Schicht 6: Darstellungsschicht (Presentation Layer)</h2>
+            <div class="layer-content">
+                <div class="text-content">
+                    <h3>Erklärung</h3>
+                    <p>Setzt die systemabhängige Darstellung der Daten (z.B. ASCII, EBCDIC) in eine unabhängige Form um und ermöglicht somit den syntaktisch korrekten Datenaustausch zwischen unterschiedlichen Systemen. Auch Aufgaben wie Datenkompression und Verschlüsselung gehören zu Schicht 6.</p>
+                    <h3>Metapher</h3>
+                    <blockquote>Wie ein Übersetzer, der einen Brief von einer Sprache in eine andere konvertiert, damit der Empfänger ihn lesen kann, oder ein Kodierer/Dekodierer für geheime Nachrichten.</blockquote>
+                    <h3>Wichtige Funktionen</h3>
+                    <ul>
+                        <li>Datenformatierung</li>
+                        <li>Zeichenkodierung (z.B. ASCII zu Unicode)</li>
+                        <li>Verschlüsselung</li>
+                        <li>Kompression</li>
+                    </ul>
+                </div>
+                <div class="visual-content">
+                    <iframe src="visual_layer6.html" style="width: 100%; height: 220px; border: none;"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section id="exercise6" class="osi-exercise">
+            <div class="exercise-iframe-container">
+                <iframe src="exercise_layer6_mc.html" style="width: 100%; height: 450px; border: none; border-radius: 8px;"></iframe>
+            </div>
+        </section>
+
+        <section id="layer5" class="osi-layer">
+            <h2>Schicht 5: Sitzungsschicht (Session Layer)</h2>
+            <div class="layer-content">
+                <div class="text-content">
+                    <h3>Erklärung</h3>
+                    <p>Sorgt für die Prozesskommunikation zwischen zwei Systemen und die Synchronisation des Datenaustauschs, z.B. durch Wiederaufsetzpunkte (Checkpoints).</p>
+                    <h3>Metapher</h3>
+                    <blockquote>Wie ein Telefonist, der das Gespräch herstellt, aufrechterhält und ordnungsgemäß beendet. Oder ein Lesezeichen in einer langen Unterhaltung.</blockquote>
+                    <h3>Wichtige Funktionen</h3>
+                    <ul>
+                        <li>Aufbau, Wartung und Beendigung von Sitzungen</li>
+                        <li>Synchronisation</li>
+                    </ul>
+                </div>
+                <div class="visual-content">
+                    <iframe src="visual_layer5.html" style="width: 100%; height: 200px; border: none;"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section id="exercise5" class="osi-exercise">
+            <div class="exercise-iframe-container">
+                <iframe src="exercise_layer5_dnd.html" style="width: 100%; height: 450px; border: none; border-radius: 8px;"></iframe>
+            </div>
+        </section>
+
+        <section id="layer4" class="osi-layer">
+            <h2>Schicht 4: Transportschicht (Transport Layer)</h2>
+            <div class="layer-content">
+                <div class="text-content">
+                    <h3>Erklärung</h3>
+                    <p>Zuständig für die Segmentierung des Datenstroms, Stauvermeidung und Sicherstellung einer fehlerfreien Übertragung zwischen den Endsystemen (Ende-zu-Ende-Kontrolle).</p>
+                    <h3>Metapher</h3>
+                    <blockquote>Wie ein Einschreibedienst, der sicherstellt, dass Ihr gesamtes Paket (alle Teile davon) in der richtigen Reihenfolge ankommt und die Zustellung bestätigt.</blockquote>
+                    <h3>Wichtige Funktionen</h3>
+                    <ul>
+                        <li>Segmentierung und Wiederzusammensetzung</li>
+                        <li>Verbindungssteuerung (TCP)</li>
+                        <li>Fehlerbehebung</li>
+                        <li>Flusskontrolle</li>
+                    </ul>
+                </div>
+                <div class="visual-content">
+                    <iframe src="visual_layer4.html" style="width: 100%; height: 220px; border: none;"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section id="exercise4" class="osi-exercise">
+            <div class="exercise-iframe-container">
+                <iframe src="exercise_layer4_problem.html" style="width: 100%; height: 450px; border: none; border-radius: 8px;"></iframe>
+            </div>
+        </section>
+
+        <section id="layer3" class="osi-layer">
+            <h2>Schicht 3: Vermittlungsschicht (Network Layer)</h2>
+            <div class="layer-content">
+                <div class="text-content">
+                    <h3>Erklärung</h3>
+                    <p>Sorgt für die Weitervermittlung von Datenpaketen über das gesamte Kommunikationsnetz hinweg, einschließlich der Wegsuche (Routing) zwischen den Netzwerkknoten.</p>
+                    <h3>Metapher</h3>
+                    <blockquote>Wie die Hauptsortieranlage der Post, die die beste Route für Ihren Brief durch Städte oder Länder entscheidet.</blockquote>
+                    <h3>Wichtige Funktionen</h3>
+                    <ul>
+                        <li>Logische Adressierung (IP-Adressen)</li>
+                        <li>Routing</li>
+                        <li>Pfadbestimmung</li>
+                    </ul>
+                </div>
+                <div class="visual-content">
+                    <iframe src="visual_layer3_animation.html" style="width: 100%; height: 250px; border: none;"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section id="exercise3" class="osi-exercise">
+            <div class="exercise-iframe-container">
+                <iframe src="exercise_layer3_apply.html" style="width: 100%; height: 450px; border: none; border-radius: 8px;"></iframe>
+            </div>
+        </section>
+
+        <section id="layer2" class="osi-layer">
+            <h2>Schicht 2: Sicherungsschicht (Data Link Layer)</h2>
+            <div class="layer-content">
+                <div class="text-content">
+                    <h3>Erklärung</h3>
+                    <p>Gewährleistet eine zuverlässige, weitgehend fehlerfreie Übertragung zwischen zwei direkt verbundenen Knoten und regelt den Zugriff auf das Übertragungsmedium. Teilt den Bitdatenstrom in Blöcke (Frames) auf.</p>
+                    <h3>Metapher</h3>
+                    <blockquote>Wie das Einlegen von Briefen in Umschläge mit Adressen für das nächste lokale Postamt und das Überprüfen, ob der Umschlag unversehrt angekommen ist.</blockquote>
+                    <h3>Wichtige Funktionen</h3>
+                    <ul>
+                        <li>Framing (Rahmenbildung)</li>
+                        <li>Physikalische Adressierung (MAC-Adressen)</li>
+                        <li>Fehlererkennung</li>
+                    </ul>
+                </div>
+                <div class="visual-content">
+                    <iframe src="visual_layer2.html" style="width: 100%; height: 250px; border: none;"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section id="exercise2" class="osi-exercise">
+            <div class="exercise-iframe-container">
+                <iframe src="exercise_layer2_tf.html" style="width: 100%; height: 450px; border: none; border-radius: 8px;"></iframe>
+            </div>
+        </section>
+
+        <section id="layer1" class="osi-layer">
+            <h2>Schicht 1: Bitübertragungsschicht (Physical Layer)</h2>
+            <div class="layer-content">
+                <div class="text-content">
+                    <h3>Erklärung</h3>
+                    <p>Stellt mechanische, elektrische und weitere funktionale Hilfsmittel zur Verfügung, um physische Verbindungen zu aktivieren/deaktivieren und Bits darüber zu übertragen (z.B. elektrische Signale, Lichtleiter, Funkwellen).</p>
+                    <h3>Metapher</h3>
+                    <blockquote>Wie die Lastwagen und Straßen des Postdienstes, die Briefe physisch bewegen, ohne zu wissen, was in ihnen steht.</blockquote>
+                    <h3>Wichtige Funktionen</h3>
+                    <ul>
+                        <li>Senden/Empfangen von Signalen</li>
+                        <li>Definition physikalischer Eigenschaften (Spannung, Kabeltypen)</li>
+                    </ul>
+                </div>
+                <div class="visual-content">
+                    <iframe src="visual_layer1.html" style="width: 100%; height: 200px; border: none;"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section id="exercise1" class="osi-exercise">
+            <div class="exercise-iframe-container">
+                <iframe src="exercise_layer1_mc.html" style="width: 100%; height: 450px; border: none; border-radius: 8px;"></iframe>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 OSI-Modell Lernplattform</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

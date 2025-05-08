@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisierung Schicht 4</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            margin: 0;
+            font-family: sans-serif;
+            background-color: transparent;
+            overflow: hidden;
+        }
+        .container {
+            border: 2px solid #e83e8c; /* Layer 4 color */
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            width: 90%;
+        }
+        .data-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* Align items at the start for segmentation */
+            margin-bottom: 10px;
+            min-height: 60px;
+        }
+        .data-block {
+            width: 80px;
+            height: 50px;
+            background-color: #007bff;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            border-radius: 4px;
+            animation: segmentData 4s ease-in-out forwards;
+        }
+        .segments-container {
+            display: flex;
+            flex-direction: column; /* Segments stack vertically */
+            align-items: center;
+            gap: 3px;
+        }
+        .segment {
+            width: 70px;
+            height: 15px;
+            background-color: #17a2b8;
+            color: white;
+            font-size: 10px;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: showSegment 0.5s ease-out forwards;
+        }
+        .segment:nth-child(1) { animation-delay: 1s; }
+        .segment:nth-child(2) { animation-delay: 1.5s; }
+        .segment:nth-child(3) { animation-delay: 2s; }
+
+        .reassembled-block {
+            width: 80px;
+            height: 50px;
+            background-color: #28a745;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            border-radius: 4px;
+            opacity: 0;
+            animation: reassembleData 1s 3s ease-in-out forwards;
+        }
+
+        @keyframes segmentData {
+            0% { transform: translateX(0); opacity: 1; }
+            20% { transform: translateX(50px) scale(0.8); opacity: 0.5; } /* Move and shrink */
+            40% { transform: translateX(50px) scale(0); opacity: 0; } /* Disappear */
+            100% { transform: translateX(50px) scale(0); opacity: 0; }
+        }
+        @keyframes showSegment {
+            to { opacity: 1; }
+        }
+        @keyframes reassembleData {
+            to { opacity: 1; }
+        }
+
+        .tcp-handshake {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #E0E0E0; /* Light grey for dark mode */
+        }
+        .tcp-handshake div { margin-bottom: 2px; opacity: 0; animation: tcpStep 1s ease-out forwards;}
+        .tcp-handshake .syn { animation-delay: 4s; }
+        .tcp-handshake .syn-ack { animation-delay: 4.5s; }
+        .tcp-handshake .ack { animation-delay: 5s; }
+
+        @keyframes tcpStep {
+            to { opacity: 1; }
+        }
+        .caption {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #E0E0E0; /* Light grey for dark mode */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="data-flow">
+            <div class="data-block">Daten</div>
+            <div class="segments-container">
+                <div class="segment">Seg 1</div>
+                <div class="segment">Seg 2</div>
+                <div class="segment">Seg 3</div>
+            </div>
+            <div class="reassembled-block">Daten</div>
+        </div>
+        <div class="tcp-handshake">
+            <div class="syn">Client --- SYN ---> Server</div>
+            <div class="syn-ack">Client <-- SYN-ACK --- Server</div>
+            <div class="ack">Client --- ACK ---> Server</div>
+        </div>
+    </div>
+    <div class="caption">Daten werden segmentiert und zuverlässig übertragen (z.B. TCP).</div>
+</body>
+</html>

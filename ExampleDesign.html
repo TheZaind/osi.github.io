@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Learning App UI</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #121212;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Strahleneffekt Hintergrund */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(ellipse at center, transparent 0%, #121212 70%);
+            background-size: 100% 100%;
+            top: -25%;
+            left: -25%;
+            z-index: -1;
+        }
+
+        /* Strahlen-Linien */
+        .rays {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            z-index: -2;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .ray {
+            position: absolute;
+            width: 2px;
+            height: 200%;
+            background-color: #333;
+            top: 0;
+            left: 50%;
+            transform-origin: center bottom;
+        }
+
+        /* Erstellen von 12 Strahlen */
+        .ray:nth-child(1) { transform: rotate(0deg); }
+        .ray:nth-child(2) { transform: rotate(30deg); }
+        .ray:nth-child(3) { transform: rotate(60deg); }
+        .ray:nth-child(4) { transform: rotate(90deg); }
+        .ray:nth-child(5) { transform: rotate(120deg); }
+        .ray:nth-child(6) { transform: rotate(150deg); }
+        .ray:nth-child(7) { transform: rotate(180deg); }
+        .ray:nth-child(8) { transform: rotate(210deg); }
+        .ray:nth-child(9) { transform: rotate(240deg); }
+        .ray:nth-child(10) { transform: rotate(270deg); }
+        .ray:nth-child(11) { transform: rotate(300deg); }
+        .ray:nth-child(12) { transform: rotate(330deg); }
+
+        .app-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            padding: 20px;
+            max-width: 1200px;
+        }
+
+        /* Gemeinsame Eigenschaften für alle Screens */
+        .phone-screen {
+            background-color: #1E1E1E;
+            border-radius: 40px;
+            width: 320px;
+            height: 650px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #2A2A2A;
+        }
+
+        /* Status-Bar */
+        .status-bar {
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            background-color: transparent;
+            color: white;
+            position: relative;
+            z-index: 10;
+        }
+
+        .time {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .icons {
+            display: flex;
+            gap: 5px;
+        }
+
+        /* Screen 1 - Subscription */
+        .subscription-content {
+            padding: 15px;
+            height: calc(100% - 44px);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .banner {
+            background-color: #FF6B39;
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .banner h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .benefit-icon {
+            width: 20px;
+            height: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        .plan-option {
+            background-color: #252525;
+            border-radius: 15px;
+            padding: 15px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .selected-plan {
+            border: 1px solid #FF6B39;
+        }
+
+        .plan-option h3 {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .plan-price {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .save-percentage {
+            color: #FF6B39;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+
+        .selection-dot {
+            width: 20px;
+            height: 20px;
+            background-color: #FF6B39;
+            border-radius: 50%;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .action-button {
+            background-color: #FF6B39;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: auto;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Screen 2 - Home */
+        .home-content {
+            padding: 15px;
+            height: calc(100% - 44px);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .greeting {
+            margin-bottom: 5px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .tab {
+            background-color: transparent;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            background-color: #FF6B39;
+            color: white;
+        }
+
+        .goal-card {
+            background-color: #252525;
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .goal-icon {
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+        }
+
+        .goal-text {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .assessment-card {
+            background-color: #D6BCFF;
+            border-radius: 15px;
+            padding: 20px;
+            color: #000;
+            position: relative;
+            overflow: hidden;
+            height: 180px;
+        }
+
+        .assessment-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            max-width: 70%;
+        }
+
+        .assessment-card p {
+            font-size: 14px;
+            margin-bottom: 20px;
+            max-width: 70%;
+        }
+
+        .assessment-button {
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .assessment-illustration {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lesson-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .lesson-card {
+            background-color: #F5E850;
+            border-radius: 15px;
+            padding: 15px;
+            color: #000;
+            height: 100px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .lesson-card.green {
+            background-color: #5FD9A4;
+        }
+
+        .lesson-number {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .lesson-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 5px 0;
+        }
+
+        .lesson-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .navigation-bar {
+            background-color: rgba(40, 40, 40, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            margin: 15px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+        }
+
+        .nav-item {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            background-color: #FF6B39;
+        }
+
+        .course-unlock {
+            background-color: rgba(40, 40, 40, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 8px 15px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            position: absolute;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+
+        /* Screen 3 - Review */
+        .review-content {
+            padding: 15px;
+            height: calc(100% - 44px);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .vocab-banner {
+            background-color: #F5E850;
+            border-radius: 15px;
+            padding: 20px;
+            color: #000;
+        }
+
+        .vocab-banner h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .vocab-banner p {
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .vocab-button {
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: block;
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .offline-notice {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #CCC;
+            width: fit-content;
+            margin: 10px auto 0;
+        }
+
+        .section-header {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+
+        .tiles-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .tile {
+            background-color: #9966FF;
+            border-radius: 15px;
+            padding: 15px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .tile.green {
+            background-color: #5FD9A4;
+        }
+
+        .tile-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .tile-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .saved-items {
+            background-color: #252525;
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .saved-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+        }
+
+        .saved-info {
+            flex: 1;
+        }
+
+        .saved-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .saved-count {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .saved-action {
+            font-size: 14px;
+            color: #888;
+        }
+
+        /* SVG Icons styles */
+        .icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .small-icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        .check-icon {
+            width: 14px;
+            height: 14px;
+            color: #fff;
+        }
+
+        /* Unique Character Image for Assessment Card */
+        .character {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .character-body {
+            width: 60px;
+            height: 80px;
+            background-color: white;
+            border-radius: 30px;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .character-head {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .character-leaf {
+            width: 30px;
+            height: 60px;
+            background-color: #333;
+            border-radius: 50%;
+            position: absolute;
+            transform: rotate(-30deg);
+            left: 0;
+            top: 20px;
+        }
+
+        .character-leaf.right {
+            transform: rotate(30deg);
+            left: auto;
+            right: 0;
+        }
+
+        .character-sunglasses {
+            width: 30px;
+            height: 15px;
+            background-color: #333;
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Strahlen-Effekt Hintergrund -->
+    <div class="rays">
+        <div class="ray"></div>
+        <div class="ray"></div>
+        <div class="ray"></div>
+        <div class="ray"></div>
+        <div class="ray"></div>
+        <div class="ray"></div>
+        <div class="ray"></div>
+        <div class="ray"></div>
+        <div class="ray"></div>
+        <div class="ray"></div>
+        <div class="ray"></div>
+        <div class="ray"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Screen 1: Subscription -->
+        <div class="phone-screen">
+            <div class="status-bar">
+                <div class="time">9:41</div>
+                <div class="icons">
+                    <svg class="small-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M18 8.4c.66 0 1.2-.54 1.2-1.2V3.6c0-.66-.54-1.2-1.2-1.2h-3.6c-.66 0-1.2.54-1.2 1.2s.54 1.2 1.2 1.2h1.2v2.4c0 .66.54 1.2 1.2 1.2zm0 12c-.66 0-1.2.54-1.2 1.2v1.2h-1.2c-.66 0-1.2.54-1.2 1.2s.54 1.2 1.2 1.2h3.6c.66 0 1.2-.54 1.2-1.2v-3.6c0-.66-.54-1.2-1.2-1.2zM6 8.4c.66 0 1.2-.54 1.2-1.2V4.8h1.2c.66 0 1.2-.54 1.2-1.2s-.54-1.2-1.2-1.2H4.8c-.66 0-1.2.54-1.2 1.2v3.6c0 .66.54 1.2 1.2 1.2zM6 15.6c-.66 0-1.2.54-1.2 1.2v3.6c0 .66.54 1.2 1.2 1.2h3.6c.66 0 1.2-.54 1.2-1.2s-.54-1.2-1.2-1.2H8.4v-2.4c0-.66-.54-1.2-1.2-1.2z" fill="currentColor"/>
+                    </svg>
+                    <svg class="small-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="currentColor"/>
+                        <path d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" fill="currentColor"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="subscription-content">
+                <div class="banner">
+                    <div class="banner-icon">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="white">
+                            <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h2>Select Subscription</h2>
+                    <div class="benefit">
+                        <div class="benefit-icon">
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="white">
+                                <path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div>100+ lessons from beginner to advanced</div>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="white">
+                                <path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div>All 14 languages included</div>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="white">
+                                <path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div>Learn anywhere with games & podcasts!</div>
+                    </div>
+                </div>
+
+                <div class="plan-option selected-plan">
+                    <h3>12 Months</h3>
+                    <div class="plan-price">$98.65 USD <span class="save-percentage">/Save 48%</span></div>
+                    <div class="selection-dot"></div>
+                </div>
+
+                <div class="plan-option">
+                    <h3>3 Months</h3>
+                    <div class="plan-price">$47.56 USD</div>
+                </div>
+
+                <div class="plan-option">
+                    <h3>6 Months</h3>
+                    <div class="plan-price">$74.81 USD</div>
+                </div>
+
+                <button class="action-button">Find level</button>
+            </div>
+        </div>
+
+        <!-- Screen 2: Home -->
+        <div class="phone-screen">
+            <div class="status-bar">
+                <div class="time">9:41</div>
+                <div class="icons">
+                    <svg class="small-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M18 8.4c.66 0 1.2-.54 1.2-1.2V3.6c0-.66-.54-1.2-1.2-1.2h-3.6c-.66 0-1.2.54-1.2 1.2s.54 1.2 1.2 1.2h1.2v2.4c0 .66.54 1.2 1.2 1.2zm0 12c-.66 0-1.2.54-1.2 1.2v1.2h-1.2c-.66 0-1.2.54-1.2 1.2s.54 1.2 1.2 1.2h3.6c.66 0 1.2-.54 1.2-1.2v-3.6c0-.66-.54-1.2-1.2-1.2zM6 8.4c.66 0 1.2-.54 1.2-1.2V4.8h1.2c.66 0 1.2-.54 1.2-1.2s-.54-1.2-1.2-1.2H4.8c-.66 0-1.2.54-1.2 1.2v3.6c0 .66.54 1.2 1.2 1.2zM6 15.6c-.66 0-1.2.54-1.2 1.2v3.6c0 .66.54 1.2 1.2 1.2h3.6c.66 0 1.2-.54 1.2-1.2s-.54-1.2-1.2-1.2H8.4v-2.4c0-.66-.54-1.2-1.2-1.2z" fill="currentColor"/>
+                    </svg>
+                    <svg class="small-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.2"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="home-content">
+                <div class="greeting">Hi, Sk</div>
+                <div class="tabs">
+                    <div class="tab active">Today</div>
+                    <div class="tab">Learning plan</div>
+                </div>
+                <div class="goal-card">
+                    <div class="goal-icon">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="white" opacity="0.6">
+                            <path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 8h.01M9 16l3-3 4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="goal-text">Set your weekly goal</div>
+                </div>
+                <div class="assessment-card">
+                    <h3>Answer a few questions to find your level</h3>
+                    <p>Start joy</p>
+                    <button class="assessment-button">Find level</button>
+                    <div class="assessment-illustration">
+                        <div class="character">
+                            <div class="character-leaf"></div>
+                            <div class="character-leaf right"></div>
+                            <div class="character-head"></div>
+                            <div class="character-sunglasses"></div>
+                            <div class="character-body"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lesson-grid">
+                    <div class="lesson-card">
+                        <div class="lesson-number">Lesson 1</div>
+                        <div class="lesson-title">¡Mucho gusto!</div>
+                        <div class="lesson-subtitle">Part 1</div>
+                        <div class="lesson-badge">
+                            <svg class="small-icon" viewBox="0 0 24 24" fill="none" stroke="black" opacity="0.6">
+                                <path d="M12 15v3m-3-3h6M9 6h6M12 3v3m4.5 7.5l2.36 2.36M5.14 13.86L7.5 16.22m0-13

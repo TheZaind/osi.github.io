@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisierung Schicht 2</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            margin: 0;
+            font-family: sans-serif;
+            background-color: transparent;
+            overflow: hidden;
+        }
+        .frame-container {
+            border: 2px solid #fd7e14; /* Layer 2 color */
+            padding: 15px;
+            border-radius: 8px;
+            width: 90%;
+            text-align: center;
+        }
+        .bits-stream {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+            overflow: hidden; /* For animation */
+            height: 20px;
+        }
+        .bit {
+            width: 10px;
+            height: 10px;
+            background-color: #6c757d;
+            margin: 2px;
+            border-radius: 50%;
+            animation: flowBit 3s linear infinite;
+        }
+        .bit:nth-child(odd) { animation-delay: 0.2s; background-color: #adb5bd;}
+        .bit:nth-child(even) { animation-delay: 0.4s; }
+        /* Add more bits for a longer stream effect if desired */
+
+        @keyframes flowBit {
+            0% { transform: translateX(-100px) scale(0.5); opacity: 0;}
+            50% { transform: translateX(0) scale(1); opacity: 1;}
+            100% { transform: translateX(100px) scale(0.5); opacity: 0;}
+        }
+
+        .frame {
+            display: flex;
+            border: 1px solid #555; /* Darker border for frame */
+            border-radius: 4px;
+            margin-top: 10px;
+            opacity: 0;
+            animation: formFrame 1s 2s ease-out forwards;
+            overflow: hidden; /* Ensure children fit */
+        }
+        .frame-part {
+            padding: 8px 5px; /* Reduced padding */
+            font-size: 10px; /* Smaller font */
+            border-right: 1px solid #555; /* Darker border for parts */
+            text-align: center;
+            white-space: nowrap; /* Prevent wrapping */
+            color: #333; /* Text on light backgrounds should be dark */
+        }
+        .frame-part:last-child { border-right: none; }
+        .mac-addr { background-color: #3a3a3a; color: #E0E0E0; min-width: 60px;} /* Darker bg, light text */
+        .payload { background-color: #444; color: #E0E0E0; flex-grow: 1; min-width: 70px;} /* Darker bg, light text */
+        .checksum { background-color: #3a3a3a; color: #E0E0E0; min-width: 50px;} /* Darker bg, light text */
+        .error { color: red; font-weight: bold; }
+
+        @keyframes formFrame {
+            to { opacity: 1; }
+        }
+        .controls button {
+            margin-top: 10px;
+            padding: 6px 12px;
+            font-size: 0.9em;
+            background-color: #fd7e14;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .caption {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #E0E0E0; /* Light grey for dark mode */
+        }
+    </style>
+</head>
+<body>
+    <div class="frame-container">
+        <div class="bits-stream">
+            <div class="bit"></div><div class="bit"></div><div class="bit"></div><div class="bit"></div><div class="bit"></div>
+            <div class="bit"></div><div class="bit"></div><div class="bit"></div><div class="bit"></div><div class="bit"></div>
+        </div>
+        <div class="frame">
+            <div class="frame-part mac-addr">MAC Ziel</div>
+            <div class="frame-part mac-addr">MAC Quelle</div>
+            <div class="frame-part payload">Daten (Payload)</div>
+            <div class="frame-part checksum" id="checksum_val">CRC: OK</div>
+        </div>
+        <div class="controls">
+            <button id="toggle_error_btn">Fehler simulieren</button>
+        </div>
+    </div>
+    <div class="caption">Bits werden zu Frames; Fehlererkennung (z.B. CRC).</div>
+
+    <script>
+        const checksumElement = document.getElementById('checksum_val');
+        const toggleErrorBtn = document.getElementById('toggle_error_btn');
+        let hasError = false;
+
+        toggleErrorBtn.addEventListener('click', () => {
+            hasError = !hasError;
+            if (hasError) {
+                checksumElement.textContent = "CRC: Fehler!";
+                checksumElement.classList.add('error');
+                toggleErrorBtn.textContent = "Fehler beheben";
+            } else {
+                checksumElement.textContent = "CRC: OK";
+                checksumElement.classList.remove('error');
+                toggleErrorBtn.textContent = "Fehler simulieren";
+            }
+        });
+    </script>
+</body>
+</html>

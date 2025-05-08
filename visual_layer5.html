@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisierung Schicht 5</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            margin: 0;
+            font-family: sans-serif;
+            background-color: transparent;
+            overflow: hidden;
+        }
+        .session-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            width: 90%;
+            padding: 20px;
+            border: 2px solid #6f42c1; /* Layer 5 color */
+            border-radius: 8px;
+            min-height: 120px;
+        }
+        .app {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .app-a { background-color: #007bff; }
+        .app-b { background-color: #28a745; }
+
+        .connection-line {
+            width: 0; /* Start with no line */
+            height: 5px;
+            background-color: #6f42c1;
+            position: relative;
+            animation: establishConnection 2s ease-out forwards,
+                       maintainConnection 3s 2s linear infinite alternate,
+                       terminateConnection 1s 8s ease-in forwards;
+        }
+
+        .checkpoint {
+            width: 10px;
+            height: 10px;
+            background-color: #ffc107;
+            border-radius: 50%;
+            position: absolute;
+            top: -2.5px; /* Center on line */
+            opacity: 0;
+        }
+        .checkpoint.c1 { left: 30%; animation: showCheckpoint 0.5s 3s forwards; }
+        .checkpoint.c2 { left: 60%; animation: showCheckpoint 0.5s 4.5s forwards; }
+
+
+        @keyframes establishConnection {
+            to { width: 100px; } /* Grow to full width */
+        }
+        @keyframes maintainConnection {
+            0% { opacity: 1; transform: scaleY(1); }
+            50% { opacity: 0.7; transform: scaleY(0.6); }
+            100% { opacity: 1; transform: scaleY(1); }
+        }
+        @keyframes terminateConnection {
+            from { width: 100px; opacity: 1; }
+            to { width: 0; opacity: 0; }
+        }
+        @keyframes showCheckpoint {
+            to { opacity: 1; }
+        }
+
+        .caption {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #E0E0E0; /* Light grey for dark mode */
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="session-container">
+        <div class="app app-a">App A</div>
+        <div class="connection-line">
+            <div class="checkpoint c1"></div>
+            <div class="checkpoint c2"></div>
+        </div>
+        <div class="app app-b">App B</div>
+    </div>
+    <div class="caption">Sitzung: Aufbau, Synchronisation (Checkpoints), Abbau.</div>
+</body>
+</html>

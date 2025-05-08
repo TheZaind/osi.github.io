@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisierung Schicht 6</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            margin: 0;
+            font-family: sans-serif;
+            background-color: transparent;
+            overflow: hidden; /* Verhindert Scrollbalken durch Animation */
+        }
+        .data-container {
+            border: 2px solid #6610f2; /* Layer 6 color */
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            width: 80%;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #data_text {
+            font-size: 1.5em;
+            color: #E0E0E0; /* Light grey for dark mode */
+            transition: all 0.5s ease-in-out;
+            min-height: 30px; /* Platz für Text */
+        }
+        .controls button {
+            margin-top: 15px;
+            padding: 8px 15px;
+            font-size: 0.9em;
+            background-color: #6610f2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .controls button:hover {
+            background-color: #520dc2;
+        }
+        .caption {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #E0E0E0; /* Light grey for dark mode */
+        }
+    </style>
+</head>
+<body>
+    <div class="data-container">
+        <div id="data_text">Hallo Welt</div>
+        <div class="controls">
+            <button id="encrypt_btn">Verschlüsseln</button>
+            <button id="decrypt_btn" style="display:none;">Entschlüsseln</button>
+        </div>
+    </div>
+    <div class="caption">Daten werden transformiert (z.B. verschlüsselt).</div>
+
+    <script>
+        const dataTextElement = document.getElementById('data_text');
+        const encryptBtn = document.getElementById('encrypt_btn');
+        const decryptBtn = document.getElementById('decrypt_btn');
+        const originalText = "Hallo Welt";
+        const encryptedText = "#@!!? %&!*"; // Simple representation
+
+        encryptBtn.addEventListener('click', () => {
+            dataTextElement.textContent = encryptedText;
+            dataTextElement.style.letterSpacing = "3px";
+            encryptBtn.style.display = 'none';
+            decryptBtn.style.display = 'inline-block';
+        });
+
+        decryptBtn.addEventListener('click', () => {
+            dataTextElement.textContent = originalText;
+            dataTextElement.style.letterSpacing = "normal";
+            decryptBtn.style.display = 'none';
+            encryptBtn.style.display = 'inline-block';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisierung Schicht 3</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            margin: 0;
+            font-family: sans-serif;
+            background-color: transparent;
+        }
+        .mermaid-container {
+            border: 2px solid #dc3545; /* Layer 3 color */
+            padding: 10px;
+            border-radius: 8px;
+            width: 95%;
+            height: auto; /* Adjust height based on content */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .caption {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #333;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="mermaid-container">
+        <pre class="mermaid">
+            graph LR;
+                A[PC_A] --> R1(Router_1);
+                R1 --> R2(Router_2);
+                R2 --> B[PC_B];
+
+                subgraph Netzwerk_A
+                    A
+                    R1
+                end
+                subgraph Netzwerk_B
+                    R2
+                    B
+                end
+
+                // Optionaler Pfad - corrected
+                R1 --> R3(Router_3);
+                R3 -->|Optionaler Pfad| R2;
+
+                classDef default fill:#f9f,stroke:#333,stroke-width:2px;
+                classDef router fill:#f0ad4e,stroke:#333,stroke-width:2px;
+                class R1,R2,R3 router;
+                classDef pc fill:#5bc0de,stroke:#333,stroke-width:2px;
+                class A,B pc;
+
+                linkStyle 0 stroke:#28a745,stroke-width:2px; /* A -> R1 */
+                linkStyle 1 stroke:#28a745,stroke-width:2px; /* R1 -> R2 (Direct) */
+                linkStyle 2 stroke:#28a745,stroke-width:2px; /* R2 -> B */
+                linkStyle 3 stroke:#dc3545,stroke-width:2px; /* R1 -> R3 (Optional Path Part 1) */
+                linkStyle 4 stroke:#dc3545,stroke-width:2px; /* R3 -> R2 (Optional Path Part 2) */
+        </pre>
+    </div>
+    <div class="caption">Paket-Routing durch ein Netzwerk von Routern.</div>
+
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+</body>
+</html>

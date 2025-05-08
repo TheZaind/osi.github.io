@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisierung Schicht 7</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            margin: 0;
+            font-family: sans-serif;
+            background-color: transparent; /* Wichtig für iframe Integration */
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            width: 90%;
+        }
+        .app-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            text-align: center;
+            color: white;
+            padding: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .browser { background-color: #007bff; } /* Blau */
+        .email { background-color: #28a745; } /* Grün */
+        .files { background-color: #ffc107; } /* Gelb */
+
+        .network-line {
+            height: 2px;
+            background-color: #6c757d;
+            width: 30px;
+            margin: 0 5px;
+        }
+        .network-cloud {
+            width: 80px;
+            height: 50px;
+            background-color: #6c757d;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px black;
+        }
+        .caption {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #E0E0E0; /* Light grey for dark mode */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-icon browser">Web Browser</div>
+        <div class="network-line"></div>
+        <div class="app-icon email">E-Mail Client</div>
+        <div class="network-line"></div>
+        <div class="network-cloud">Netzwerk</div>
+        <div class="network-line"></div>
+        <div class="app-icon files">Datei Transfer</div>
+    </div>
+    <div class="caption">Anwendungen greifen auf Netzwerkdienste zu.</div>
+</body>
+</html>

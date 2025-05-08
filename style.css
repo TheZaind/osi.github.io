@@ -1,0 +1,309 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #121212; /* Dark background */
+    color: white; /* Default text color */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    line-height: 1.7;
+}
+
+/* Strahleneffekt Hintergrund (radial gradient) */
+body::before {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(ellipse at center, rgba(255, 107, 57, 0.1) 0%, #121212 70%); /* Subtle orange hint in center */
+    background-size: 100% 100%;
+    top: -25%;
+    left: -25%;
+    z-index: -2; /* Behind rays */
+}
+
+/* Strahlen-Linien */
+.rays {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    z-index: -1; /* Behind content, above radial gradient */
+    opacity: 0.15; /* Softer rays */
+    pointer-events: none;
+}
+
+.ray {
+    position: absolute;
+    width: 1px; /* Thinner rays */
+    height: 200%;
+    background-color: #444; /* Slightly lighter than darkest gray for subtlety */
+    top: 0;
+    left: 50%;
+    transform-origin: center bottom;
+}
+
+.ray:nth-child(1) { transform: rotate(0deg); }
+.ray:nth-child(2) { transform: rotate(15deg); } /* More rays for denser effect */
+.ray:nth-child(3) { transform: rotate(30deg); }
+.ray:nth-child(4) { transform: rotate(45deg); }
+.ray:nth-child(5) { transform: rotate(60deg); }
+.ray:nth-child(6) { transform: rotate(75deg); }
+.ray:nth-child(7) { transform: rotate(90deg); }
+.ray:nth-child(8) { transform: rotate(105deg); }
+.ray:nth-child(9) { transform: rotate(120deg); }
+.ray:nth-child(10) { transform: rotate(135deg); }
+.ray:nth-child(11) { transform: rotate(150deg); }
+.ray:nth-child(12) { transform: rotate(165deg); }
+.ray:nth-child(13) { transform: rotate(180deg); }
+.ray:nth-child(14) { transform: rotate(195deg); }
+.ray:nth-child(15) { transform: rotate(210deg); }
+.ray:nth-child(16) { transform: rotate(225deg); }
+.ray:nth-child(17) { transform: rotate(240deg); }
+.ray:nth-child(18) { transform: rotate(255deg); }
+.ray:nth-child(19) { transform: rotate(270deg); }
+.ray:nth-child(20) { transform: rotate(285deg); }
+.ray:nth-child(21) { transform: rotate(300deg); }
+.ray:nth-child(22) { transform: rotate(315deg); }
+.ray:nth-child(23) { transform: rotate(330deg); }
+.ray:nth-child(24) { transform: rotate(345deg); }
+
+
+header {
+    background: rgba(30, 30, 30, 0.8); /* Dark, slightly transparent */
+    backdrop-filter: blur(10px);
+    color: #fff;
+    padding: 1rem 2rem; /* Adjusted padding */
+    display: flex; /* Enable flexbox */
+    justify-content: space-between; /* Space between title and buttons */
+    align-items: center; /* Align items vertically */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    border-bottom: 1px solid #2A2A2A;
+}
+
+header h1 {
+    margin-bottom: 0; /* Remove bottom margin as flex handles alignment */
+    font-size: 2.0rem; /* Slightly adjust size if needed */
+    font-weight: 700;
+    color: #FF6B39; /* Orange accent for main title */
+}
+
+main {
+    padding: 20px;
+    max-width: 1400px; /* Increased max-width for wider screens */
+    margin: 30px auto;
+    flex-grow: 1;
+    width: 90%; /* Main content area takes 90% of screen width */
+}
+
+.osi-layer {
+    background: #1E1E1E; /* Dark card background */
+    margin-bottom: 30px;
+    padding: 25px 30px; /* More padding */
+    border-radius: 20px; /* More rounded corners */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4); /* Deeper shadow */
+    display: none;
+    border: 1px solid #2A2A2A; /* Subtle border */
+    /* border-left will be replaced by a top border or other indicator for active */
+}
+
+.osi-layer.active-layer {
+    display: block;
+    border-top: 4px solid #FF6B39; /* Orange accent for active layer */
+}
+
+.osi-exercise {
+    background: #1E1E1E; /* Dark card background, same as osi-layer */
+    margin-bottom: 30px;
+    padding: 20px; /* Slightly less padding perhaps, or adjust as needed */
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    display: none; /* Hidden by default */
+    border: 1px solid #2A2A2A;
+}
+
+.osi-exercise.active-layer {
+    display: block;
+    border-top: 4px solid #FF6B39; /* Same active indicator */
+}
+
+.exercise-iframe-container {
+    /* This container ensures the iframe has some padding around it if the exercise content itself doesn't fill the space */
+    /* Or, if exercise content has its own padding, this might not be strictly needed, but good for consistency */
+    background-color: #252525; /* Match visual-content background for the iframe area */
+    padding: 15px;
+    border-radius: 15px; /* Rounded corners for the iframe block */
+    min-height: 450px; /* Default height, can be adjusted per iframe if needed */
+    display: flex; /* To center iframe if it's smaller than container */
+    align-items: center;
+    justify-content: center;
+}
+
+.exercise-iframe-container iframe {
+    border-radius: 8px; /* Rounded corners for the iframe itself */
+}
+
+
+.layer-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.text-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+.visual-content {
+    flex: 1;
+    min-width: 300px;
+    background-color: #252525; /* Slightly lighter dark for visual area */
+    padding: 20px;
+    border-radius: 15px; /* Rounded corners for visual block */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid #333;
+    min-height: 250px; /* Ensure space for visuals */
+}
+
+.visual-content iframe {
+    border-radius: 8px; /* Rounded corners for iframe content if possible */
+}
+
+section h2 { /* Layer Title */
+    color: #E0E0E0; /* Light grey for titles */
+    margin-bottom: 20px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 15px;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+section h3 { /* Subheadings like "Erklärung", "Metapher" */
+    color: #FF6B39; /* Orange accent for subheadings */
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+section ul {
+    list-style-position: inside;
+    padding-left: 0;
+    margin-bottom: 15px;
+}
+
+section ul li {
+    margin-bottom: 8px;
+    color: #B0B0B0; /* Lighter grey for list items */
+}
+section ul li::marker { /* For browsers supporting ::marker styling */
+    color: #FF6B39;
+}
+
+
+section blockquote {
+    background-color: rgba(255, 107, 57, 0.05); /* Very subtle orange background */
+    border-left: 4px solid #FF6B39; /* Orange accent */
+    margin: 20px 0;
+    padding: 15px 20px;
+    font-style: italic;
+    color: #D6BCFF; /* Purple for metaphor text as an example accent use */
+    border-radius: 0 8px 8px 0;
+}
+
+.navigation-buttons {
+    display: flex;
+    /* justify-content: space-between; /* No longer needed here, header handles it */
+    margin-top: 0; /* Remove top margin */
+    padding: 0; /* Remove padding */
+    display: flex; /* Keep flex for button spacing if needed, or just rely on gap */
+    gap: 10px; /* Add gap between buttons */
+}
+
+.navigation-buttons button {
+    background-color: #FF6B39; /* Orange accent */
+    color: white;
+    border: none;
+    padding: 10px 20px; /* Slightly smaller buttons for header */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 30px; /* Fully rounded buttons */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(255, 107, 57, 0.3);
+}
+
+.navigation-buttons button:hover {
+    background-color: #E05A30; /* Darker orange on hover */
+    transform: translateY(-2px);
+}
+
+.navigation-buttons button:disabled {
+    background-color: #444; /* Dark grey for disabled */
+    color: #888;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: translateY(0);
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(10px);
+    color: #aaa; /* Lighter grey for footer text */
+    margin-top: auto;
+    border-top: 1px solid #2A2A2A;
+    font-size: 0.9rem;
+}
+
+/* Specific Layer Accent Colors - Can be used for h2 border-bottom or other elements if desired */
+/* For now, main accent is orange. These can be used for more variety later. */
+/* #layer7 { } */
+/* #layer6 { } */
+/* #layer5 { } */
+/* #layer4 { } */
+/* #layer3 { } */
+/* #layer2 { } */
+/* #layer1 { } */
+
+/* Responsive Anpassungen */
+@media (max-width: 768px) {
+    .layer-content {
+        flex-direction: column;
+    }
+    header h1 {
+        font-size: 1.8rem;
+    }
+    section h2 {
+        font-size: 1.5rem;
+    }
+    section h3 {
+        font-size: 1.2rem;
+    }
+    .navigation-buttons button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    .visual-content {
+        min-height: 200px; /* Adjust for smaller screens */
+    }
+}

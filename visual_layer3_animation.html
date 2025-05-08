@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisierung Schicht 3 - Animation</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            margin: 0;
+            font-family: sans-serif;
+            background-color: transparent;
+            overflow: hidden;
+        }
+        .network-container {
+            position: relative;
+            width: 320px; /* Adjusted width */
+            height: 180px; /* Adjusted height */
+            border: 2px solid #dc3545; /* Layer 3 color */
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .node {
+            position: absolute;
+            width: 50px;
+            height: 30px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .pc { background-color: #5bc0de; } /* Blau für PCs */
+        .router { background-color: #f0ad4e; } /* Orange für Router */
+
+        #pc_a { top: 75px; left: 10px; }
+        #router1 { top: 75px; left: 90px; }
+        #router2 { top: 20px; left: 170px; } /* Obere Route */
+        #router3 { top: 130px; left: 170px; } /* Untere Route */
+        #pc_b { top: 75px; left: 250px; }
+
+        .packet {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #28a745; /* Grün für Paket */
+            border-radius: 3px;
+            box-shadow: 0 0 5px #28a745;
+            /* Initial position at PC_A */
+            top: 82px; /* (75 + 30/2) - 15/2 */
+            left: 30px; /* 10 + 50/2 - 15/2 + some offset */
+            opacity: 0;
+        }
+
+        /* Animation für den Hauptpfad (über Router2) */
+        @keyframes routePacketMain {
+            0% { top: 82px; left: 30px; opacity: 1; } /* Start PC_A */
+            20% { top: 82px; left: 100px; } /* Zu Router1 */
+            40% { top: 27px; left: 180px; } /* Zu Router2 (oben) */
+            60% { top: 82px; left: 260px; opacity: 1; } /* Zu PC_B */
+            80% { opacity: 0; } /* Fade out */
+            100% { top: 82px; left: 30px; opacity: 0; } /* Reset für Loop */
+        }
+
+        /* Animation für den alternativen Pfad (über Router3) */
+        @keyframes routePacketAlt {
+            0% { top: 82px; left: 30px; opacity: 1; } /* Start PC_A */
+            20% { top: 82px; left: 100px; } /* Zu Router1 */
+            40% { top: 137px; left: 180px; } /* Zu Router3 (unten) */
+            60% { top: 82px; left: 260px; opacity: 1; } /* Zu PC_B */
+            80% { opacity: 0; }
+            100% { top: 82px; left: 30px; opacity: 0; }
+        }
+
+        .packet.main-path {
+            animation: routePacketMain 6s ease-in-out 0.5s infinite;
+        }
+        .packet.alt-path {
+            background-color: #e83e8c; /* Andere Farbe für alternatives Paket */
+            box-shadow: 0 0 5px #e83e8c;
+            animation: routePacketAlt 6s ease-in-out 3.5s infinite; /* Startet später */
+        }
+        .line {
+            position: absolute;
+            background-color: #6c757d;
+            height: 2px;
+            z-index: -1; /* Hinter den Nodes */
+        }
+        /* Linien manuell positionieren - dies ist der mühsame Teil */
+        /* PC_A zu Router1 */
+        .line.l1 { top: 89px; left: 60px; width: 30px; }
+        /* Router1 zu Router2 */
+        .line.l2 { top: 50px; left: 115px; width: 55px; transform: rotate(-45deg); transform-origin: top left;}
+        /* Router1 zu Router3 */
+        .line.l3 { top: 105px; left: 115px; width: 55px; transform: rotate(45deg); transform-origin: top left;}
+        /* Router2 zu PC_B */
+        .line.l4 { top: 50px; left: 220px; width: 55px; transform: rotate(45deg); transform-origin: top left;}
+        /* Router3 zu PC_B */
+        .line.l5 { top: 105px; left: 220px; width: 55px; transform: rotate(-45deg); transform-origin: top left;}
+
+
+        .caption {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #E0E0E0; /* Light grey for dark mode */
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="network-container">
+        <div class="node pc" id="pc_a">PC A</div>
+        <div class="node router" id="router1">R1</div>
+        <div class="node router" id="router2">R2</div>
+        <div class="node router" id="router3">R3</div>
+        <div class="node pc" id="pc_b">PC B</div>
+
+        <!-- Linien für Verbindungen -->
+        <div class="line l1"></div>
+        <div class="line l2"></div>
+        <div class="line l3"></div>
+        <div class="line l4"></div>
+        <div class="line l5"></div>
+
+        <div class="packet main-path"></div>
+        <div class="packet alt-path"></div>
+    </div>
+    <div class="caption">Animation: Paket-Routing über verschiedene Pfade.</div>
+</body>
+</html>
